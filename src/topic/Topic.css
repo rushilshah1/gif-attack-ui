@@ -1,0 +1,11 @@
+.topic {
+    display: inline;
+}
+
+.topicText {
+    min-width: 700px;
+}
+
+.Button {
+    padding-top: 20px;
+}
