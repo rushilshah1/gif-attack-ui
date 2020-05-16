@@ -1,5 +1,6 @@
 .topic {
     display: inline;
+    border: medium;
 }
 
 .topicText {
@@ -7,5 +8,5 @@
 }
 
 .Button {
-    padding-top: 20px;
+    padding-top: 50px;
 }

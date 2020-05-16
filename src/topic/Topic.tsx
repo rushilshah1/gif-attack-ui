@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { TextField, Button, withStyles } from '@material-ui/core'
-import styled from 'styled-components';
 import { useTopic } from '../graphql/topic-hooks';
+import './Topic.css';
 
 // const StyledInputText = withStyles({
 //     root: {
