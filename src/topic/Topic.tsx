@@ -3,13 +3,13 @@ import { TextField, Button, withStyles } from '@material-ui/core'
 import { useTopic } from '../graphql/topic-hooks';
 import './Topic.css';
 
-// const StyledInputText = withStyles({
-//     root: {
-//         //background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-//         width: "auto",
-//         minWidth: "200px"
-//     }
-// })(TextField);
+const StyledInputText = withStyles({
+    root: {
+        paddingTop: "20px",
+        width: "auto",
+        minWidth: "500px"
+    }
+})(TextField);
 
 export type ITopic = { gameId?: string, text: string };
 
@@ -30,9 +30,9 @@ export const Topic: React.FC<TopicProps> = props => {
     return (
         <div className="topic">
             <div className="topicText">
-                <TextField className="topicText" id="standard-basic" label="Enter a topic" value={props.topic} onChange={(e) => props.setTopic(e.target.value)} multiline></TextField>
+                <StyledInputText className="topicText" id="standard-basic" label="Enter a topic" value={props.topic} onChange={(e) => props.setTopic(e.target.value)} multiline></StyledInputText>
             </div >
-            <div>
+            <div className="submitButton">
                 <Button variant="contained" color="primary" onClick={() => {
                     props.submitTopic(props.topic)
                 }}> Submit</Button>

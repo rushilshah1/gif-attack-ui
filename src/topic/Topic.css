@@ -3,10 +3,11 @@
     border: medium;
 }
 
-.topicText {
-    min-width: 700px;
-}
-
 .Button {
     padding-top: 50px;
+}
+
+.submitButton {
+    /* display: inline-block; */
+    padding-top: 10px;
 }
