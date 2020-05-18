@@ -1,8 +1,4 @@
-/* .gif {
-    display: inline-block;
-    padding: 10px 10px 10px 10px;
-} */
-.submittedGif {
+.winnerGif {
     display: inline-block;
     padding: 5px;
     justify-content: space-between;
@@ -12,13 +8,12 @@
     border-radius: 25px;
 }
 
-.votedGif {
+.consolationGif {
     display: inline-block;
     padding: 5px;
     justify-content: space-between;
     /* box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22); */
     margin-right: 20px;
     margin-top: 20px;
-    border-radius: 100px;
-    color: aqua;
+    border-radius: 25px;
 }

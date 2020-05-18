@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Button, Container, withStyles, TextField } from '@material-ui/core'
-import { Carousel, GifOverlayProps, Gif } from '@giphy/react-components'
-import { GiphyFetch, GifsResult } from '@giphy/js-fetch-api'
+import { GifOverlayProps, Gif } from '@giphy/react-components'
+import { GiphyFetch } from '@giphy/js-fetch-api'
 import { gifSearchData } from './GiphyMock';
 import './GifSelect.css';
 
@@ -40,7 +40,7 @@ const ShuffleButton = withStyles({
 })(Button);
 
 interface GifSelectProps {
-    selectGif: (gif: any) => void;
+    selectGif: (gif: any, searchText: string) => void;
 }
 
 const delay = async (ms: number) => {
@@ -121,7 +121,7 @@ export const GifSelect: React.FC<GifSelectProps> = props => {
                     pickRandomGif()
                 }}>Shuffle</ShuffleButton>}
                 {currentGif && <ShuffleButton variant="contained" color="primary" onClick={() => {
-                    props.selectGif(currentGif)
+                    props.selectGif(currentGif, gifSearchInput)
                 }}>Submit</ShuffleButton>}
             </div>
         </GifSelectionContainer>
