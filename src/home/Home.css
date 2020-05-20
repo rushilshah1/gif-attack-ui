@@ -1,0 +1,21 @@
+.title {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+  display: block;
+  font-weight: bold;
+  font-size: xx-large;
+  display: block;
+  /* color: blue; */
+  
+}
+
+.gameType {
+    text-align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    color: blue
+
+}
+

@@ -3,29 +3,41 @@ import { Round } from '../round/Round'
 import { Container } from '@material-ui/core';
 import { RoundResult } from '../round/RoundResult';
 import { SubmittedGifModel } from '../models/SubmittedGifModel';
-import { useMutation, useSubscription } from '@apollo/react-hooks';
+import { useMutation, useSubscription, useQuery } from '@apollo/react-hooks';
 import { ROUND_STARTED_SUBSCRIPTION, NEXT_ROUND_MUTATION, IRound } from '../graphql/round';
-
+import { useParams } from "react-router-dom";
+import { LOCAL_STORAGE_USER } from '../common/constants';
+import { GET_USERS_IN_GAME } from '../graphql/game';
 
 const tempGameId = '5ebb3d7469bb4c37860aa594'
 
 
-export interface GameProps {
-    gameId?: string
+export interface IGameProps {
+    gameId: string
 }
+//As of now this component assumes the input gameId is valid -> a guard will need to sit between to perform the validation
+export const Game: React.FC<IGameProps> = props => {
+    let params: IGameProps = useParams();
+    const localStorageUser: string | null = localStorage.getItem(LOCAL_STORAGE_USER)
 
-export const Game: React.FC<GameProps> = props => {
-    //Controls when round is over or not -> number of votes === number of submissions => toggle to results page
-    const [users, setUsers] = useState<Array<string>>(['Rushil', 'Sam']);
+    const [gameId, setGameId] = useState<string>(params.gameId);
+    const [users, setUsers] = useState<Array<string>>(localStorageUser ? [localStorageUser] : []);
     const [submittedGifs, setSubmittedGifs] = useState<Array<SubmittedGifModel>>([]);
     const [roundComplete, setRoundComplete] = useState<boolean>(false);
-    const [roundNumber, setRoundNumber] = useState<number>(1);
+    const [roundNumber, setRoundNumber] = useState<number>(0);
+    /**
+     * GraphQL hooks
+     */
+    const { data, loading, error } = useQuery(GET_USERS_IN_GAME);
+    //TODO
     const [startNextRound, startNextRoundResult] = useMutation(NEXT_ROUND_MUTATION);
     const nextRoundSubscription = useSubscription(ROUND_STARTED_SUBSCRIPTION, {
         variables: { gameId: tempGameId }, onSubscriptionData: (response) => {
             newRoundReceived(response.subscriptionData.data.roundStarted.roundNumber)
         }
     });
+
+
     //TODO: Add query to fetch users given a game ID
     //TODO: Add subscription hook for added users to game
     //Pass users into Lobby component -> that will have button to take us back and start a round
