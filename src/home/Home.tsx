@@ -6,6 +6,7 @@ import { useMutation, useLazyQuery, useQuery } from '@apollo/react-hooks';
 import { CREATE_GAME_MUTATION, ADD_USER_TO_GAME_MUTATION, GET_GAMES_QUERY, IGame, GET_GAMES_BY_ID_QUERY } from '../graphql/game';
 import { Redirect } from "react-router-dom";
 import { CREATE_GAME, JOIN_GAME, LOCAL_STORAGE_USER } from '../common/constants';
+import { getQuery } from '../graphql/api-client';
 
 
 export const Home: React.FC = props => {
@@ -15,9 +16,7 @@ export const Home: React.FC = props => {
     const [gameId, setGameId] = useState<string>('');
     const [createGame, createGameResult] = useMutation(CREATE_GAME_MUTATION);
     const [addUserToGame, addUserToGameResult] = useMutation(ADD_USER_TO_GAME_MUTATION);
-    const { handleSubmit, register, errors } = useForm({ mode: 'onSubmit', reValidateMode: 'onSubmit' });
-    const { data, loading, error } = useQuery(GET_GAMES_QUERY);
-    //const [getGameById, { called, loading, data }] = useLazyQuery(GET_GAMES_BY_ID_QUERY);
+    const { handleSubmit, register, errors, setError, clearError } = useForm({ mode: 'onSubmit', reValidateMode: 'onSubmit' });
 
 
     const onSubmit = async (formValues) => {
@@ -26,6 +25,10 @@ export const Home: React.FC = props => {
             await startGame(formValues.name);
         }
         else if (gameType === JOIN_GAME) {
+            const isValid: boolean = await validateGameId(formValues.userInputGameId);
+            if (!isValid) {
+                return;
+            }
             await joinGame(formValues.name, formValues.userInputGameId)
 
         }
@@ -40,11 +43,22 @@ export const Home: React.FC = props => {
         console.log(`Game ${gameId} has been created`);
     };
 
-    const validateGameId = (value: string): boolean => {
+    const validateGameId = async (userInputGameId: string): Promise<boolean> => {
+        try {
+            const response = await getQuery(GET_GAMES_BY_ID_QUERY(userInputGameId));
+            const gameHasStarted: boolean = response.getGameById.started;
+            if (gameHasStarted) {
+                setError("userInputGameId", "startedGame", "Game ID has already started and cannot be joined")
+            }
+            return !gameHasStarted;
+        } catch (error) { //If id does not exist
+            setError("userInputGameId", "invalidId", "Game ID is not valid")
+            return false;
+        }
 
-        const gamesList: Array<IGame> = data.getGames;
-        const gameFound = gamesList.find(game => game.id === value && game.started === false);
-        return (gameFound) ? true : false;
+        // const gamesList: Array<IGame> = data.getGames;
+        // const gameFound = gamesList.find(game => game.id === value && game.started === false);
+        // return (gameFound) ? true : false;
 
     }
     const joinGame = async (name: string, gameId: string) => {
@@ -63,11 +77,8 @@ export const Home: React.FC = props => {
         console.log('Game created, redirecting...')
         return <Redirect to={`/game/${gameId}`} />
     }
-    if (loading) {
-        return <CircularProgress />
-    }
-    // if (error) {
-    //     debugger;
+    // if (loading) {
+    //     return <CircularProgress />
     // }
     return (
         <div className="title">
@@ -80,11 +91,15 @@ export const Home: React.FC = props => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <TextField required name="name" label="Name" error={errors.name} onChange={(e) => setUsername(e.target.value)} inputRef={register({ required: true })}> </TextField>
                 {gameType === JOIN_GAME && <TextField required name="userInputGameId" label="Game ID" error={errors.gameId}
-                    onChange={(e) => setUserInputGameId(e.target.value)} inputRef={register({ required: true, validate: validateGameId })} > </TextField>}
-                {errors.userInputGameId && <p>Invalid Game ID</p>}
+                    onChange={(e) => {
+                        clearError();
+                        setUserInputGameId(e.target.value)
+                    }} inputRef={register({ required: true })} > </TextField>}
+                {errors.userInputGameId && <p>{errors.userInputGameId.message}</p>}
 
                 <Button type="submit" color="primary">{gameType}</Button>
             </form>
         </div >
     )
 }
+//, validate: validateGameId

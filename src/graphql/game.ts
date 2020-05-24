@@ -61,9 +61,10 @@ export const GET_GAMES_QUERY = gql`
     }
 `
 
-export const GET_GAMES_BY_ID_QUERY = gql`
-    query GetGamesByIdQuery($gameId: ID!) {
-        getGameById(gameId: $gameId) {
+export const GET_GAMES_BY_ID_QUERY = (id): string =>
+    `
+    query {
+        getGameById(gameId: "${id}") {
             id
             started
         }
