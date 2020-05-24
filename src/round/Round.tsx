@@ -1,37 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Container } from '@material-ui/core';
-import { Topic, ITopic } from '../topic/Topic';
-import { useTopic } from '../graphql/topic-hooks';
+import { Topic } from '../topic/Topic';
+import { SUBMIT_TOPIC_MUTATION, TOPIC_CREATED_SUBSCRIPTION, ITopic } from '../graphql/topic';
 import './Round.css';
 import { useMutation, useSubscription } from '@apollo/react-hooks';
 import { GifSelect } from '../gif/GifSelect';
-import { CREATE_GIF_MUTATION, GIF_CREATED_SUBSCRIPTION, IGif, VOTE_GIF_MUTATION, GIF_VOTED_SUBSCRIPTION } from '../graphql/gif-hooks';
+import { CREATE_GIF_MUTATION, GIF_CREATED_SUBSCRIPTION, IGif, VOTE_GIF_MUTATION, GIF_VOTED_SUBSCRIPTION } from '../graphql/gif';
 import { SubmittedGif } from '../gif/SubmittedGif';
-import { uniqueNamesGenerator, names } from 'unique-names-generator';
 import { SubmittedGifModel } from '../models/SubmittedGifModel';
-
-// interface Person {
-//     firstName: string;
-//     lastName: string;
-// }
-
-// interface Props {
-//     text: string;
-//     ok?: boolean;
-//     i?: number;
-//     fn?: (bob: string) => string;
-//     person: Person
-//     handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-// }
-
-// interface TextNode {
-//     text: string
-// }
-
-// interface IProps {
-
-// }
-
 
 // const StyledContainer = withStyles({
 //     root: {
@@ -43,14 +19,11 @@ import { SubmittedGifModel } from '../models/SubmittedGifModel';
 //     }
 // })(Container);
 
-
-
-const tempGameId = '5ebb3d7469bb4c37860aa594'
-const tempUserName = uniqueNamesGenerator({ dictionaries: [names], length: 1 });
 export interface RoundProps {
-    //isRoundComplete: (status: boolean) => boolean;
+    gameId: string;
+    player: string;
     roundNumber: number;
-    users?: Array<string>;
+    // users?: Array<string>;
     submittedGifs: Array<SubmittedGifModel>;
     addSubmitedGif: (submittedGif: SubmittedGifModel) => void;
     voteForSubmitedGif: (gifId: string) => void;
@@ -58,35 +31,35 @@ export interface RoundProps {
 
 export const Round: React.FC<RoundProps> = props => {
 
-
-    //console.log(`Game ${tempGameId} started. Playing as user ${tempUserName}`);
-    const [selectedTopic, selectTopic] = useState<string>('');
+    const [selectedTopic, setSelectedTopic] = useState<string>('');
     const [hasUserSubmittedGif, setHasUserSubmittedGif] = useState<boolean>(false);
 
+    /** Gif Submission hooks */
     const [createGif, createGifResult] = useMutation(CREATE_GIF_MUTATION);
     const { data, loading, error } = useSubscription(GIF_CREATED_SUBSCRIPTION, {
-        variables: { gameId: tempGameId }, onSubscriptionData: (response) => {
+        variables: { gameId: props.gameId }, onSubscriptionData: (response) => {
             gifReceived(response.subscriptionData.data.gifCreated)
         }
     });
+
+    /** Gif Voting hooks */
     const [voteForGif, voteForGifResult] = useMutation(VOTE_GIF_MUTATION);
     const votedForSubscription = useSubscription(GIF_VOTED_SUBSCRIPTION, {
-        variables: { gameId: tempGameId }, onSubscriptionData: (response) => {
-            //console.log(`Subscription response: ${response.subscriptionData.data.gifVoteAdded}`);
-            gifVoteReceived(response.subscriptionData.data.gifVoteAdded)
+        variables: { gameId: props.gameId }, onSubscriptionData: (response) => gifVoteReceived(response.subscriptionData.data.gifVoteAdded)
+    });
+
+    /** Topic Creation hooks */
+    const [createTopic, createTopicResult] = useMutation(SUBMIT_TOPIC_MUTATION);
+    const topicCreatedSubscription = useSubscription(TOPIC_CREATED_SUBSCRIPTION, {
+        variables: { gameId: props.gameId }, onSubscriptionData: (response) => {
+            topicReceived(response.subscriptionData.data.topicCreated.text);
         }
     });
 
-    //Logic to determine if the round is over (when everyone has casted their votes)
-    // useEffect(() => {
-    //     if (props.users.length === numVotesCasted) {
-
-    //     }
-    // }, [numVotesCasted])
 
     const submitGif = async (gifObject: any, searchText: string) => {
         const gifString: string = JSON.stringify(gifObject);
-        const mutationInput: IGif = { gameId: tempGameId, gif: gifString, userName: tempUserName, gifSearchText: searchText, id: gifObject.id };
+        const mutationInput: IGif = { gameId: props.gameId, gif: gifString, userName: props.player, gifSearchText: searchText, id: gifObject.id };
         await createGif({ variables: { input: mutationInput } });
         setHasUserSubmittedGif(true);
         console.log(`Create Gif Result: ${createGifResult}`);
@@ -102,7 +75,7 @@ export const Round: React.FC<RoundProps> = props => {
     };
 
     const submitGifVote = async (gifId: string) => {
-        const mutationInput: IGif = { gameId: tempGameId, id: gifId };
+        const mutationInput: IGif = { gameId: props.gameId, id: gifId };
         await voteForGif({ variables: { input: mutationInput } });
         console.log(`Gif ${gifId} has been voted for`);
     }
@@ -112,15 +85,19 @@ export const Round: React.FC<RoundProps> = props => {
         return true;
     }
 
-    const submitTopic = useTopic(tempGameId, (topic: ITopic) => {
-        selectTopic(topic.text)
-        console.log(`${selectedTopic} set in Game componenet`)
-    });
+    const submitTopic = async (topic: string) => {
+        const topicInput: ITopic = { gameId: props.gameId, text: topic }
+        await createTopic({ variables: { input: topicInput } });
+    };
+
+    const topicReceived = async (topic: string) => {
+        setSelectedTopic(topic);
+    }
 
     return (
         <Container>
             <h3>Round {props.roundNumber}</h3>
-            <Topic topic={selectedTopic} submitTopic={text => (submitTopic(text))} setTopic={text => (selectTopic(text))} />
+            <Topic topic={selectedTopic} submitTopic={text => (submitTopic(text))} setTopic={text => (setSelectedTopic(text))} />
             <SubmittedGif submittedGifs={props.submittedGifs} voteGif={(gifId) => (submitGifVote(gifId))}></SubmittedGif>
             {/* {!hasUserSubmittedGif && <GifSelect selectGif={gif => (submitGif(gif))}></GifSelect>} */}
             {<GifSelect selectGif={(gif, searchText) => (submitGif(gif, searchText))}></GifSelect>}

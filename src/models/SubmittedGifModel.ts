@@ -1,4 +1,4 @@
-import { IGif } from "../graphql/gif-hooks";
+import { IGif } from "../graphql/gif";
 
 export class SubmittedGifModel implements IGif {
 

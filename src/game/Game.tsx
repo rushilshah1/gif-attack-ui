@@ -1,16 +1,14 @@
 import React, { useState } from 'react'
 import { Round } from '../round/Round'
-import { Container } from '@material-ui/core';
+import { Container, CircularProgress } from '@material-ui/core';
 import { RoundResult } from '../round/RoundResult';
 import { SubmittedGifModel } from '../models/SubmittedGifModel';
 import { useMutation, useSubscription, useQuery } from '@apollo/react-hooks';
 import { ROUND_STARTED_SUBSCRIPTION, NEXT_ROUND_MUTATION, IRound } from '../graphql/round';
 import { useParams } from "react-router-dom";
 import { LOCAL_STORAGE_USER } from '../common/constants';
-import { GET_USERS_IN_GAME } from '../graphql/game';
-
-const tempGameId = '5ebb3d7469bb4c37860aa594'
-
+import { GET_USERS_IN_GAME_QUERY, NEW_USER_IN_GAME_SUBSCRIPTION, START_GAME_MUTATION } from '../graphql/game';
+import { Lobby } from '../lobby/Lobby';
 
 export interface IGameProps {
     gameId: string
@@ -21,22 +19,41 @@ export const Game: React.FC<IGameProps> = props => {
     const localStorageUser: string | null = localStorage.getItem(LOCAL_STORAGE_USER)
 
     const [gameId, setGameId] = useState<string>(params.gameId);
-    const [users, setUsers] = useState<Array<string>>(localStorageUser ? [localStorageUser] : []);
+    const [currentUser, setCurrentUser] = useState<string>(localStorageUser ? localStorageUser : '');
+    const [usersInGame, setUsersInGame] = useState<Array<string>>([]);
     const [submittedGifs, setSubmittedGifs] = useState<Array<SubmittedGifModel>>([]);
     const [roundComplete, setRoundComplete] = useState<boolean>(false);
     const [roundNumber, setRoundNumber] = useState<number>(0);
-    /**
-     * GraphQL hooks
-     */
-    const { data, loading, error } = useQuery(GET_USERS_IN_GAME);
-    //TODO
+
+    /** Users in Game Lobby Hooks*/
+    const { data, loading, error } = useQuery(GET_USERS_IN_GAME_QUERY, {
+        variables: { gameId: gameId }, onCompleted: async (response) => {
+            let listOfUsers: Array<any> = response.getUsers;
+            const listOfNames: Array<string> = await listOfUsers.map(user => user.name);
+            setUsersInGame(listOfNames);
+        }
+    });
+    const usersAddedToGameSubscription = useSubscription(NEW_USER_IN_GAME_SUBSCRIPTION, {
+        variables: { gameId: gameId },
+        onSubscriptionData: (response) => {
+            userInGameReceived(response.subscriptionData.data.newUserInGame.users)
+        }
+    });
+    /** Start Game Hooks */
+    const [gameStatusStarted, gameStatusStartedResult] = useMutation(START_GAME_MUTATION);
+    /**  New Round Hooks */
     const [startNextRound, startNextRoundResult] = useMutation(NEXT_ROUND_MUTATION);
     const nextRoundSubscription = useSubscription(ROUND_STARTED_SUBSCRIPTION, {
-        variables: { gameId: tempGameId }, onSubscriptionData: (response) => {
+        variables: { gameId: gameId }, onSubscriptionData: (response) => {
             newRoundReceived(response.subscriptionData.data.roundStarted.roundNumber)
         }
     });
 
+
+    const userInGameReceived = async (currentUserList) => {
+        const listOfNames: Array<string> = await currentUserList.map(user => user.name);
+        setUsersInGame(listOfNames);
+    }
 
     //TODO: Add query to fetch users given a game ID
     //TODO: Add subscription hook for added users to game
@@ -61,16 +78,21 @@ export const Game: React.FC<IGameProps> = props => {
         const numVotes: number = submittedGifs.reduce((sum: number, currentGif: SubmittedGifModel) => sum + currentGif.numVotes, 0);
         console.log(`Number of votes: ${numVotes}`);
 
-        if (numVotes === users.length) {
+        if (numVotes === usersInGame.length) {
             setRoundComplete(true);
         }
     }
     const startNewRound = async () => {
-        const mutationInput: IRound = { gameId: tempGameId, roundNumber: roundNumber };
+        const mutationInput: IRound = { gameId: gameId, roundNumber: roundNumber };
         await startNextRound({ variables: { input: mutationInput } });
         console.log(`Round ${roundNumber} has finished, a new round is about to start...`);
     };
 
+    const startGame = async () => {
+        //Mutation to change game status
+        await gameStatusStarted({ variables: { gameId: gameId } })
+        await startNewRound();
+    }
     const newRoundReceived = (newRoundNumber: number) => {
         setRoundNumber(newRoundNumber);
         setRoundComplete(false);
@@ -78,11 +100,19 @@ export const Game: React.FC<IGameProps> = props => {
         // console.log(`It is now Round ${roundNumber}`);
         // debugger;
     }
-
+    if (loading) {
+        return <CircularProgress />
+    }
+    if (error) {
+        console.error(`Error! ${error}`)
+    }
     return (
         <Container>
-            {roundComplete ? <RoundResult submittedGifs={submittedGifs} startNewRound={() => startNewRound()} />
-                : <Round roundNumber={roundNumber} submittedGifs={submittedGifs} addSubmitedGif={(gif) => addSubmitedGif(gif)} voteForSubmitedGif={(gifId) => voteForSubmittedGif(gifId)} />}
+            <p>Welcome {currentUser}!</p>
+            <p>There are currently {usersInGame.length} users in the game!</p>
+            {roundNumber === 0 && <Lobby gameId={gameId} players={usersInGame} startGame={() => startGame()} />}
+            {roundNumber > 0 && (roundComplete ? <RoundResult submittedGifs={submittedGifs} startNewRound={() => startNewRound()} />
+                : <Round roundNumber={roundNumber} gameId={gameId} player={currentUser} submittedGifs={submittedGifs} addSubmitedGif={(gif) => addSubmitedGif(gif)} voteForSubmitedGif={(gifId) => voteForSubmittedGif(gifId)} />)}
         </Container>
     )
 }

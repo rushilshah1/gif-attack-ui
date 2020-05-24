@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { TextField, Button, withStyles } from '@material-ui/core'
-import { useTopic } from '../graphql/topic-hooks';
 import './Topic.css';
 
 const StyledInputText = withStyles({
@@ -11,7 +10,6 @@ const StyledInputText = withStyles({
     }
 })(TextField);
 
-export type ITopic = { gameId?: string, text: string };
 
 interface TopicProps {
     setTopic: (text: any) => any;

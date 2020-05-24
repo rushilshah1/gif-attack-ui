@@ -6,8 +6,9 @@ import gql from 'graphql-tag';
 //     gif?: string
 // }
 export interface IGame {
-    id: number
-    users: Array<string>
+    id: string
+    users?: Array<string>
+    started?: boolean;
 }
 
 export const NEW_USER_IN_GAME_SUBSCRIPTION = gql`
@@ -36,10 +37,35 @@ export const ADD_USER_TO_GAME_MUTATION = gql`
     }
 `
 
-export const GET_USERS_IN_GAME = gql`
+export const START_GAME_MUTATION = gql`
+    mutation StartGameMutation($gameId: ID!) {
+        startGame(gameId: $gameId) {
+            started
+        }
+    }
+`
+
+export const GET_USERS_IN_GAME_QUERY = gql`
     query GetUsersInGameQuery($gameId: ID!) {
         getUsers(gameId: $gameId) {
             name
+        }
+    }
+`
+export const GET_GAMES_QUERY = gql`
+    query GetGamesQuery {
+        getGames {
+            id
+            started
+        }
+    }
+`
+
+export const GET_GAMES_BY_ID_QUERY = gql`
+    query GetGamesByIdQuery($gameId: ID!) {
+        getGameById(gameId: $gameId) {
+            id
+            started
         }
     }
 `
