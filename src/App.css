@@ -1,66 +1,27 @@
-/* .App {
+.App {
   text-align: center;
   margin-top: auto;
-  height: '100%';
-  height: 100vh;
+  margin-bottom: auto;
+  height: '100%' !important;
+  /* height: 100vh; */
+  min-height: 100vh;
   justify-content: center;
-  background: lightcyan; */
-  /* background-image: url("../src/assets/bush.png");
-} */
-/* .App-title {
-  padding-top: 20px;
-  padding-bottom: 20px;
-  text-align: center;
-  display: block;
-  font-weight: bold;
-  font-size: xx-large;
+  background-image: url("../src/assets/background.png");
+}
 
-  
-} */
-
-/* .App-logo {
-  height: 10vmin;
-  pointer-events: none;
-
-} */
 .homeButton {
   display: inline;
 }
-
-/* .title {
-  display: inline-block;
-  text-align: center;
-
-} 
-
-.navBar {
-  display: inline-block;
-  vertical-align: top;
-  flex-direction: column;
-  justify-content: space-between;
-} */
-/*
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.header {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+}
+.title {
+  text-align: left;
+  justify-content: left;
+  align-items: left;
+  min-width: 10%;
 }
 
-.App-link {
-  color: #61dafb;
-}
-*/
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

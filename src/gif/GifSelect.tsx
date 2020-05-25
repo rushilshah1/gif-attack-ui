@@ -4,6 +4,8 @@ import { GifOverlayProps, Gif } from '@giphy/react-components'
 import { GiphyFetch } from '@giphy/js-fetch-api'
 import { gifSearchData } from './GiphyMock';
 import './GifSelect.css';
+import ENVIRONMENT from '../common/environments';
+import { ENVRIONMENT_LOCAL } from '../common/constants';
 
 const GifSelectionContainer = withStyles({
     root: {
@@ -60,7 +62,8 @@ const Overlay = ({ gif, isHovered }: GifOverlayProps) => {
 
 
 export const GifSelect: React.FC<GifSelectProps> = props => {
-    const giphyClient = new GiphyFetch('dc6zaTOxFJmzC')
+
+    const giphyClient = new GiphyFetch(ENVIRONMENT.GIPHY_KEY);
     const [gifSearchInput, setGifSearchInput] = useState<string>('');
     const [gifSearchResults, setGifSearchResults] = useState<Array<any>>([]);
     const [currentGif, setCurrentGif] = useState(null as any);
@@ -72,12 +75,10 @@ export const GifSelect: React.FC<GifSelectProps> = props => {
     }, [gifSearchResults]);
 
     const giphySearch = async () => {
-        //const searchResults: GifsResult = await giphyClient.search(searchInput);
-        const searchResults: any = await searchApiMock(gifSearchInput)
+        const searchResults: any = (ENVIRONMENT.ENV === ENVRIONMENT_LOCAL) ? await searchApiMock(gifSearchInput) : await giphyClient.search(gifSearchInput);
         let results: any[] = searchResults.data;
         console.log(results)
         setGifSearchResults(gifSearchResults => [...results]);
-
     }
 
     const searchApiMock = async (searchInput: string) => {
@@ -86,28 +87,13 @@ export const GifSelect: React.FC<GifSelectProps> = props => {
 
     const pickRandomGif = async () => {
         setCurrentGif(null);
-        //await delay(1000);
         const numSearchResults: number = gifSearchResults.length
         const randomIndex: number = Math.floor(Math.random() * Math.floor(numSearchResults));
         setCurrentGif(gifSearchResults[randomIndex]);
 
     }
-    // const fetchGifs = async (offset: number) => {
-    //     await delay(3000);
-    //     return gifSearchData;
-    // }
 
-    // fetch 10 gifs at a time as the user scrolls (offset is handled by the grid)
-    const fetchGifs = async (offset?: number): Promise<any> => {
-        return new Promise<any>((resolve) => {
 
-            resolve(gifSearchData);
-        });
-        // const trendingGifs = await gf.trending({ offset, limit: 10 })
-        // console.log(trendingGifs);
-        // debugger;
-        // return trendingGifs;
-    }
 
     return (
         <GifSelectionContainer>

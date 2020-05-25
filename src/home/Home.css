@@ -1,14 +1,12 @@
 .title {
   /* padding-top: 20px;
   padding-bottom: 20px; */
-      display: inline;
-    justify-content: space-between;
+  display: inline;
+  justify-content: space-between;
   text-align: center;
-  /* display: inline; */
   font-weight: bold;
   font-size: xx-large;
   vertical-align: text-bottom;
-  ;
   /* color: blue; */
   
 }

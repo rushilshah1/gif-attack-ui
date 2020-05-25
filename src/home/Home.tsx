@@ -19,12 +19,6 @@ const GameSelection = withStyles({
     }
 })(RadioGroup);
 
-const TitleDivider = withStyles({
-    root: {
-        marginTop: '2%',
-        marginBottom: '2%'
-    }
-})(Divider);
 
 const SubmitButton = withStyles({
     root: {
@@ -132,8 +126,8 @@ export const Home: React.FC = props => {
     // }
     return (
         <div className="title">
-            Welcome to Gif Attack!
-            <TitleDivider />
+            {/* Welcome to Gif Attack!
+            <TitleDivider /> */}
             <Container>
                 <GameSelection aria-label="gameType" name="gameType" value={gameType} onChange={(e) => toggleGameType(e.target.value)}>
                     <FormControlLabel value={CREATE_GAME} control={<Radio />} label="Create Game"></FormControlLabel>
