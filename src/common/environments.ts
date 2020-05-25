@@ -1,4 +1,7 @@
 import { ENVRIONMENT_LOCAL, ENVIRONMENT_QA, ENVIRONMENT_PROD } from "./constants";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 const ENVIRONMENT = {
     LOCAL: {
@@ -10,8 +13,8 @@ const ENVIRONMENT = {
     QA: {
         ENV: ENVIRONMENT_QA,
         GIPHY_KEY: 'dc6zaTOxFJmzC',
-        // API_ENDPOINT: 'http://localhost:4000/graphql',
-        // WS_ENDPOINT: 'ws://localhost:4000/graphql',
+        API_ENDPOINT: 'http://gif-attack-api-qa.us-east-1.elasticbeanstalk.com/graphql',
+        WS_ENDPOINT: 'ws://gif-attack-api-qa.us-east-1.elasticbeanstalk.com/graphql',
     },
     PROD: {
         ENV: ENVIRONMENT_PROD,
@@ -20,5 +23,9 @@ const ENVIRONMENT = {
 }
 
 let env = ENVIRONMENT.LOCAL
-
+console.log(`ENV is ${process.env.ENV}`)
+if (process.env.ENV === ENVIRONMENT_QA) {
+    console.log("QA mode");
+    env = ENVIRONMENT.QA;
+}
 export default env;
