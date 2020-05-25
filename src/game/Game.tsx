@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Round } from '../round/Round'
-import { Container, CircularProgress } from '@material-ui/core';
+import { Container, CircularProgress, withStyles } from '@material-ui/core';
 import { RoundResult } from '../round/RoundResult';
 import { SubmittedGifModel } from '../models/SubmittedGifModel';
 import { useMutation, useSubscription, useQuery } from '@apollo/react-hooks';
@@ -9,10 +9,20 @@ import { useParams } from "react-router-dom";
 import { LOCAL_STORAGE_USER } from '../common/constants';
 import { GET_USERS_IN_GAME_QUERY, NEW_USER_IN_GAME_SUBSCRIPTION, START_GAME_MUTATION } from '../graphql/game';
 import { Lobby } from '../lobby/Lobby';
+import { Players } from '../lobby/Players';
+import './Game.css';
 
 export interface IGameProps {
     gameId: string
 }
+
+const StyledContainer = withStyles({
+    root: {
+        textAlign: 'center',
+        minWidth: '85%',
+        justifyContent: 'center'
+    }
+})(Container);
 //As of now this component assumes the input gameId is valid -> a guard will need to sit between to perform the validation
 export const Game: React.FC<IGameProps> = props => {
     let params: IGameProps = useParams();
@@ -55,10 +65,6 @@ export const Game: React.FC<IGameProps> = props => {
         setUsersInGame(listOfNames);
     }
 
-    //TODO: Add query to fetch users given a game ID
-    //TODO: Add subscription hook for added users to game
-    //Pass users into Lobby component -> that will have button to take us back and start a round
-    //One that has happened, update DB that game has started! No more joining game :(
     const addSubmitedGif = (gif: SubmittedGifModel) => {
         setSubmittedGifs(submittedGifs => [...submittedGifs, gif]);
     }
@@ -107,12 +113,14 @@ export const Game: React.FC<IGameProps> = props => {
         console.error(`Error! ${error}`)
     }
     return (
-        <Container>
-            <p>Welcome {currentUser}!</p>
-            <p>There are currently {usersInGame.length} users in the game!</p>
-            {roundNumber === 0 && <Lobby gameId={gameId} players={usersInGame} startGame={() => startGame()} />}
-            {roundNumber > 0 && (roundComplete ? <RoundResult submittedGifs={submittedGifs} startNewRound={() => startNewRound()} />
-                : <Round roundNumber={roundNumber} gameId={gameId} player={currentUser} submittedGifs={submittedGifs} addSubmitedGif={(gif) => addSubmitedGif(gif)} voteForSubmitedGif={(gifId) => voteForSubmittedGif(gifId)} />)}
-        </Container>
+        <div className="game">
+            <Players players={usersInGame}></Players>
+
+            <StyledContainer>
+                {roundNumber === 0 && <Lobby gameId={gameId} players={usersInGame} startGame={() => startGame()} />}
+                {roundNumber > 0 && (roundComplete ? <RoundResult submittedGifs={submittedGifs} startNewRound={() => startNewRound()} />
+                    : <Round roundNumber={roundNumber} gameId={gameId} player={currentUser} submittedGifs={submittedGifs} addSubmitedGif={(gif) => addSubmitedGif(gif)} voteForSubmitedGif={(gifId) => voteForSubmittedGif(gifId)} />)}
+            </StyledContainer>
+        </div>
     )
 }

@@ -1,5 +1,6 @@
 import React from 'react'
-import { Container, Avatar, Button } from '@material-ui/core'
+import { Container, Avatar, Button, makeStyles, Theme, createStyles, Grid, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
+import './Lobby.css';
 
 interface LobbyProps {
     players: Array<string>;
@@ -7,18 +8,14 @@ interface LobbyProps {
     startGame: () => void; //AKA Start the game
 }
 
+
 export const Lobby: React.FC<LobbyProps> = props => {
     return (
         <Container>
-            <p>Waiting for Game {props.gameId} to start...</p>
-            {props.players.map((player: string) => {
-                // const nameSplit: Array<string> = player.split(" ", 2);
-                // let avatarName: string = nameSplit[0].charAt(0).toUpperCase();
-                // if (nameSplit.length > 1) {
-                //     avatarName += nameSplit[1].charAt(0).toUpperCase()
-                // }
-                return <Avatar alt={player} src="/fake.jpg" key={player}>{player.charAt(0)}</Avatar>
-            })}
+            <h3>There are currently {props.players.length} user(s) in the game!</h3>
+
+            <h4>Send the Game <b>{props.gameId}</b> to your friends so they can join the game session!</h4>
+
             <Button variant="contained" color="primary" onClick={() => props.startGame()}>Start Game
             </Button>
         </Container>

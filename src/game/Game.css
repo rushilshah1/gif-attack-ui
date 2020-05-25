@@ -1,0 +1,11 @@
+.game {
+    margin-left: 20px;
+    /* margin: 20px; */
+    display: flex;
+    /* justify-content: space-between; */
+}
+
+.gameCore {
+    display: inline-flex;
+    justify-content: space-between;
+}

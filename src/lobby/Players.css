@@ -1,0 +1,22 @@
+.playerList {
+    /* justify-content: left; */
+    margin-top: 10px;
+    width: 15%;
+    border-style: ridge;
+    display: block;
+    justify-content: start;
+    height: 100%;
+
+
+}
+.player {
+    margin-top: 10px;
+
+}
+
+.playerName {
+    margin-left: 15px;
+}
+.player-title {
+    text-align: center;
+}

@@ -4,12 +4,24 @@ import './Topic.css';
 
 const StyledInputText = withStyles({
     root: {
-        paddingTop: "20px",
+        // paddingTop: "20px",
         width: "auto",
-        minWidth: "500px"
+        minWidth: "400px"
     }
 })(TextField);
 
+const SubmitButton = withStyles({
+    root: {
+        display: 'block',
+
+        padding: '10px',
+        textAlign: 'center',
+        justifyContent: 'normal',
+        marginLeft: '20px',
+        minWidth: '50px'
+        // width: '50%'
+    }
+})(Button);
 
 interface TopicProps {
     setTopic: (text: any) => any;
@@ -19,22 +31,14 @@ interface TopicProps {
 
 
 export const Topic: React.FC<TopicProps> = props => {
-    //const [userSubmitedTopic, setUserSubmitedTopic] = useState<string>(props.topic)
-    // useEffect(() => {
-    //     setUserSubmitedTopic(props.topic)
-    //     console.log(`${userSubmitedTopic} is the topic in the Topic comp`);
-    // });
-    //onChange = { e => setUserSubmitedTopic(e.target.value)}
+
     return (
         <div className="topic">
-            <div className="topicText">
-                <StyledInputText className="topicText" id="standard-basic" label="Enter a topic" value={props.topic} onChange={(e) => props.setTopic(e.target.value)} multiline></StyledInputText>
-            </div >
-            <div className="submitButton">
-                <Button variant="contained" color="primary" onClick={() => {
-                    props.submitTopic(props.topic)
-                }}> Submit</Button>
-            </div>
+            <StyledInputText className="topicText" id="standard-basic" label="Enter a topic" value={props.topic} onChange={(e) => props.setTopic(e.target.value)} multiline></StyledInputText>
+
+            <SubmitButton variant="contained" color="primary" onClick={() => {
+                props.submitTopic(props.topic)
+            }}> Submit</SubmitButton>
         </div>
 
     )

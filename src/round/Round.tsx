@@ -9,15 +9,6 @@ import { CREATE_GIF_MUTATION, GIF_CREATED_SUBSCRIPTION, IGif, VOTE_GIF_MUTATION,
 import { SubmittedGif } from '../gif/SubmittedGif';
 import { SubmittedGifModel } from '../models/SubmittedGifModel';
 
-// const StyledContainer = withStyles({
-//     root: {
-//         //background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-//         borderRadius: 3,
-//         border: 0,
-//         color: 'black',
-//         height: '100%'
-//     }
-// })(Container);
 
 export interface RoundProps {
     gameId: string;
@@ -96,11 +87,10 @@ export const Round: React.FC<RoundProps> = props => {
 
     return (
         <Container>
-            <h3>Round {props.roundNumber}</h3>
+            <h1>Round {props.roundNumber}</h1>
             <Topic topic={selectedTopic} submitTopic={text => (submitTopic(text))} setTopic={text => (setSelectedTopic(text))} />
             <SubmittedGif submittedGifs={props.submittedGifs} voteGif={(gifId) => (submitGifVote(gifId))}></SubmittedGif>
-            {/* {!hasUserSubmittedGif && <GifSelect selectGif={gif => (submitGif(gif))}></GifSelect>} */}
-            {<GifSelect selectGif={(gif, searchText) => (submitGif(gif, searchText))}></GifSelect>}
+            {!hasUserSubmittedGif && <GifSelect selectGif={(gif, searchText) => (submitGif(gif, searchText))}></GifSelect>}
         </Container>
 
 

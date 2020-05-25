@@ -8,20 +8,21 @@ import './GifSelect.css';
 const GifSelectionContainer = withStyles({
     root: {
         marginTop: '70px',
-        padding: "50px 50px 50px 50px",
+        padding: "20px",
         border: 'groove',
         borderRadius: 3,
         height: 'auto',
-        width: 'auto'
-        // boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+        width: '70%',
+        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
 
     }
 })(Container);
 
 const StyledInputText = withStyles({
     root: {
-        paddingTop: "20px",
-        paddingRight: "10px",
+        // paddingTop: "20px",
+        // paddingRight: "10px",
+        display: 'inline-flex',
         width: "auto",
         minWidth: "200px"
     }
@@ -29,13 +30,18 @@ const StyledInputText = withStyles({
 
 const SearchButton = withStyles({
     root: {
-        verticalAlign: 'bottom'
+        display: 'inline-flex',
+        verticalAlign: 'top',
+        marginLeft: '15%',
+        minWidth: '40%'
+        // minWidth: '30px'
     }
 })(Button);
 
-const ShuffleButton = withStyles({
+const GifActionButton = withStyles({
     root: {
-        marginTop: '20px'
+        margin: '20px',
+
     }
 })(Button);
 
@@ -117,12 +123,12 @@ export const GifSelect: React.FC<GifSelectProps> = props => {
                 {currentGif && <Gif gif={currentGif} width={250} height={250} hideAttribution={true} />}
             </div>
             <div>
-                {currentGif && <ShuffleButton variant="contained" color="primary" onClick={() => {
+                {currentGif && <GifActionButton variant="contained" color="primary" onClick={() => {
                     pickRandomGif()
-                }}>Shuffle</ShuffleButton>}
-                {currentGif && <ShuffleButton variant="contained" color="primary" onClick={() => {
+                }}>Shuffle</GifActionButton>}
+                {currentGif && <GifActionButton variant="contained" color="primary" onClick={() => {
                     props.selectGif(currentGif, gifSearchInput)
-                }}>Submit</ShuffleButton>}
+                }}>Submit</GifActionButton>}
             </div>
         </GifSelectionContainer>
 

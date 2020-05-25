@@ -1,10 +1,11 @@
-/* .gif {
-    display: inline-block;
-    padding: 10px 10px 10px 10px;
-} */
+.gif {
+    margin-top: 10px;
+    /* display: inline-block;
+    padding: 10px 10px 10px 10px; */
+}
 .submittedGif {
     display: inline-block;
-    padding: 5px;
+    /* padding: 5px; */
     justify-content: space-between;
     /* box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22); */
     margin-right: 20px;
@@ -14,11 +15,26 @@
 
 .votedGif {
     display: inline-block;
-    padding: 5px;
+    /* padding: 5px; */
     justify-content: space-between;
     /* box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22); */
     margin-right: 20px;
     margin-top: 20px;
     border-radius: 100px;
     color: aqua;
+}
+
+.voteButton {
+    /* justify-content: center;
+    text-align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;  */
+    /* text-align: center; */
+    justify-content: flex-end;
+    /* display: block;
+    margin-left: auto;
+    margin-right: auto;   */
+    
+    
 }

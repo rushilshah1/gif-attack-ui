@@ -6,16 +6,15 @@ import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-boost';
-
-const API_ENDPOINT: string = 'localhost:4000/graphql'
+import ENVIRONMENT from '../common/environments';
 
 // Create an http link:
 const httpLink = new HttpLink({
-    uri: `http://${API_ENDPOINT}`
+    uri: ENVIRONMENT.API_ENDPOINT
 });
 // Create a WebSocket link:
 const wsLink = new WebSocketLink({
-    uri: `ws://${API_ENDPOINT}`,
+    uri: ENVIRONMENT.WS_ENDPOINT,
     options: { reconnect: true }
 });
 // using the ability to split links, you can send data to each link

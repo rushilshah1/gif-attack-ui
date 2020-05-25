@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { get } from "lodash";
+import ENVIRONMENT from '../common/environments';
 
-const API_ENDPOINT: string = 'http://localhost:4000/graphql'
+const API_ENDPOINT: string = ENVIRONMENT.API_ENDPOINT;
 
 const handleResponse = response => {
     if (get(response, 'data.errors')) {

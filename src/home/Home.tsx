@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Home.css';
-import { Input, FormControl, InputLabel, TextField, Button, RadioGroup, FormControlLabel, FormLabel, Radio, CircularProgress } from '@material-ui/core';
+import { Input, FormControl, InputLabel, TextField, Button, RadioGroup, FormControlLabel, FormLabel, Radio, CircularProgress, withStyles, Divider, Container, Grid } from '@material-ui/core';
 import { useForm, Controller } from "react-hook-form";
 import { useMutation, useLazyQuery, useQuery } from '@apollo/react-hooks';
 import { CREATE_GAME_MUTATION, ADD_USER_TO_GAME_MUTATION, GET_GAMES_QUERY, IGame, GET_GAMES_BY_ID_QUERY } from '../graphql/game';
@@ -8,6 +8,55 @@ import { Redirect } from "react-router-dom";
 import { CREATE_GAME, JOIN_GAME, LOCAL_STORAGE_USER } from '../common/constants';
 import { getQuery } from '../graphql/api-client';
 
+
+
+const GameSelection = withStyles({
+    root: {
+        padding: "10px",
+        textAlign: 'center',
+        alignContent: 'center'
+
+    }
+})(RadioGroup);
+
+const TitleDivider = withStyles({
+    root: {
+        marginTop: '2%',
+        marginBottom: '2%'
+    }
+})(Divider);
+
+const SubmitButton = withStyles({
+    root: {
+        display: 'block',
+        // display: 'inline-block',
+        padding: '10px',
+        alignContent: 'stretch',
+        textAlign: 'center',
+        justifyContent: 'normal',
+        marginTop: '25px',
+
+        // width: '50%'
+    }
+})(Button);
+
+const NameInput = withStyles({
+    root: {
+
+        width: "200px",
+        // minWidth: "200px",
+        alignContent: 'center',
+        textAlign: 'center',
+        marginTop: '25px',
+        display: 'flex',
+    }
+})(TextField);
+
+const StyledContainer = withStyles({
+    root: {
+        textAlign: 'center'
+    }
+})(Container);
 
 export const Home: React.FC = props => {
     const [username, setUsername] = useState<string>('');
@@ -67,6 +116,7 @@ export const Home: React.FC = props => {
     };
     const toggleGameType = (gameType: string) => {
         if (gameType === CREATE_GAME) {
+            clearError(); //clear error
             setGameId('') //reset gameID
         }
         setGameType(gameType);
@@ -83,22 +133,32 @@ export const Home: React.FC = props => {
     return (
         <div className="title">
             Welcome to Gif Attack!
-            {/* <FormLabel component="legend">Game Type</FormLabel> */}
-            <RadioGroup className="gameType" aria-label="gameType" name="gameType" value={gameType} onChange={(e) => toggleGameType(e.target.value)}>
-                <FormControlLabel value={CREATE_GAME} control={<Radio />} label="Create Game"></FormControlLabel>
-                <FormControlLabel value={JOIN_GAME} control={<Radio />} label="Join Game"></FormControlLabel>
-            </RadioGroup>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <TextField required name="name" label="Name" error={errors.name} onChange={(e) => setUsername(e.target.value)} inputRef={register({ required: true })}> </TextField>
-                {gameType === JOIN_GAME && <TextField required name="userInputGameId" label="Game ID" error={errors.gameId}
-                    onChange={(e) => {
-                        clearError();
-                        setUserInputGameId(e.target.value)
-                    }} inputRef={register({ required: true })} > </TextField>}
-                {errors.userInputGameId && <p>{errors.userInputGameId.message}</p>}
+            <TitleDivider />
+            <Container>
+                <GameSelection aria-label="gameType" name="gameType" value={gameType} onChange={(e) => toggleGameType(e.target.value)}>
+                    <FormControlLabel value={CREATE_GAME} control={<Radio />} label="Create Game"></FormControlLabel>
+                    <FormControlLabel value={JOIN_GAME} control={<Radio />} label="Join Game"></FormControlLabel>
+                </GameSelection>
 
-                <Button type="submit" color="primary">{gameType}</Button>
-            </form>
+                <Grid container justify="center" alignContent='center'>
+                    <form onSubmit={handleSubmit(onSubmit)} className="gameForm">
+
+                        <NameInput required name="name" label="Name" error={errors.name} onChange={(e) => setUsername(e.target.value)} inputRef={register({ required: true })}> </NameInput>
+
+                        {gameType === JOIN_GAME &&
+
+                            <NameInput required name="userInputGameId" label="Game ID" error={errors.gameId}
+                                onChange={(e) => {
+                                    clearError();
+                                    setUserInputGameId(e.target.value)
+                                }} inputRef={register({ required: true })} > </NameInput>
+                        }
+                        {errors.userInputGameId && <p className="error">{errors.userInputGameId.message}</p>}
+
+                        <SubmitButton type="submit" variant="contained" color="primary">{gameType}</SubmitButton>
+                    </form>
+                </Grid>
+            </Container>
         </div >
     )
 }
