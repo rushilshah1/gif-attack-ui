@@ -22,7 +22,7 @@ const ENVIRONMENT = {
     }
 }
 
-let env = ENVIRONMENT.LOCAL
+let env = ENVIRONMENT.QA
 console.log(`ENV is ${process.env.ENV}`)
 if (process.env.ENV === ENVIRONMENT_QA) {
     console.log("QA mode");
