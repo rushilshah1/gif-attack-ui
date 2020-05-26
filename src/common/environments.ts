@@ -13,8 +13,8 @@ const ENVIRONMENT = {
     QA: {
         ENV: ENVIRONMENT_QA,
         GIPHY_KEY: 'dc6zaTOxFJmzC',
-        API_ENDPOINT: 'https://gif-attack-api-qa.us-east-1.elasticbeanstalk.com/graphql',
-        WS_ENDPOINT: 'wss://gif-attack-api-qa.us-east-1.elasticbeanstalk.com/graphql',
+        API_ENDPOINT: 'https://gif-attack-api.com/graphql',
+        WS_ENDPOINT: 'wss://gif-attack-api.com/graphql',
     },
     PROD: {
         ENV: ENVIRONMENT_PROD,
