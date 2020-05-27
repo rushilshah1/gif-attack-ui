@@ -22,3 +22,10 @@
     align-items: center;
     display: inline-flex;
 }
+
+.noResults {
+    color: red;
+    margin: 20px;
+    font-size: larger;
+    font-style: italic;
+}

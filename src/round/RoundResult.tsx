@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import './RoundResult.css';
-import { SubmittedGifModel } from '../models/SubmittedGifModel';
+import { SubmittedGif } from '../models/SubmittedGif';
 import * as _ from "lodash";
 import { Container, Card, CardHeader, CardContent, CardActions, IconButton, Divider, Fab, makeStyles, withStyles, Typography } from '@material-ui/core'
 import { Gif } from '@giphy/react-components'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import FavoriteOutlinedIcon from '@material-ui/icons/FavoriteOutlined';
+import { User } from '../models/User';
 
 export interface RoundResultProps {
-    submittedGifs: Array<SubmittedGifModel>;
+    submittedGifs: Array<SubmittedGif>;
     startNewRound: () => void;
+    updateScores: (userNames: Array<string>) => void;
 }
 
 const cardRootStyle = {
@@ -45,17 +47,28 @@ const CONSOLIDATION_GIF_SIZE: number = 150;
 
 export const RoundResult: React.FC<RoundResultProps> = props => {
     const classes = useStyles();
-    const [winnerGifs, setWinnerGifs] = useState<Array<SubmittedGifModel>>([]);
-    const [consolationGifs, setConsolationGifs] = useState<Array<SubmittedGifModel>>([]);
+    const [winnerGifs, setWinnerGifs] = useState<Array<SubmittedGif>>([]);
+    const [consolationGifs, setConsolationGifs] = useState<Array<SubmittedGif>>([]);
 
     useEffect(() => {
         //Sort descending order
-        const sortedGifs: Array<SubmittedGifModel> = props.submittedGifs.sort((a: SubmittedGifModel, b: SubmittedGifModel) => b.numVotes - a.numVotes);
+        const sortedGifs: Array<SubmittedGif> = props.submittedGifs.sort((a: SubmittedGif, b: SubmittedGif) => b.numVotes - a.numVotes);
         const maxVotes: number = sortedGifs[0].numVotes;
-        const victoryLine: number = _.findLastIndex(sortedGifs, (gif: SubmittedGifModel) => gif.numVotes === maxVotes);
+        const victoryLine: number = _.findLastIndex(sortedGifs, (gif: SubmittedGif) => gif.numVotes === maxVotes);
         setWinnerGifs(sortedGifs.slice(0, victoryLine + 1));
         setConsolationGifs(sortedGifs.slice(victoryLine + 1));
+        console.log(`winner gifs: ${winnerGifs.length}`)
     }, []);
+
+    useEffect(() => {
+        if (winnerGifs.length === 1) { //Only update score for winner - no ties
+            //Technically only 1, but making it generic to be expanded for "multiple" winners/ties
+            //This logic is based on a username is unique and players cannot have to the same name
+            //TODO: Add validation on home page form
+            const winnerUsers: Array<string> = winnerGifs.map(gif => gif.userName);
+            props.updateScores(winnerUsers);
+        }
+    }, [winnerGifs])
 
 
     const generateVoteIcons = (numVotes: number) => {
@@ -66,12 +79,30 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
             </IconButton >
         );
     }
+
+    const generateGifPanel = (gifList: Array<SubmittedGif>, isWinner: boolean) => {
+        const size: number = isWinner ? WINNER_GIF_SIZE : CONSOLIDATION_GIF_SIZE;
+        const stylingClass = isWinner ? classes.winnerGif : classes.consolationGif;
+
+        return gifList.map((gif: SubmittedGif) =>
+            <Card className={stylingClass} variant="elevation" square={true} key={gif.id}>
+                {/* <CardHeader title={submittedGif.gifSearchText + " - " + submittedGif.numVotes + " - " + submittedGif.userName}></CardHeader> */}
+                {/* <CardHeader title={submittedGif.userName + " - " + submittedGif.gifSearchText} titleTypographyProps={{ variant: 'subtitle1' }}></CardHeader> */}
+                <CardContent>
+                    <Typography variant="subtitle1">
+                        {gif.userName} - {gif.gifSearchText}
+                    </Typography>
+                    <Gif className="gif" gif={gif.gif} width={size} height={size} hideAttribution={true} noLink={true}></Gif>
+                </CardContent>
+                <CardActions disableSpacing className="voteButton">
+                    {generateVoteIcons(gif.numVotes)}
+                </CardActions>
+
+            </Card>
+        );
+    }
     return (
         <Container>
-            {/* <div className="next-round-title">
-                    <h1> Round Results</h1>
-                </div> */}
-
             <div className="next-round-action">
                 <Fab color="secondary" aria-label="next round" onClick={() => props.startNewRound()} size="large">
                     <ArrowForwardIosIcon />
@@ -82,44 +113,15 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
                     {winnerGifs.length > 1 && <h2>We have a Tie!</h2>}
                     <div className="winnerCards">
                         {winnerGifs.length > 0
-                            && winnerGifs.map((submittedGif: SubmittedGifModel) =>
-                                <Card className={classes.winnerGif} variant="elevation" square={true} key={submittedGif.id}>
-
-                                    {/* <CardHeader title={submittedGif.gifSearchText + " - " + submittedGif.numVotes + " - " + submittedGif.userName}></CardHeader> */}
-                                    {/* <CardHeader title={submittedGif.userName + " - " + submittedGif.gifSearchText} titleTypographyProps={{ variant: 'subtitle1' }}></CardHeader> */}
-                                    <CardContent>
-                                        <Typography variant="subtitle1">
-                                            {submittedGif.userName} - {submittedGif.gifSearchText}
-                                        </Typography>
-                                        <Gif className="gif" gif={submittedGif.gif} width={WINNER_GIF_SIZE} height={WINNER_GIF_SIZE} hideAttribution={true}></Gif>
-                                    </CardContent>
-                                    <CardActions disableSpacing className="voteButton">
-                                        {generateVoteIcons(submittedGif.numVotes)}
-                                    </CardActions>
-
-                                </Card>
-                            )}
+                            && generateGifPanel(winnerGifs, true)
+                        }
                     </div>
                     <ResultDivider />
                     {consolationGifs.length > 0 && <h2>Runner up(s):</h2>}
                     <div className="consolationCards">
                         {consolationGifs.length > 0
-                            && consolationGifs.map((submittedGif: SubmittedGifModel) =>
-                                <Card className={classes.consolationGif} variant="elevation" square={true} key={submittedGif.id}>
-
-                                    {/* <CardHeader title={submittedGif.userName + " - " + submittedGif.gifSearchText} titleTypographyProps={{ variant: 'subtitle1' }}></CardHeader> */}
-
-                                    <CardContent>
-                                        <Typography variant="subtitle1">
-                                            {submittedGif.userName} - {submittedGif.gifSearchText}
-                                        </Typography>
-                                        <Gif className="gif" gif={submittedGif.gif} width={CONSOLIDATION_GIF_SIZE} height={CONSOLIDATION_GIF_SIZE} hideAttribution={true}></Gif>
-                                    </CardContent>
-                                    <CardActions disableSpacing={true} className="voteButton">
-                                        {generateVoteIcons(submittedGif.numVotes)}
-                                    </CardActions>
-                                </Card>
-                            )}
+                            && generateGifPanel(consolationGifs, false)
+                        }
                     </div>
                 </div>
             </div>

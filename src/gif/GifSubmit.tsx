@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { Container, Card, CardHeader, CardContent, CardActions, IconButton, Typography, makeStyles } from '@material-ui/core'
 import { Gif } from '@giphy/react-components'
-import './SubmittedGif.css';
+import './GifSubmit.css';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
-import { SubmittedGifModel } from '../models/SubmittedGifModel';
+import { SubmittedGif } from '../models/SubmittedGif';
 
-export interface SubmittedGifProps {
-    submittedGifs: Array<SubmittedGifModel>;
+export interface GifSubmitProps {
+    submittedGifs: Array<SubmittedGif>;
     voteGif: (gifId: string) => void;
 }
 const cardRootStyle = {
@@ -32,13 +32,13 @@ const useStyles = makeStyles({
 });
 
 
-export const SubmittedGif: React.FC<SubmittedGifProps> = props => {
+export const GifSubmit: React.FC<GifSubmitProps> = props => {
     const [gifVotedFor, setGifVotedFor] = useState<string | null>(null);
     const classes = useStyles();
     return (
         <Container>
             <div>
-                {props.submittedGifs.length > 0 && props.submittedGifs.map((submittedGif: SubmittedGifModel) =>
+                {props.submittedGifs.length > 0 && props.submittedGifs.map((submittedGif: SubmittedGif) =>
                     <Card className={gifVotedFor === submittedGif.id ? classes.votedGif : classes.submittedGif} variant="elevation" square={true} key={submittedGif.id}>
                         {/* <CardHeader title={submittedGif.gifSearchText + "-" + submittedGif.numVotes}></CardHeader> */}
                         {/* <CardHeader title={submittedGif.gifSearchText} titleTypographyProps={{ variant: 'subtitle1' }}></CardHeader> */}
@@ -48,7 +48,7 @@ export const SubmittedGif: React.FC<SubmittedGifProps> = props => {
                                 {submittedGif.gifSearchText}
                                 <br />
                             </Typography>
-                            <Gif className="gif" gif={submittedGif.gif} width={200} height={200} hideAttribution={true}></Gif>
+                            <Gif className="gif" gif={submittedGif.gif} width={225} height={225} hideAttribution={true} noLink={true}></Gif>
                         </CardContent>
                         <CardActions disableSpacing className="voteButton">
                             <IconButton aria-label="Vote for gif" onClick={() => {

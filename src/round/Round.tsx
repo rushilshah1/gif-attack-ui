@@ -6,17 +6,18 @@ import './Round.css';
 import { useMutation, useSubscription } from '@apollo/react-hooks';
 import { GifSelect } from '../gif/GifSelect';
 import { CREATE_GIF_MUTATION, GIF_CREATED_SUBSCRIPTION, IGif, VOTE_GIF_MUTATION, GIF_VOTED_SUBSCRIPTION } from '../graphql/gif';
-import { SubmittedGif } from '../gif/SubmittedGif';
-import { SubmittedGifModel } from '../models/SubmittedGifModel';
+import { GifSubmit } from '../gif/GifSubmit';
+import { SubmittedGif } from '../models/SubmittedGif';
+import { User } from '../models/User';
 
 
 export interface RoundProps {
     gameId: string;
-    player: string;
+    player: User;
     roundNumber: number;
     // users?: Array<string>;
-    submittedGifs: Array<SubmittedGifModel>;
-    addSubmitedGif: (submittedGif: SubmittedGifModel) => void;
+    submittedGifs: Array<SubmittedGif>;
+    addSubmitedGif: (submittedGif: SubmittedGif) => void;
     voteForSubmitedGif: (gifId: string) => void;
 }
 
@@ -50,7 +51,7 @@ export const Round: React.FC<RoundProps> = props => {
 
     const submitGif = async (gifObject: any, searchText: string) => {
         const gifString: string = JSON.stringify(gifObject);
-        const mutationInput: IGif = { gameId: props.gameId, gif: gifString, userName: props.player, gifSearchText: searchText, id: gifObject.id };
+        const mutationInput: IGif = { gameId: props.gameId, gif: gifString, userName: props.player.name, gifSearchText: searchText, id: gifObject.id };
         await createGif({ variables: { input: mutationInput } });
         setHasUserSubmittedGif(true);
         console.log(`Create Gif Result: ${createGifResult}`);
@@ -60,7 +61,7 @@ export const Round: React.FC<RoundProps> = props => {
         const gifObject = JSON.parse(gifResponse.gif);
         gifResponse.gif = gifObject;
         gifResponse.id = gifObject.id;
-        const submittedGif: SubmittedGifModel = new SubmittedGifModel(gifResponse);
+        const submittedGif: SubmittedGif = new SubmittedGif(gifResponse);
         props.addSubmitedGif(submittedGif);
         console.log(`List of submitted gifs: ${props.submittedGifs}`);
     };
@@ -89,7 +90,7 @@ export const Round: React.FC<RoundProps> = props => {
         <Container>
             <h1>Round {props.roundNumber}</h1>
             <Topic topic={selectedTopic} submitTopic={text => (submitTopic(text))} setTopic={text => (setSelectedTopic(text))} />
-            <SubmittedGif submittedGifs={props.submittedGifs} voteGif={(gifId) => (submitGifVote(gifId))}></SubmittedGif>
+            <GifSubmit submittedGifs={props.submittedGifs} voteGif={(gifId) => (submitGifVote(gifId))}></GifSubmit>
             {!hasUserSubmittedGif && <GifSelect selectGif={(gif, searchText) => (submitGif(gif, searchText))}></GifSelect>}
         </Container>
 

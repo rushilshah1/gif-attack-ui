@@ -1,9 +1,10 @@
 import React from 'react'
 import { Container, Avatar, Button, makeStyles, Theme, createStyles, Grid, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 import './Lobby.css';
+import { User } from '../models/User';
 
 interface LobbyProps {
-    players: Array<string>;
+    players: Array<User>;
     gameId: string;
     startGame: () => void; //AKA Start the game
 }

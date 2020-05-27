@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Avatar, Button, makeStyles, Theme, createStyles, Grid, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 import { deepOrange, deepPurple, cyan, pink } from '@material-ui/core/colors';
-import './Players.css';
+import './Scoreboard.css';
+import { User } from '../models/User';
 
-interface PlayersProps {
-    players: Array<string>;
+interface ScoreboardProps {
+    players: Array<User>;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -44,29 +45,31 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const COLORS: Array<string> = ['orange', 'purple', 'cyan', 'pink'];
 
-export const Players: React.FC<PlayersProps> = props => {
+export const Scoreboard: React.FC<ScoreboardProps> = props => {
     const classes = useStyles();
     const [playerAvatarsMap, setPlayerAvatarsMap] = useState<Map<string, string>>(new Map());
 
     const generateAvatarIcons = () => {
-        return props.players.map((player: string) => {
-            const nameSplit: Array<string> = player.split(" ", 2);
+        return props.players.map((player: User) => {
+            const playerName: string = player.name
+            const nameSplit: Array<string> = playerName.split(" ", 2);
             let avatarName: string = nameSplit[0].charAt(0).toUpperCase();
             if (nameSplit.length > 1) {
                 avatarName += nameSplit[1].charAt(0).toUpperCase()
             }
-            let randomColor: string = playerAvatarsMap.has(player) ? playerAvatarsMap.get(player)! : COLORS[Math.floor(Math.random() * Math.floor(COLORS.length))];
-            if (!playerAvatarsMap.has(player)) {
-                playerAvatarsMap.set(player, randomColor);
+            let randomColor: string = playerAvatarsMap.has(playerName) ? playerAvatarsMap.get(playerName)! : COLORS[Math.floor(Math.random() * Math.floor(COLORS.length))];
+            if (!playerAvatarsMap.has(playerName)) {
+                playerAvatarsMap.set(playerName, randomColor);
             }
 
-            return (<ListItem key={player}>
+            return (<ListItem key={playerName}>
                 <ListItemIcon>
-                    <Avatar alt={player} className={classes[randomColor]}>
+                    <Avatar alt={playerName} className={classes[randomColor]}>
 
                         {avatarName}</Avatar>
                 </ListItemIcon>
-                <ListItemText primary={player} className="playerName" />
+                <ListItemText primary={playerName} className="playerName" />
+                <ListItemText primary={player.score} className="playerScore" />
             </ListItem>
             )
         })

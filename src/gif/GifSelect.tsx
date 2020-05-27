@@ -51,10 +51,6 @@ interface GifSelectProps {
     selectGif: (gif: any, searchText: string) => void;
 }
 
-const delay = async (ms: number) => {
-    await new Promise(resolve => setTimeout(() => resolve(), ms)).then(() => console.log("fired"));
-};
-
 const Overlay = ({ gif, isHovered }: GifOverlayProps) => {
     return <div className="overlay">{isHovered ? gif.title : ''}</div>
 }
@@ -67,6 +63,7 @@ export const GifSelect: React.FC<GifSelectProps> = props => {
     const [gifSearchInput, setGifSearchInput] = useState<string>('');
     const [gifSearchResults, setGifSearchResults] = useState<Array<any>>([]);
     const [currentGif, setCurrentGif] = useState(null as any);
+    const [searchError, setSearchError] = useState<string>('');
 
     useEffect(() => {
         if (gifSearchResults.length > 0) {
@@ -75,22 +72,36 @@ export const GifSelect: React.FC<GifSelectProps> = props => {
     }, [gifSearchResults]);
 
     const giphySearch = async () => {
-        const searchResults: any = (ENVIRONMENT.ENV === ENVRIONMENT_LOCAL) ? await searchApiMock(gifSearchInput) : await giphyClient.search(gifSearchInput);
-        let results: any[] = searchResults.data;
-        console.log(results)
-        setGifSearchResults(gifSearchResults => [...results]);
+        try {
+            setCurrentGif(null);
+            const searchResults: any = (ENVIRONMENT.ENV === ENVRIONMENT_LOCAL) ? await searchApiMock(gifSearchInput) : await giphyClient.search(gifSearchInput);
+            //const searchResults: any = await giphyClient.search(gifSearchInput);
+
+            //let results: any[] = Math.random() < 0.5 ? searchResults.data : [];
+            const results: Array<any> = searchResults.data;
+            if (Array.isArray(results) && results.length) {
+                setSearchError('');
+            }
+            else {
+                setSearchError('No Gifs Found');
+            }
+            console.log(results)
+            setGifSearchResults(gifSearchResults => [...results]);
+        } catch (error) {
+            setSearchError(error.message);
+        }
+
     }
 
     const searchApiMock = async (searchInput: string) => {
         return new Promise<any>((resolve) => resolve(gifSearchData));
     }
 
-    const pickRandomGif = async () => {
+    const pickRandomGif = () => {
         setCurrentGif(null);
         const numSearchResults: number = gifSearchResults.length
         const randomIndex: number = Math.floor(Math.random() * Math.floor(numSearchResults));
         setCurrentGif(gifSearchResults[randomIndex]);
-
     }
 
 
@@ -106,8 +117,13 @@ export const GifSelect: React.FC<GifSelectProps> = props => {
             {/* <Carousel gifHeight={300} gutter={15} fetchGifs={fetchGifs} overlay={Overlay} /> */}
             {currentGif && <h3>{currentGif.title}</h3>}
             <div className="gif">
-                {currentGif && <Gif gif={currentGif} width={250} height={250} hideAttribution={true} />}
+                {currentGif && <Gif gif={currentGif} width={250} height={250} hideAttribution={true} noLink={true} />}
             </div>
+            {searchError &&
+                <div className="noResults">
+                    {searchError}
+                </div>
+            }
             <div>
                 {currentGif && <GifActionButton variant="contained" color="primary" onClick={() => {
                     pickRandomGif()

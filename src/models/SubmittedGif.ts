@@ -1,6 +1,6 @@
 import { IGif } from "../graphql/gif";
 
-export class SubmittedGifModel implements IGif {
+export class SubmittedGif implements IGif {
 
     id!: string;
     gif: any;
@@ -9,7 +9,7 @@ export class SubmittedGifModel implements IGif {
     gifSearchText!: string;
     numVotes: number = 0;
 
-    constructor(gif?: Partial<SubmittedGifModel>) {
+    constructor(gif?: Partial<SubmittedGif>) {
         Object.assign(this, gif);
     }
 

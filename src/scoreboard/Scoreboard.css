@@ -1,7 +1,7 @@
 .playerList {
     /* justify-content: left; */
     margin-top: 10px;
-    width: 15%;
+    width: 25%;
     border-style: ridge;
     display: block;
     justify-content: start;
@@ -19,4 +19,7 @@
 }
 .player-title {
     text-align: center;
+}
+.playerScore {
+    text-align: end;
 }
