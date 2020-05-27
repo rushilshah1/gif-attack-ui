@@ -75,9 +75,6 @@ export const GifSelect: React.FC<GifSelectProps> = props => {
         try {
             setCurrentGif(null);
             const searchResults: any = (ENVIRONMENT.ENV === ENVRIONMENT_LOCAL) ? await searchApiMock(gifSearchInput) : await giphyClient.search(gifSearchInput);
-            //const searchResults: any = await giphyClient.search(gifSearchInput);
-
-            //let results: any[] = Math.random() < 0.5 ? searchResults.data : [];
             const results: Array<any> = searchResults.data;
             if (Array.isArray(results) && results.length) {
                 setSearchError('');
