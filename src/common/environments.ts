@@ -1,10 +1,10 @@
-import { ENVRIONMENT_LOCAL, ENVIRONMENT_PROD } from "./constants";
+import { ENVIRONMENT_LOCAL, ENVIRONMENT_PROD } from "./constants";
 
 const ENVIRONMENT = {
     LOCAL: {
         API_ENDPOINT: 'http://localhost:4000/graphql',
         WS_ENDPOINT: 'ws://localhost:4000/graphql',
-        ENV: ENVRIONMENT_LOCAL,
+        ENV: ENVIRONMENT_LOCAL,
         GIPHY_KEY: 'dc6zaTOxFJmzC'
     },
     PROD: {

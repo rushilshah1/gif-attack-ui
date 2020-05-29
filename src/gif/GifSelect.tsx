@@ -5,7 +5,7 @@ import { GiphyFetch } from '@giphy/js-fetch-api'
 import { gifSearchData } from './GiphyMock';
 import './GifSelect.css';
 import ENVIRONMENT from '../common/environments';
-import { ENVRIONMENT_LOCAL } from '../common/constants';
+import { ENVIRONMENT_LOCAL } from '../common/constants';
 
 const GifSelectionContainer = withStyles({
     root: {
@@ -74,7 +74,7 @@ export const GifSelect: React.FC<GifSelectProps> = props => {
     const giphySearch = async () => {
         try {
             setCurrentGif(null);
-            const searchResults: any = (ENVIRONMENT.ENV === ENVRIONMENT_LOCAL) ? await searchApiMock(gifSearchInput) : await giphyClient.search(gifSearchInput);
+            const searchResults: any = (ENVIRONMENT.ENV === ENVIRONMENT_LOCAL) ? await searchApiMock(gifSearchInput) : await giphyClient.search(gifSearchInput);
             const results: Array<any> = searchResults.data;
             if (Array.isArray(results) && results.length) {
                 setSearchError('');

@@ -1,0 +1,15 @@
+.round-heading{
+    display: flex;
+    justify-content: space-between;
+    margin-top: -10px;
+}
+.round-number {
+    display: inline-block;
+    text-align: center;
+    justify-self: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+.round-timer {
+    display: inline-block;
+}

@@ -77,7 +77,9 @@ export const Scoreboard: React.FC<ScoreboardProps> = props => {
 
     return (
         <List className="playerList">
-            <h3 className="player-title">Players:</h3>
+            <div className="player-title">
+                <h3 >Players:</h3>
+            </div>
             {generateAvatarIcons()}
         </List>
 

@@ -9,6 +9,7 @@ import { CREATE_GIF_MUTATION, GIF_CREATED_SUBSCRIPTION, IGif, VOTE_GIF_MUTATION,
 import { GifSubmit } from '../gif/GifSubmit';
 import { SubmittedGif } from '../models/SubmittedGif';
 import { User } from '../models/User';
+import { Timer } from './Timer';
 
 
 export interface RoundProps {
@@ -19,6 +20,7 @@ export interface RoundProps {
     submittedGifs: Array<SubmittedGif>;
     addSubmitedGif: (submittedGif: SubmittedGif) => void;
     voteForSubmitedGif: (gifId: string) => void;
+    completeRound: () => void;
 }
 
 export const Round: React.FC<RoundProps> = props => {
@@ -88,7 +90,14 @@ export const Round: React.FC<RoundProps> = props => {
 
     return (
         <Container>
-            <h1>Round {props.roundNumber}</h1>
+            <div className="round-heading">
+                <div className="round-number">
+                    <h1>Round {props.roundNumber}</h1>
+                </div>
+                <div className="round-timer">
+                    {props.submittedGifs.length > 0 && <Timer completeRound={() => props.completeRound()}></Timer>}
+                </div>
+            </div>
             <Topic topic={selectedTopic} submitTopic={text => (submitTopic(text))} setTopic={text => (setSelectedTopic(text))} />
             <GifSubmit submittedGifs={props.submittedGifs} voteGif={(gifId) => (submitGifVote(gifId))}></GifSubmit>
             {!hasUserSubmittedGif && <GifSelect selectGif={(gif, searchText) => (submitGif(gif, searchText))}></GifSelect>}
