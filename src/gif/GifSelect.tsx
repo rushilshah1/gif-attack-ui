@@ -12,7 +12,7 @@ const GifSelectionContainer = withStyles({
         marginTop: '70px',
         padding: "20px",
         border: 'groove',
-        borderRadius: 3,
+        borderRadius: '15px',
         height: 'auto',
         width: '70%',
         boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',

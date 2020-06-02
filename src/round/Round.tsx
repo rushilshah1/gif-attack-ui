@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Container } from '@material-ui/core';
+import { Container, Icon, withStyles, Modal, Theme, makeStyles, createStyles, Button } from '@material-ui/core';
 import { Topic } from '../topic/Topic';
 import { SUBMIT_TOPIC_MUTATION, TOPIC_CREATED_SUBSCRIPTION, ITopic } from '../graphql/topic';
 import './Round.css';
@@ -10,7 +10,8 @@ import { GifSubmit } from '../gif/GifSubmit';
 import { SubmittedGif } from '../models/SubmittedGif';
 import { User } from '../models/User';
 import { Timer } from './Timer';
-
+import HelpIcon from '@material-ui/icons/Help';
+import { InstructionsModal } from './InstructionsModal';
 
 export interface RoundProps {
     gameId: string;
@@ -23,10 +24,42 @@ export interface RoundProps {
     completeRound: () => void;
 }
 
+const StyledHelpIcon = withStyles({
+    root: {
+        fontSize: "15px",
+        width: 'auto'
+    }
+})(HelpIcon);
+
+
+// function getModalStyle() {
+
+//     return {
+//         top: '50%',
+//         left: '50%',
+//         transform: `translate(-50%, -50%)`,
+//     };
+// }
+
+// const useStyles = makeStyles((theme: Theme) =>
+//     createStyles({
+//         paper: {
+//             position: 'absolute',
+//             minWidth: 450,
+//             minHeight: 450,
+//             backgroundColor: theme.palette.background.paper,
+//             border: '2px solid #000',
+//             boxShadow: theme.shadows[5],
+//             padding: theme.spacing(2, 4, 3),
+//         },
+//     }),
+// );
+
 export const Round: React.FC<RoundProps> = props => {
 
     const [selectedTopic, setSelectedTopic] = useState<string>('');
     const [hasUserSubmittedGif, setHasUserSubmittedGif] = useState<boolean>(false);
+    const [openInstructions, setOpenInstructions] = useState<boolean>(false);
 
     /** Gif Submission hooks */
     const [createGif, createGifResult] = useMutation(CREATE_GIF_MUTATION);
@@ -88,16 +121,33 @@ export const Round: React.FC<RoundProps> = props => {
         setSelectedTopic(topic);
     }
 
+    /** Instructions Modal Functions */
+    const openInstructionsModal = () => {
+        setOpenInstructions(true);
+    }
+
+    const closeInstructionsModal = () => {
+        setOpenInstructions(false);
+    }
+
     return (
         <Container>
             <div className="round-heading">
                 <div className="round-number">
                     <h1>Round {props.roundNumber}</h1>
+                    <Icon color='primary' className='round-help' onClick={() => openInstructionsModal()}>
+                        <StyledHelpIcon />
+                    </Icon>
                 </div>
-                <div className="round-timer">
+                {/* <div className="round-timer">
                     {props.submittedGifs.length > 0 && <Timer completeRound={() => props.completeRound()}></Timer>}
-                </div>
+                </div> */}
             </div>
+            {openInstructions && <Modal
+                open={openInstructions}
+                onClose={closeInstructionsModal}>
+                <InstructionsModal closeInstructionsModal={() => closeInstructionsModal()} />
+            </Modal>}
             <Topic topic={selectedTopic} submitTopic={text => (submitTopic(text))} setTopic={text => (setSelectedTopic(text))} />
             <GifSubmit submittedGifs={props.submittedGifs} voteGif={(gifId) => (submitGifVote(gifId))}></GifSubmit>
             {!hasUserSubmittedGif && <GifSelect selectGif={(gif, searchText) => (submitGif(gif, searchText))}></GifSelect>}

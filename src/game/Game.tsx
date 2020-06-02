@@ -70,6 +70,14 @@ export const Game: React.FC<IGameProps> = props => {
     const startGame = async () => {
         //Mutation to change game status
         await gameStatusStarted({ variables: { gameId: gameId } })
+        //Bug if syncro gets off -> make sure everyones scores is on a clean slate
+        //TODO:
+        /*
+        const usersWithoutScores = await usersInGame.map((user: User) => {
+            return { ...user, ...{ score: 0 } }
+        });
+        setUsersInGame(usersWithoutScores);
+        */
         await startNewRound();
     }
 
