@@ -24,22 +24,18 @@ const GameSelection = withStyles({
 const SubmitButton = withStyles({
     root: {
         display: 'block',
-        // display: 'inline-block',
         padding: '10px',
         alignContent: 'stretch',
         textAlign: 'center',
         justifyContent: 'normal',
         marginTop: '25px',
 
-        // width: '50%'
     }
 })(Button);
 
 const NameInput = withStyles({
     root: {
-
         width: "200px",
-        // minWidth: "200px",
         alignContent: 'center',
         textAlign: 'center',
         marginTop: '25px',

@@ -43,7 +43,7 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <div className="header">
-            <a href="/" className="homeButton">
+            <a href="/" className="homeButton" >
               <StyledHomeIcon />
             </a>
             <h2 className="title">Gif Attack</h2>

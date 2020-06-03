@@ -1,7 +1,8 @@
 .playerList {
     /* justify-content: left; */
     margin-top: 10px;
-    width: 25%;
+    /* min-width: 15%; */
+    /* width: 25%; */
     border-style: ridge;
     display: block;
     justify-content: start;
@@ -9,18 +10,15 @@
 
 
 }
-.player {
-    margin-top: 10px;
-
-}
 
 .playerName {
-    margin-left: 15px;
+    margin-left: 10px;
 }
 .player-title {
-    margin-top: -10px;;
-    text-align: center;
+    margin-top: -10px;
+    text-align: inherit;
 }
 .playerScore {
     text-align: end;
+    margin-left: 20px;
 }
