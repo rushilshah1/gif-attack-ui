@@ -7,11 +7,12 @@ import { useMutation, useSubscription, useQuery } from '@apollo/react-hooks';
 import { ROUND_STARTED_SUBSCRIPTION, NEXT_ROUND_MUTATION, IRound } from '../graphql/round';
 import { useParams } from "react-router-dom";
 import { LOCAL_STORAGE_USER } from '../common/constants';
-import { GET_USERS_IN_GAME_QUERY, NEW_USER_IN_GAME_SUBSCRIPTION, START_GAME_MUTATION } from '../graphql/game';
+import { GET_USERS_IN_GAME_QUERY, NEW_USER_IN_GAME_SUBSCRIPTION, START_GAME_MUTATION, USER_REMOVED_FROM_GAME_SUBSCRIPTION } from '../graphql/game';
 import { Lobby } from '../lobby/Lobby';
 import './Game.css';
 import { Scoreboard } from '../scoreboard/Scoreboard';
 import { User } from '../models/User';
+import { intersectionBy, unionBy } from 'lodash';
 
 export interface IGameProps {
     gameId: string
@@ -51,6 +52,12 @@ export const Game: React.FC<IGameProps> = props => {
             usersInGameReceived(response.subscriptionData.data.newUserInGame.users)
         }
     });
+    const userRemovedFromGameSubscription = useSubscription(USER_REMOVED_FROM_GAME_SUBSCRIPTION, {
+        variables: { gameId: gameId },
+        onSubscriptionData: (response) => {
+            usersRemovedFromGameReceived(response.subscriptionData.data.userRemovedFromGame.users)
+        }
+    })
     /** Start Game Hooks */
     const [gameStatusStarted, gameStatusStartedResult] = useMutation(START_GAME_MUTATION);
     /**  New Round Hooks */
@@ -63,8 +70,18 @@ export const Game: React.FC<IGameProps> = props => {
 
     /**  Used for Game Lobby*/
     const usersInGameReceived = async (currentUserList: Array<any>) => {
-        const listOfUsers: Array<User> = await currentUserList.map(user => new User({ name: user.name, score: 0 }));
-        setUsersInGame(listOfUsers);
+        const listOfUsers: Array<User> = await currentUserList.map(user => {
+            return new User({ name: user.name, score: 0 });
+        });
+        //set in this order so score defaults to 0 -> and then can be potentially overridden if user enters in the middle
+        setUsersInGame(prevUserList => [...listOfUsers, ...prevUserList]);
+    }
+    const usersRemovedFromGameReceived = async (currentUserList: Array<any>) => {
+        //const listOfUserNames: Set<string> = new Set(currentUserList.map(user => user.name));
+        setUsersInGame(prevUserList => intersectionBy(prevUserList, currentUserList, 'name'));
+
+        // return prevUserList.filter((user: User) => listOfUserNames.has(user.name))
+
     }
     /** Start Game */
     const startGame = async () => {

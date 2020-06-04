@@ -21,6 +21,17 @@ export const NEW_USER_IN_GAME_SUBSCRIPTION = gql`
         }
     }
 `
+export const USER_REMOVED_FROM_GAME_SUBSCRIPTION = gql`
+    subscription UserRemovedFromGameSubscription($gameId: ID!) {
+        userRemovedFromGame(gameId: $gameId) {
+            id
+            users {
+                name
+            }
+        }
+    }
+`
+
 export const CREATE_GAME_MUTATION = gql`
     mutation CreateGameMutation($userName: String!) {
         createGame(userName: $userName) {
@@ -30,7 +41,7 @@ export const CREATE_GAME_MUTATION = gql`
 `
 
 export const ADD_USER_TO_GAME_MUTATION = gql`
-    mutation AddUserToGameMutation($input: AddUserInput!) {
+    mutation AddUserToGameMutation($input: UserInput!) {
         addUserToGame(input: $input) {
             name
         }

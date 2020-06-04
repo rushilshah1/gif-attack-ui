@@ -22,12 +22,6 @@ const StyledHomeIcon = withStyles({
   }
 })(HomeIcon);
 
-const StyledContainer = withStyles({
-  root: {
-    textAlign: 'center'
-  }
-})(Container);
-
 const TitleDivider = withStyles({
   root: {
     marginTop: '-1%',
@@ -49,13 +43,10 @@ function App() {
             <h2 className="title">Gif Attack</h2>
           </div>
           <TitleDivider />
-          {/* <StyledContainer> */}
           <Route exact path="/home" component={Home}></Route>
           {/* Implement guard on this route -> only navigate to it if valid gameId */}
           <Route exact path="/game/:gameId" component={Game}></Route>
           <Route exact path="/" render={() => <Redirect to="/home" />} />
-
-          {/* </StyledContainer> */}
         </BrowserRouter>
 
       </div>
