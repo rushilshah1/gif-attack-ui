@@ -74,7 +74,7 @@ export const Game: React.FC<IGameProps> = props => {
             return new User({ name: user.name, score: 0 });
         });
         //set in this order so score defaults to 0 -> and then can be potentially overridden if user enters in the middle
-        setUsersInGame(prevUserList => [...listOfUsers, ...prevUserList]);
+        setUsersInGame(prevUserList => unionBy(prevUserList, listOfUsers, 'name'));
     }
     const usersRemovedFromGameReceived = async (currentUserList: Array<any>) => {
         //const listOfUserNames: Set<string> = new Set(currentUserList.map(user => user.name));
