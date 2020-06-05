@@ -25,7 +25,7 @@ const StyledContainer = withStyles({
         justifyContent: 'center'
     }
 })(Container);
-//As of now this component assumes the input gameId is valid -> a guard will need to sit between to perform the validation
+
 export const Game: React.FC<IGameProps> = props => {
     let params: IGameProps = useParams();
     const localStorageUser: string | null = localStorage.getItem(LOCAL_STORAGE_USER)
@@ -40,10 +40,7 @@ export const Game: React.FC<IGameProps> = props => {
     /** Users in Game Lobby Hooks*/
     const { data, loading, error } = useQuery(GET_USERS_IN_GAME_QUERY, {
         variables: { gameId: gameId }, onCompleted: async (response) => {
-            // let responseUsers: Array<any> = response.getUsers;
             usersInGameReceived(response.getUsers)
-            // const listOfUsers: Array<User> = await responseUsers.map(user => new User({ name: user.name, score: 0 }));
-            // setUsersInGame(listOfUsers);
         }
     });
     const usersAddedToGameSubscription = useSubscription(NEW_USER_IN_GAME_SUBSCRIPTION, {

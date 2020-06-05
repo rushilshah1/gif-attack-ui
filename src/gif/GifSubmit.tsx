@@ -4,6 +4,9 @@ import { Gif } from '@giphy/react-components'
 import './GifSubmit.css';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import { SubmittedGif } from '../models/SubmittedGif';
+import { LOCAL_STORAGE_USER, ENVIRONMENT_PROD, ENVIRONMENT_LOCAL } from '../common/constants';
+import ENVIRONMENT from '../common/environments';
+
 
 export interface GifSubmitProps {
     submittedGifs: Array<SubmittedGif>;
@@ -35,6 +38,12 @@ const useStyles = makeStyles({
 export const GifSubmit: React.FC<GifSubmitProps> = props => {
     const [gifVotedFor, setGifVotedFor] = useState<string | null>(null);
     const classes = useStyles();
+
+    const disableVotingForGif = (submitedGifPlayer: string): boolean => {
+        const thisPlayer: string | null = localStorage.getItem(LOCAL_STORAGE_USER);
+        //In PROD, do not allow player to vote for themself
+        return gifVotedFor ? true : (ENVIRONMENT.ENV === ENVIRONMENT_PROD && submitedGifPlayer === thisPlayer);
+    };
     return (
         <Container>
             <div>
@@ -54,7 +63,7 @@ export const GifSubmit: React.FC<GifSubmitProps> = props => {
                             <IconButton aria-label="Vote for gif" onClick={() => {
                                 setGifVotedFor(submittedGif.id)
                                 props.voteGif(submittedGif.id)
-                            }} color='primary' disabled={gifVotedFor ? true : false}>
+                            }} color='primary' disabled={disableVotingForGif(submittedGif.userName)}>
                                 <ThumbUpIcon />
                             </IconButton>
                         </CardActions>

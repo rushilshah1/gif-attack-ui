@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { getQuery } from './api-client';
 
 // export type IGif = {
 //     gameId?: string,
@@ -81,3 +82,16 @@ export const GET_GAMES_BY_ID_QUERY = (id): string =>
         }
     }
 `
+export const canJoinGame = async (gameId: string): Promise<boolean> => {
+    const game = await getGameById(gameId);
+    return (game && game.started === false);
+}
+
+export const getGameById = async (gameId: string): Promise<any> => {
+    try {
+        const response = await getQuery(GET_GAMES_BY_ID_QUERY(gameId));
+        return response.getGameById;
+    } catch (error) { //If id does not exist
+        return null;
+    }
+}

@@ -3,7 +3,7 @@ import './Home.css';
 import { Input, FormControl, InputLabel, TextField, Button, RadioGroup, FormControlLabel, FormLabel, Radio, CircularProgress, withStyles, Divider, Container, Grid } from '@material-ui/core';
 import { useForm, Controller } from "react-hook-form";
 import { useMutation, useLazyQuery, useQuery } from '@apollo/react-hooks';
-import { CREATE_GAME_MUTATION, ADD_USER_TO_GAME_MUTATION, GET_GAMES_QUERY, IGame, GET_GAMES_BY_ID_QUERY } from '../graphql/game';
+import { CREATE_GAME_MUTATION, ADD_USER_TO_GAME_MUTATION, GET_GAMES_QUERY, IGame, GET_GAMES_BY_ID_QUERY, getGameById } from '../graphql/game';
 import { Redirect } from "react-router-dom";
 import { CREATE_GAME, JOIN_GAME, LOCAL_STORAGE_USER } from '../common/constants';
 import { getQuery } from '../graphql/api-client';
@@ -58,7 +58,10 @@ export const Home: React.FC = props => {
     const [addUserToGame, addUserToGameResult] = useMutation(ADD_USER_TO_GAME_MUTATION);
     const { handleSubmit, register, errors, setError, clearError } = useForm({ mode: 'onSubmit', reValidateMode: 'onSubmit' });
 
-
+    useEffect(() => {
+        //Remove user, Home page should not have an assigned user till form has been submitted
+        localStorage.removeItem(LOCAL_STORAGE_USER);
+    }, []);
     const onSubmit = async (formValues) => {
         console.log(`Form has been submitted ${formValues}`)
         if (gameType === CREATE_GAME) {
@@ -84,22 +87,16 @@ export const Home: React.FC = props => {
     };
 
     const validateGameId = async (userInputGameId: string): Promise<boolean> => {
-        try {
-            const response = await getQuery(GET_GAMES_BY_ID_QUERY(userInputGameId));
-            const gameHasStarted: boolean = response.getGameById.started;
-            if (gameHasStarted) {
-                setError("userInputGameId", "startedGame", "Game ID has already started and cannot be joined")
-            }
-            return !gameHasStarted;
-        } catch (error) { //If id does not exist
+        const game = await getGameById(userInputGameId);
+        if (!game) {
             setError("userInputGameId", "invalidId", "Game ID is not valid")
             return false;
         }
-
-        // const gamesList: Array<IGame> = data.getGames;
-        // const gameFound = gamesList.find(game => game.id === value && game.started === false);
-        // return (gameFound) ? true : false;
-
+        const gameHasStarted: boolean = game.started;
+        if (gameHasStarted) {
+            setError("userInputGameId", "startedGame", "Game ID has already started and cannot be joined")
+        }
+        return !gameHasStarted;
     }
     const joinGame = async (name: string, gameId: string) => {
         await addUserToGame({ variables: { input: { gameId: gameId, name: name } } })
