@@ -23,9 +23,30 @@
     display: inline-flex;
 }
 
+.gif-image {
+    width: 100%;
+}
+
 .noResults {
     color: red;
     margin: 20px;
     font-size: larger;
     font-style: italic;
+}
+
+.searchbox-wrapper{
+    /* margin: 15px; */
+    /* padding: 15px; */
+    justify-content: center;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+
+    /* border: groove; */
+}
+
+.gifSelection {
+    margin-top: 70px;
+    height: auto;
+    width: auto;
 }

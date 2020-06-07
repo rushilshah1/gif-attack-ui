@@ -42,7 +42,8 @@ export const GifSubmit: React.FC<GifSubmitProps> = props => {
     const disableVotingForGif = (submitedGifPlayer: string): boolean => {
         const thisPlayer: string | null = localStorage.getItem(LOCAL_STORAGE_USER);
         //In PROD, do not allow player to vote for themself
-        return gifVotedFor ? true : (ENVIRONMENT.ENV === ENVIRONMENT_PROD && submitedGifPlayer === thisPlayer);
+        // return gifVotedFor ? true : (ENVIRONMENT.ENV === ENVIRONMENT_PROD && submitedGifPlayer === thisPlayer);
+        return gifVotedFor ? true : false;
     };
     return (
         <Container>
