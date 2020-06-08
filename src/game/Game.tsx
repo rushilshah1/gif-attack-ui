@@ -67,7 +67,10 @@ export const Game: React.FC<IGameProps> = props => {
 
     /**  Used for Game Lobby*/
     const usersInGameReceived = async (currentUserList: Array<any>) => {
+        console.log(`User added to game.`);
+
         const listOfUsers: Array<User> = await currentUserList.map(user => {
+            console.log(`Users in game: ${user.name}`);
             return new User({ name: user.name, score: 0 });
         });
         //set in this order so score defaults to 0 -> and then can be potentially overridden if user enters in the middle
@@ -75,6 +78,7 @@ export const Game: React.FC<IGameProps> = props => {
     }
     const usersRemovedFromGameReceived = async (currentUserList: Array<any>) => {
         //const listOfUserNames: Set<string> = new Set(currentUserList.map(user => user.name));
+        console.log(`User removed from game...${currentUserList}`);
         setUsersInGame(prevUserList => intersectionBy(prevUserList, currentUserList, 'name'));
 
         // return prevUserList.filter((user: User) => listOfUserNames.has(user.name))

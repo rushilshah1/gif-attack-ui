@@ -49,4 +49,10 @@
     margin-top: 70px;
     height: auto;
     width: auto;
+    /* background-color: #fff; */
+    border-radius: 0.3rem;
+    border: 1px solid #ddd;
+    display: inline-block;
+    padding: 15px;
+    box-shadow: 0 0.3rem 1rem rgba(8, 38, 78, 0.2);
 }

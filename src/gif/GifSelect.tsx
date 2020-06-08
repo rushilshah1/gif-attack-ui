@@ -6,7 +6,7 @@ import { gifSearchData } from './GiphyMock';
 import './GifSelect.css';
 import ENVIRONMENT from '../common/environments';
 import { ENVIRONMENT_LOCAL } from '../common/constants';
-import ReactGiphySearchbox from 'react-giphy-searchbox'
+import ReactGiphySearchbox from 'react-giphy-searchbox';
 
 
 const GifSelectionContainer = withStyles({
@@ -107,6 +107,7 @@ export const GifSelect: React.FC<GifSelectProps> = props => {
                     setCurrentGif(gif)
                     props.selectGif(gif, gifSearchInput)
                 }}
+                onSearch={(text) => setGifSearchInput(text)}
                 wrapperClassName={"searchbox-wrapper"}
                 searchFormClassName={"searchbox-search"}
                 listWrapperClassName={"searchbox-list"}
@@ -116,7 +117,7 @@ export const GifSelect: React.FC<GifSelectProps> = props => {
                 masonryConfig={
                     [
                         { columns: 2, imageWidth: 150, gutter: 10 },
-                        { mq: '700px', columns: 3, imageWidth: 200, gutter: 10 },
+                        { mq: '700px', columns: 3, imageWidth: 190, gutter: 10 },
                         // { mq: '1000px', columns: 4, imageWidth: 200, gutter: 10 },
                     ]}
             />
