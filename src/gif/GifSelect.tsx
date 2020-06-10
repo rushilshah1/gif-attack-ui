@@ -54,11 +54,14 @@ const Overlay = ({ gif, isHovered }: GifOverlayProps) => {
 
 export const GifSelect: React.FC<GifSelectProps> = props => {
 
-    const giphyClient = new GiphyFetch(ENVIRONMENT.GIPHY_KEY);
     const [gifSearchInput, setGifSearchInput] = useState<string>('');
+
+    /*
+    const giphyClient = new GiphyFetch(ENVIRONMENT.GIPHY_KEY);
     const [gifSearchResults, setGifSearchResults] = useState<Array<any>>([]);
     const [currentGif, setCurrentGif] = useState(null as any);
     const [searchError, setSearchError] = useState<string>('');
+    
 
     useEffect(() => {
         if (gifSearchResults.length > 0) {
@@ -95,7 +98,7 @@ export const GifSelect: React.FC<GifSelectProps> = props => {
         const randomIndex: number = Math.floor(Math.random() * Math.floor(numSearchResults));
         setCurrentGif(gifSearchResults[randomIndex]);
     }
-
+    */
 
 
     return (
@@ -103,8 +106,6 @@ export const GifSelect: React.FC<GifSelectProps> = props => {
             <ReactGiphySearchbox
                 apiKey={ENVIRONMENT.GIPHY_KEY}
                 onSelect={(gif) => {
-                    console.log(gif)
-                    setCurrentGif(gif)
                     props.selectGif(gif, gifSearchInput)
                 }}
                 onSearch={(text) => setGifSearchInput(text)}

@@ -38,18 +38,18 @@ function App() {
     <ApolloProvider client={apolloClient}>
       <div className="App">
         <BrowserRouter>
-          <GuardProvider guards={[gameGuard]}>
-            <div className="header">
-              <a href="/" className="homeButton" >
-                <StyledHomeIcon />
-              </a>
-              <h2 className="title">Gif Attack</h2>
-            </div>
-            <TitleDivider />
-            <Route exact path="/home" component={Home}></Route>
-            <GuardedRoute exact path="/game/:gameId" component={Game}></GuardedRoute>
-            <Route path="/" render={() => <Redirect to="/home" />} />
-          </GuardProvider>
+          {/* <GuardProvider guards={[gameGuard]}> */}
+          <div className="header">
+            <a href="/" className="homeButton" >
+              <StyledHomeIcon />
+            </a>
+            <h2 className="title">Gif Attack</h2>
+          </div>
+          <TitleDivider />
+          <Route exact path="/home" component={Home}></Route>
+          <Route exact path="/game/:gameId" component={Game}></Route>
+          <Route path="/" render={() => <Redirect to="/home" />} />
+          {/* </GuardProvider> */}
         </BrowserRouter>
 
       </div>

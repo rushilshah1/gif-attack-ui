@@ -12,22 +12,13 @@ export interface IGame {
     started?: boolean;
 }
 
-export const NEW_USER_IN_GAME_SUBSCRIPTION = gql`
-    subscription NewUserInGameSubscription($gameId: ID!) {
-        newUserInGame(gameId: $gameId) {
+export const USER_CHANGED_IN_GAME_SUBSCRIPTION = gql`
+    subscription UserChangedInGameSubscription($gameId: ID!) {
+        usersChangedInGame(gameId: $gameId) {
             id
             users {
                 name
-            }
-        }
-    }
-`
-export const USER_REMOVED_FROM_GAME_SUBSCRIPTION = gql`
-    subscription UserRemovedFromGameSubscription($gameId: ID!) {
-        userRemovedFromGame(gameId: $gameId) {
-            id
-            users {
-                name
+                score
             }
         }
     }
@@ -49,6 +40,23 @@ export const ADD_USER_TO_GAME_MUTATION = gql`
     }
 `
 
+export const REMOVE_USER_FROM_GAME_MUTATION = gql`
+    mutation RemoveUserFromGameMutation($input: UserInput!) {
+        removeUserFromGame(input: $input) {
+            name
+            score
+        }
+    }
+`
+
+export const USER_SCORED_MUTATION = gql`
+    mutation UserScoredMutation($input: UserInput!) {
+        userScoredInGame(input: $input) {
+            name
+            score
+        }
+    }
+`
 export const START_GAME_MUTATION = gql`
     mutation StartGameMutation($gameId: ID!) {
         startGame(gameId: $gameId) {
@@ -61,6 +69,7 @@ export const GET_USERS_IN_GAME_QUERY = gql`
     query GetUsersInGameQuery($gameId: ID!) {
         getUsers(gameId: $gameId) {
             name
+            score
         }
     }
 `
