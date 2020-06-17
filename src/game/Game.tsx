@@ -160,7 +160,6 @@ export const Game: React.FC<IGameProps> = props => {
     return (
         <div className="game">
             <Scoreboard players={usersInGame}></Scoreboard>
-
             <StyledContainer>
                 {roundNumber === 0 && <Lobby gameId={gameId} players={usersInGame} startGame={() => startGame()} />}
                 {roundNumber > 0 && (roundComplete ? <RoundResult submittedGifs={submittedGifs} startNewRound={() => startNewRound()}

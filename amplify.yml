@@ -13,6 +13,7 @@ frontend:
     build:
       commands:
         - npm run build
+        - GIPHY_KEY=$GIPHY_KEY
   artifacts:
     baseDirectory: /build
     files:

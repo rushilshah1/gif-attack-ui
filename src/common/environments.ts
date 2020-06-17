@@ -16,6 +16,8 @@ const ENVIRONMENT = {
 }
 
 let env = ENVIRONMENT.LOCAL
+console.log(process.env)
+console.log(`Giphy key: ${process.env.GIPHY_KEY}`)
 if (window.location.hostname.includes('gif-attack.com')) {
     console.log("PROD mode");
     env = ENVIRONMENT.PROD;
