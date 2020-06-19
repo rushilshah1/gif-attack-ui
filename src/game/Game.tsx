@@ -4,15 +4,16 @@ import { Container, CircularProgress, withStyles } from '@material-ui/core';
 import { RoundResult } from '../round/RoundResult';
 import { SubmittedGif } from '../models/SubmittedGif';
 import { useMutation, useSubscription, useQuery } from '@apollo/react-hooks';
-import { ROUND_STARTED_SUBSCRIPTION, NEXT_ROUND_MUTATION, IRound } from '../graphql/round';
+import { ROUND_CHANGED_SUBSCRIPTION, NEXT_ROUND_MUTATION, IRound } from '../graphql/round';
 import { useParams } from "react-router-dom";
-import { LOCAL_STORAGE_USER } from '../common/constants';
-import { GET_USERS_IN_GAME_QUERY, START_GAME_MUTATION, USER_CHANGED_IN_GAME_SUBSCRIPTION, USER_SCORED_MUTATION, REMOVE_USER_FROM_GAME_MUTATION } from '../graphql/game';
+import { LOCAL_STORAGE_USER_NAME, LOCAL_STORAGE_USER_ID } from '../common/constants';
+import { GET_USERS_IN_GAME_QUERY, START_GAME_MUTATION, USER_CHANGED_IN_GAME_SUBSCRIPTION, UPDATE_USER_MUTATION, REMOVE_USER_MUTATION } from '../graphql/game';
 import { Lobby } from '../lobby/Lobby';
 import './Game.css';
 import { Scoreboard } from '../scoreboard/Scoreboard';
-import { User } from '../models/User';
-import { intersectionBy, unionBy } from 'lodash';
+import { User, IUser } from '../models/User';
+import { Redirect } from "react-router-dom";
+import { UPDATE_GIF_MUTATION } from '../graphql/gif';
 
 export interface IGameProps {
     gameId: string
@@ -28,10 +29,11 @@ const StyledContainer = withStyles({
 
 export const Game: React.FC<IGameProps> = props => {
     let params: IGameProps = useParams();
-    const localStorageUser: string | null = localStorage.getItem(LOCAL_STORAGE_USER)
-
+    const localStorageUserName: string | null = localStorage.getItem(LOCAL_STORAGE_USER_NAME)
+    const localStorageUserId: string | null = localStorage.getItem(LOCAL_STORAGE_USER_ID)
     const [gameId, setGameId] = useState<string>(params.gameId);
-    const [currentUser, setCurrentUser] = useState<User>(localStorageUser ? new User({ name: localStorageUser, score: 0 }) : new User());
+    const [currentUser, setCurrentUser] = useState<User>(
+        localStorageUserName && localStorageUserId ? new User({ id: localStorageUserId, name: localStorageUserName, score: 0 }) : new User());
     const [usersInGame, setUsersInGame] = useState<Array<User>>([]);
     const [submittedGifs, setSubmittedGifs] = useState<Array<SubmittedGif>>([]);
     const [roundComplete, setRoundComplete] = useState<boolean>(false);
@@ -39,7 +41,8 @@ export const Game: React.FC<IGameProps> = props => {
 
     const leaveGame = async (event) => {
         event.preventDefault();
-        await removeUser({ variables: { input: { gameId: gameId, name: currentUser.name } } });
+        await removeUser({ variables: { user: currentUser, gameId: gameId } });
+
     };
     useEffect(() => {
         window.addEventListener("beforeunload", leaveGame);
@@ -59,27 +62,24 @@ export const Game: React.FC<IGameProps> = props => {
             usersChangedInGameReceived(response.subscriptionData.data.usersChangedInGame.users)
         }
     });
-    // const userRemovedFromGameSubscription = useSubscription(USER_REMOVED_FROM_GAME_SUBSCRIPTION, {
-    //     variables: { gameId: gameId },
-    //     onSubscriptionData: (response) => {
-    //         usersRemovedFromGameReceived(response.subscriptionData.data.userRemovedFromGame.users)
-    //     }
-    // })
+
     /** Start Game Hooks */
     const [gameStatusStarted, gameStatusStartedResult] = useMutation(START_GAME_MUTATION);
     /**  New Round Hooks */
     const [startNextRound, startNextRoundResult] = useMutation(NEXT_ROUND_MUTATION);
-    const nextRoundSubscription = useSubscription(ROUND_STARTED_SUBSCRIPTION, {
+    const nextRoundSubscription = useSubscription(ROUND_CHANGED_SUBSCRIPTION, {
         variables: { gameId: gameId }, onSubscriptionData: (response) => {
-            newRoundReceived(response.subscriptionData.data.roundStarted.roundNumber)
+            newRoundReceived(response.subscriptionData.data.roundChanged.roundNumber)
         }
     });
-    /** Update Score Hook */
-    const [updateScore, updateScoreResult] = useMutation(USER_SCORED_MUTATION);
+    /** Update Gif */
+    const [updateSubmittedGif, updateSubmittedGifResult] = useMutation(UPDATE_GIF_MUTATION);
+    /** Update User Hook */
+    const [updateUser, updateUserResult] = useMutation(UPDATE_USER_MUTATION);
     /** Remove User On Component Destroy */
-    const [removeUser, removeUserResult] = useMutation(REMOVE_USER_FROM_GAME_MUTATION);
+    const [removeUser, removeUserResult] = useMutation(REMOVE_USER_MUTATION);
     /**  Used for Game Lobby*/
-    const usersChangedInGameReceived = async (currentUserList: Array<any>) => {
+    const usersChangedInGameReceived = async (currentUserList: Array<User>) => {
         // console.log(`User changed in to game.`);
 
         // const listOfUsers: Array<User> = await currentUserList.map(user => {
@@ -107,8 +107,8 @@ export const Game: React.FC<IGameProps> = props => {
 
     /** New Round */
     const startNewRound = async () => {
-        const mutationInput: IRound = { gameId: gameId, roundNumber: roundNumber };
-        await startNextRound({ variables: { input: mutationInput } });
+        const changeRoundInput: IRound = { roundNumber: roundNumber + 1 };
+        await startNextRound({ variables: { round: changeRoundInput, gameId: gameId } });
         console.log(`Round ${roundNumber} has finished, a new round is about to start...`);
     };
 
@@ -117,27 +117,31 @@ export const Game: React.FC<IGameProps> = props => {
         setRoundNumber(newRoundNumber);
         setRoundComplete(false);
         setSubmittedGifs([]);
+        //TODO: Call mutation for this
     }
 
     /** Game Interactions and Helpers */
-    const addSubmitedGif = (gif: SubmittedGif) => {
-        setSubmittedGifs(submittedGifs => [...submittedGifs, gif]);
+    const updateSubmittedGifs = (updatedGifs: Array<SubmittedGif>) => {
+        setSubmittedGifs(prevSubmittedGifs => updatedGifs);
+        checkRoundStatus(updatedGifs);
     }
 
-    const voteForSubmittedGif = (gifId: string) => {
-        let gifVotedFor: SubmittedGif | undefined = submittedGifs.find(g => g.id === gifId);
-        if (!gifVotedFor) {
-            console.error("Trying to vote for a Gif that does not exist");
-            return false;
-        }
-        gifVotedFor.numVotes += 1;
-        setSubmittedGifs(submittedGifs => [...submittedGifs]);
-        checkRoundStatus();
+    const voteForSubmittedGif = async (gif: SubmittedGif) => {
+        gif.numVotes += 1;
+        await updateSubmittedGif({ variables: { gif: gif, gameId: gameId } });
+        // let gifVotedFor: SubmittedGif | undefined = submittedGifs.find(g => g.id === gifId);
+        // if (!gifVotedFor) {
+        //     console.error("Trying to vote for a Gif that does not exist");
+        //     return false;
+        // }
+        // gifVotedFor.numVotes += 1;
+        // setSubmittedGifs(submittedGifs => [...submittedGifs]);
+        // checkRoundStatus();
     }
 
     //Logic to determine if round is over or not    
-    const checkRoundStatus = () => {
-        const numVotes: number = submittedGifs.reduce((sum: number, currentGif: SubmittedGif) => sum + currentGif.numVotes, 0);
+    const checkRoundStatus = (gifList: Array<SubmittedGif>) => {
+        const numVotes: number = gifList.reduce((sum: number, currentGif: SubmittedGif) => sum + currentGif.numVotes, 0);
         console.log(`Number of votes: ${numVotes}`);
 
         if (numVotes === usersInGame.length) { //Criteria
@@ -145,14 +149,19 @@ export const Game: React.FC<IGameProps> = props => {
         }
     }
 
-    const updateScores = (winnerUserNames: Array<string>) => {
-        winnerUserNames.forEach(async (name) => {
-            let winnerUser: User | undefined = usersInGame.find(user => user.name === name);
+    const updateScores = (winnerUserIds: Array<string>) => {
+        winnerUserIds.forEach(async (userId: string) => {
+            let winnerUser: User | undefined = usersInGame.find((user: User) => user.id === userId);
             if (!winnerUser) {
                 console.error("Winner does not exist in game user list..");
                 return;
             }
-            await updateScore({ variables: { input: { gameId: gameId, name: winnerUser.name, score: winnerUser.score + 1 } } })
+            winnerUser.score += 1;
+            await updateUser({
+                variables: {
+                    user: winnerUser as IUser, gameId: gameId
+                }
+            })
         });
     }
 
@@ -165,7 +174,7 @@ export const Game: React.FC<IGameProps> = props => {
                 {roundNumber > 0 && (roundComplete ? <RoundResult submittedGifs={submittedGifs} startNewRound={() => startNewRound()}
                     updateScores={(winners) => updateScores(winners)} />
                     : <Round roundNumber={roundNumber} gameId={gameId} player={currentUser} submittedGifs={submittedGifs}
-                        addSubmitedGif={(gif) => addSubmitedGif(gif)} voteForSubmitedGif={(gifId) => voteForSubmittedGif(gifId)}
+                        updateSubmittedGifs={(updatedGifList) => updateSubmittedGifs(updatedGifList)} voteForSubmitedGif={(gif) => voteForSubmittedGif(gif)}
                         completeRound={() => setRoundComplete(true)} />)}
             </StyledContainer>
         </div>

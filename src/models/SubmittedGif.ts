@@ -1,16 +1,26 @@
-import { IGif } from "../graphql/gif";
+export interface IGif {
+    id?: string
+    gifId?: string;
+    content?: string;
+    userId?: string
+    gifSearchText?: string
+    numVotes?: number;
+}
 
 export class SubmittedGif implements IGif {
 
     id!: string;
-    gif: any;
-    gameId?: string;
-    userName!: string;
+    gifId!: string;
+    content: any;
+    userId!: string;
     gifSearchText!: string;
-    numVotes: number = 0;
+    numVotes!: number;
 
     constructor(gif?: Partial<SubmittedGif>) {
         Object.assign(this, gif);
+        if (gif && gif.content && typeof gif.content === "string") {
+            this.content = JSON.parse(gif.content);
+        }
     }
 
 }

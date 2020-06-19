@@ -8,7 +8,7 @@ import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-boost';
 import ENVIRONMENT from '../common/environments';
 import { setContext } from 'apollo-link-context';
-import { LOCAL_STORAGE_USER } from '../common/constants';
+import { LOCAL_STORAGE_USER_NAME, LOCAL_STORAGE_USER_ID } from '../common/constants';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 
 
@@ -22,7 +22,7 @@ const wsLink = new WebSocketLink({
     options: {
         reconnect: true,
         connectionParams: () => ({
-            user: localStorage.getItem(LOCAL_STORAGE_USER) ? localStorage.getItem(LOCAL_STORAGE_USER) : ''
+            user: localStorage.getItem(LOCAL_STORAGE_USER_NAME) ? localStorage.getItem(LOCAL_STORAGE_USER_NAME) : ''
         }),
         lazy: true
     },
@@ -68,7 +68,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
  * and more importantly when a user has unsubscribed (exited) the game.
  */
 const authLink = setContext((_, { headers, connectionParams }) => {
-    const user = localStorage.getItem(LOCAL_STORAGE_USER);
+    const user = localStorage.getItem(LOCAL_STORAGE_USER_NAME);
     return {
         headers: {
             ...headers,
@@ -78,5 +78,5 @@ const authLink = setContext((_, { headers, connectionParams }) => {
 });
 export const apolloClient = new ApolloClient({
     link: ApolloLink.from([errorLink, authLink, apiLink]),
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({ addTypename: false }),
 });

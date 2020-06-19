@@ -2,30 +2,32 @@ import { useEffect } from 'react';
 import { apolloClient } from './apollo-client';
 import gql from 'graphql-tag';
 
-export const TOPIC_CREATED_SUBSCRIPTION = gql`
-    subscription TopicSubscription($gameId: ID!) {
-        topicCreated(gameId: $gameId) {
-            text
+export const TOPIC_CHANGED_SUBSCRIPTION = gql`
+    subscription TopicChangedSubscription($gameId: ID!) {
+        topicChanged(gameId: $gameId) {
+            topic
         }
     }
 `
 
-export const SUBMIT_TOPIC_MUTATION = gql`
-    mutation SubmitTopic($input: TopicInput!) {
-        createTopic(input: $input) {
-            text
-        }
+export const UPDATE_TOPIC_MUTATION = gql`
+    mutation UpdateTopic($topicInput: TopicInput!, $gameId: ID!) {
+        updateTopic(topicInput: $topicInput, gameId: $gameId)
+    }
+`
+export const REMOVE_TOPIC_MUTATION = gql`
+    mutation RemoveTopic($gameId: ID!) {
+        removeTopic(gameId: $gameId)
     }
 `
 export interface ITopic {
-    gameId: string,
-    text: string
+    topic: string
 };
 
-
+/*
 export type topicReceived = (topic: ITopic) => void
 
-/*
+
 export const subscribeToTopic = (gameId: string, topicReceived: topicReceived) => {
     return apolloClient.subscribe({
         query: topicSubscription,

@@ -3,11 +3,12 @@ import './Home.css';
 import { Input, FormControl, InputLabel, TextField, Button, RadioGroup, FormControlLabel, FormLabel, Radio, CircularProgress, withStyles, Divider, Container, Grid } from '@material-ui/core';
 import { useForm, Controller } from "react-hook-form";
 import { useMutation, useLazyQuery, useQuery } from '@apollo/react-hooks';
-import { CREATE_GAME_MUTATION, ADD_USER_TO_GAME_MUTATION, GET_GAMES_QUERY, IGame, GET_GAMES_BY_ID_QUERY, getGameById } from '../graphql/game';
+import { CREATE_GAME_MUTATION, ADD_USER_MUTATION, getGameById } from '../graphql/game';
 import { Redirect } from "react-router-dom";
-import { CREATE_GAME, JOIN_GAME, LOCAL_STORAGE_USER } from '../common/constants';
+import { CREATE_GAME, JOIN_GAME, LOCAL_STORAGE_USER_ID, LOCAL_STORAGE_USER_NAME } from '../common/constants';
 import { getQuery } from '../graphql/api-client';
 import { Timer } from '../round/Timer';
+import { User, IUser } from '../models/User';
 
 
 
@@ -51,21 +52,24 @@ const StyledContainer = withStyles({
 
 export const Home: React.FC = props => {
     const [username, setUsername] = useState<string>('');
+    const [currentUser, setCurrentUser] = useState<User | undefined>(undefined);
     const [gameType, setGameType] = useState<string>(CREATE_GAME);
     const [userInputGameId, setUserInputGameId] = useState<string>('');
     const [gameId, setGameId] = useState<string>('');
-    const [createGame, createGameResult] = useMutation(CREATE_GAME_MUTATION);
-    const [addUserToGame, addUserToGameResult] = useMutation(ADD_USER_TO_GAME_MUTATION);
     const { handleSubmit, register, errors, setError, clearError } = useForm({ mode: 'onSubmit', reValidateMode: 'onSubmit' });
+
+    const [createGame, createGameResult] = useMutation(CREATE_GAME_MUTATION);
+    const [addUserToGame, addUserToGameResult] = useMutation<any, any>(ADD_USER_MUTATION);
 
     useEffect(() => {
         //Remove user, Home page should not have an assigned user till form has been submitted
-        localStorage.removeItem(LOCAL_STORAGE_USER);
+        localStorage.removeItem(LOCAL_STORAGE_USER_NAME);
+        localStorage.removeItem(LOCAL_STORAGE_USER_ID);
     }, []);
     const onSubmit = async (formValues) => {
         console.log(`Form has been submitted ${formValues}`)
         if (gameType === CREATE_GAME) {
-            await startGame(formValues.name);
+            await createNewGame(formValues.name);
         }
         else if (gameType === JOIN_GAME) {
             const isValid: boolean = await validateGameId(formValues.userInputGameId);
@@ -80,9 +84,13 @@ export const Home: React.FC = props => {
         }
     };
 
-    const startGame = async (name: string) => {
-        const game = await createGame({ variables: { userName: name } });
-        setGameId(game.data.createGame.id);
+    const createNewGame = async (name: string) => {
+        const gameResult = await createGame();
+        const gameId: string = gameResult.data.createGame.id
+        const result = await addUserToGame({ variables: { user: { name: name }, gameId: gameId } });
+        const user: User | undefined = result.data ? result.data.addUser : undefined;
+        setCurrentUser(user);
+        setGameId(gameId);
         console.log(`Game ${gameId} has been created`);
     };
 
@@ -92,15 +100,17 @@ export const Home: React.FC = props => {
             setError("userInputGameId", "invalidId", "Game ID is not valid")
             return false;
         }
-        const gameHasStarted: boolean = game.started;
+        const gameHasStarted: boolean = game.gameStarted;
         if (gameHasStarted) {
             setError("userInputGameId", "startedGame", "Game ID has already started and cannot be joined")
         }
         return !gameHasStarted;
     }
     const joinGame = async (name: string, gameId: string) => {
-        await addUserToGame({ variables: { input: { gameId: gameId, name: name } } })
-        setGameId(gameId)
+        const result = await addUserToGame({ variables: { user: { name: name }, gameId: gameId } })
+        const user: User | undefined = result.data ? result.data.addUser : undefined;
+        setCurrentUser(user);
+        setGameId(gameId);
     };
     const toggleGameType = (gameType: string) => {
         if (gameType === CREATE_GAME) {
@@ -110,14 +120,12 @@ export const Home: React.FC = props => {
         setGameType(gameType);
     }
 
-    if (gameId) {
-        localStorage.setItem(LOCAL_STORAGE_USER, username);
+    if (gameId && currentUser) {
+        localStorage.setItem(LOCAL_STORAGE_USER_NAME, currentUser.name);
+        localStorage.setItem(LOCAL_STORAGE_USER_ID, currentUser.id);
         console.log('Game created, redirecting...')
         return <Redirect to={`/game/${gameId}`} />
     }
-    // if (loading) {
-    //     return <CircularProgress />
-    // }
     return (
         <div className="title">
             {/* Welcome to Gif Attack!
@@ -150,4 +158,3 @@ export const Home: React.FC = props => {
         </div >
     )
 }
-//, validate: validateGameId

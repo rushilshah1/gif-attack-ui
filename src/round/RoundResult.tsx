@@ -9,6 +9,7 @@ import FavoriteOutlinedIcon from '@material-ui/icons/FavoriteOutlined';
 import { User } from '../models/User';
 
 export interface RoundResultProps {
+    players?: Array<User>;
     submittedGifs: Array<SubmittedGif>;
     startNewRound: () => void;
     updateScores: (userNames: Array<string>) => void;
@@ -65,7 +66,7 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
             //Technically only 1, but making it generic to be expanded for "multiple" winners/ties
             //This logic is based on a username is unique and players cannot have to the same name
             //TODO: Add validation on home page form
-            const winnerUsers: Array<string> = winnerGifs.map(gif => gif.userName);
+            const winnerUsers: Array<string> = winnerGifs.map(gif => gif.userId);
             props.updateScores(winnerUsers);
         }
     }, [winnerGifs])
@@ -90,9 +91,9 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
                 {/* <CardHeader title={submittedGif.userName + " - " + submittedGif.gifSearchText} titleTypographyProps={{ variant: 'subtitle1' }}></CardHeader> */}
                 <CardContent>
                     <Typography variant="subtitle1">
-                        {gif.userName} - {gif.gifSearchText}
+                        {gif.userId} - {gif.gifSearchText}
                     </Typography>
-                    <Gif className="gif" gif={gif.gif} width={size} height={size} hideAttribution={true} noLink={true}></Gif>
+                    <Gif className="gif" gif={gif.content} width={size} height={size} hideAttribution={true} noLink={true}></Gif>
                 </CardContent>
                 <CardActions disableSpacing className="voteButton">
                     {generateVoteIcons(gif.numVotes)}
@@ -116,7 +117,7 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
                             && generateGifPanel(winnerGifs, true)
                         }
                     </div>
-                    <ResultDivider />
+                    {consolationGifs.length > 0 && <ResultDivider />}
                     {consolationGifs.length > 0 && <h2>Runner up(s):</h2>}
                     <div className="consolationCards">
                         {consolationGifs.length > 0
