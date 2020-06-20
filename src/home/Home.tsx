@@ -89,9 +89,10 @@ export const Home: React.FC = props => {
         const gameId: string = gameResult.data.createGame.id
         const result = await addUserToGame({ variables: { user: { name: name }, gameId: gameId } });
         const user: User | undefined = result.data ? result.data.addUser : undefined;
+        console.log(`Game ${gameId} has been created`);
         setCurrentUser(user);
         setGameId(gameId);
-        console.log(`Game ${gameId} has been created`);
+
     };
 
     const validateGameId = async (userInputGameId: string): Promise<boolean> => {

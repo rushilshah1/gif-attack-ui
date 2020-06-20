@@ -21,7 +21,7 @@ export interface RoundProps {
     submittedGifs: Array<SubmittedGif>;
     updateSubmittedGifs: (updatedGifs: Array<SubmittedGif>) => void;
     voteForSubmitedGif: (gif: SubmittedGif) => void;
-    completeRound: () => void;
+    completeRound?: () => void;
 }
 
 const StyledHelpIcon = withStyles({

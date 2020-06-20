@@ -7,9 +7,10 @@ import { Gif } from '@giphy/react-components'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import FavoriteOutlinedIcon from '@material-ui/icons/FavoriteOutlined';
 import { User } from '../models/User';
+import { WINNER_GIF_SIZE, CONSOLIDATION_GIF_SIZE } from '../common/constants';
 
 export interface RoundResultProps {
-    players?: Array<User>;
+    players: Array<User>;
     submittedGifs: Array<SubmittedGif>;
     startNewRound: () => void;
     updateScores: (userNames: Array<string>) => void;
@@ -43,8 +44,7 @@ const ResultDivider = withStyles({
     }
 })(Divider);
 
-const WINNER_GIF_SIZE: number = 250;
-const CONSOLIDATION_GIF_SIZE: number = 150;
+
 
 export const RoundResult: React.FC<RoundResultProps> = props => {
     const classes = useStyles();
@@ -64,10 +64,9 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
     useEffect(() => {
         if (winnerGifs.length === 1) { //Only update score for winner - no ties
             //Technically only 1, but making it generic to be expanded for "multiple" winners/ties
-            //This logic is based on a username is unique and players cannot have to the same name
             //TODO: Add validation on home page form
-            const winnerUsers: Array<string> = winnerGifs.map(gif => gif.userId);
-            props.updateScores(winnerUsers);
+            const winnerUserIds: Array<string> = winnerGifs.map(gif => gif.userId);
+            props.updateScores(winnerUserIds);
         }
     }, [winnerGifs])
 
@@ -84,14 +83,14 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
     const generateGifPanel = (gifList: Array<SubmittedGif>, isWinner: boolean) => {
         const size: number = isWinner ? WINNER_GIF_SIZE : CONSOLIDATION_GIF_SIZE;
         const stylingClass = isWinner ? classes.winnerGif : classes.consolationGif;
-
+        const userNameByIdMap: Map<string, string> = new Map(props.players.map((player: User) => [player.id, player.name]));
         return gifList.map((gif: SubmittedGif) =>
             <Card className={stylingClass} variant="elevation" square={true} key={gif.id}>
                 {/* <CardHeader title={submittedGif.gifSearchText + " - " + submittedGif.numVotes + " - " + submittedGif.userName}></CardHeader> */}
                 {/* <CardHeader title={submittedGif.userName + " - " + submittedGif.gifSearchText} titleTypographyProps={{ variant: 'subtitle1' }}></CardHeader> */}
                 <CardContent>
                     <Typography variant="subtitle1">
-                        {gif.userId} - {gif.gifSearchText}
+                        {userNameByIdMap.get(gif.userId)} - {gif.gifSearchText}
                     </Typography>
                     <Gif className="gif" gif={gif.content} width={size} height={size} hideAttribution={true} noLink={true}></Gif>
                 </CardContent>
