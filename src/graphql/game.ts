@@ -12,14 +12,26 @@ import { getQuery } from './api-client';
 //     started?: boolean;
 // }
 
-export const USER_CHANGED_IN_GAME_SUBSCRIPTION = gql`
+export const GAME_STATE_CHANGED_SUBSCRIPTION = gql`
     subscription UserChangedInGameSubscription($gameId: ID!) {
-        usersChangedInGame(gameId: $gameId) {
+        gameStateChanged(gameId: $gameId) {
             id
+            gameStarted
+            roundActive
+            topic
+            roundNumber
             users {
                 id
                 name
                 score
+            }
+            submittedGifs {
+                id
+                gifId
+                content
+                userId
+                gifSearchText
+                numVotes
             }
         }
     }
@@ -89,12 +101,54 @@ export const GET_GAMES_QUERY = gql`
     }
 `
 
+export const GET_GAME_BY_ID_QUERY_HOOK = gql`
+    query GetGameByIdQuery($gameId: ID!) {
+        getGameById(gameId: $gameId) {
+            id
+            gameStarted
+            roundActive
+            topic
+            roundNumber
+            users {
+                id
+                name
+                score
+            }
+            submittedGifs {
+                id
+                gifId
+                content
+                userId
+                gifSearchText
+                numVotes
+            }
+        }
+    }
+`
+//This query is not meant to be used with the useQuery hook
+//To be used with axios http client to be called on demand within a function
 export const GET_GAMES_BY_ID_QUERY = (id): string =>
     `
     query {
         getGameById(gameId: "${id}") {
             id
             gameStarted
+            roundActive
+            topic
+            roundNumber
+            users {
+                id
+                name
+                score
+            }
+            submittedGifs {
+                id
+                gifId
+                content
+                userId
+                gifSearchText
+                numVotes
+            }
         }
     }
 `
