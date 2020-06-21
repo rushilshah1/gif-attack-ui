@@ -23,8 +23,8 @@ export class Game implements IGame {
     roundActive!: boolean;
     topic!: string;
     roundNumber!: number;
-    users!: Array<User>;
-    submittedGifs!: Array<SubmittedGif>;
+    users: Array<User> = [];
+    submittedGifs: Array<SubmittedGif> = [];
 
     constructor(game?: Partial<Game>) {
         Object.assign(this, game);

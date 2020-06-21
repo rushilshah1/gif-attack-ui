@@ -13,7 +13,6 @@ export interface RoundResultProps {
     players: Array<User>;
     submittedGifs: Array<SubmittedGif>;
     startNewRound: () => void;
-    updateScores: (userNames: Array<string>) => void;
 }
 
 const cardRootStyle = {
@@ -44,8 +43,6 @@ const ResultDivider = withStyles({
     }
 })(Divider);
 
-
-
 export const RoundResult: React.FC<RoundResultProps> = props => {
     const classes = useStyles();
     const [winnerGifs, setWinnerGifs] = useState<Array<SubmittedGif>>([]);
@@ -58,18 +55,7 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
         const victoryLine: number = _.findLastIndex(sortedGifs, (gif: SubmittedGif) => gif.numVotes === maxVotes);
         setWinnerGifs(sortedGifs.slice(0, victoryLine + 1));
         setConsolationGifs(sortedGifs.slice(victoryLine + 1));
-        console.log(`winner gifs: ${winnerGifs.length}`)
     }, []);
-
-    useEffect(() => {
-        if (winnerGifs.length === 1) { //Only update score for winner - no ties
-            //Technically only 1, but making it generic to be expanded for "multiple" winners/ties
-            //TODO: Add validation on home page form
-            const winnerUserIds: Array<string> = winnerGifs.map(gif => gif.userId);
-            props.updateScores(winnerUserIds);
-        }
-    }, [winnerGifs])
-
 
     const generateVoteIcons = (numVotes: number) => {
         const arrVotes: Array<any> = Array.from(new Array(numVotes), x => Math.random());
@@ -90,7 +76,7 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
                 {/* <CardHeader title={submittedGif.userName + " - " + submittedGif.gifSearchText} titleTypographyProps={{ variant: 'subtitle1' }}></CardHeader> */}
                 <CardContent>
                     <Typography variant="subtitle1">
-                        {userNameByIdMap.get(gif.userId)} - {gif.gifSearchText}
+                        {userNameByIdMap.get(gif.userId)} {gif.gifSearchText && - gif.gifSearchText}
                     </Typography>
                     <Gif className="gif" gif={gif.content} width={size} height={size} hideAttribution={true} noLink={true}></Gif>
                 </CardContent>
