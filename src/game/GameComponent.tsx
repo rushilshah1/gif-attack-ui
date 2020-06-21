@@ -18,6 +18,7 @@ import { IGame, IGameVars, IGameData, Game } from '../models/Game';
 import { REMOVE_USER_MUTATION, UPDATE_USER_MUTATION } from '../graphql/user';
 import { UPDATE_TOPIC_MUTATION, ITopic } from '../graphql/topic';
 
+
 export interface IGameComponentProps {
     gameId: string
 }
@@ -60,7 +61,6 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
 
     };
 
-
     /** Get Game state */
     const gameStateChangedSubscription = useSubscription(GAME_STATE_CHANGED_SUBSCRIPTION, {
         variables: { gameId: currentGame.id },
@@ -73,9 +73,7 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
     const [gameStatusStarted, gameStatusStartedResult] = useMutation(START_GAME_MUTATION);
     /**  New Round Hooks */
     const [startNextRound, startNextRoundResult] = useMutation(NEW_ROUND_MUTATION);
-
     const [updateTopic, updateTopicResult] = useMutation(UPDATE_TOPIC_MUTATION);
-
     /** Update Gif */
     const [updateSubmittedGif, updateSubmittedGifResult] = useMutation(UPDATE_GIF_MUTATION);
     /** Update User Hook */
@@ -123,6 +121,7 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
                     <Round player={currentUser} currentGame={currentGame} topic={selectedTopic} setTopic={(text) => setSelectedTopic(text)} submitTopic={(text) => submitTopicToGame(text)} /> :
                     <RoundResult submittedGifs={currentGame.submittedGifs} players={currentGame.users} startNewRound={() => startNewRound()}
                     />
+
                 )}
             </StyledContainer>
         </div>
