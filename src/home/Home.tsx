@@ -3,12 +3,13 @@ import './Home.css';
 import { Input, FormControl, InputLabel, TextField, Button, RadioGroup, FormControlLabel, FormLabel, Radio, CircularProgress, withStyles, Divider, Container, Grid } from '@material-ui/core';
 import { useForm, Controller } from "react-hook-form";
 import { useMutation, useLazyQuery, useQuery } from '@apollo/react-hooks';
-import { CREATE_GAME_MUTATION, ADD_USER_MUTATION, getGameById } from '../graphql/game';
+import { CREATE_GAME_MUTATION, getGameById } from '../graphql/game';
 import { Redirect } from "react-router-dom";
 import { CREATE_GAME, JOIN_GAME, LOCAL_STORAGE_USER_ID, LOCAL_STORAGE_USER_NAME } from '../common/constants';
 import { getQuery } from '../graphql/api-client';
 import { Timer } from '../round/Timer';
 import { User, IUser } from '../models/User';
+import { ADD_USER_MUTATION } from '../graphql/user';
 
 
 
@@ -59,7 +60,7 @@ export const Home: React.FC = props => {
     const { handleSubmit, register, errors, setError, clearError } = useForm({ mode: 'onSubmit', reValidateMode: 'onSubmit' });
 
     const [createGame, createGameResult] = useMutation(CREATE_GAME_MUTATION);
-    const [addUserToGame, addUserToGameResult] = useMutation<any, any>(ADD_USER_MUTATION);
+    const [addUserToGame, addUserToGameResult] = useMutation(ADD_USER_MUTATION);
 
     useEffect(() => {
         //Remove user, Home page should not have an assigned user till form has been submitted
@@ -129,8 +130,6 @@ export const Home: React.FC = props => {
     }
     return (
         <div className="title">
-            {/* Welcome to Gif Attack!
-            <TitleDivider /> */}
             <Container>
                 <GameSelection aria-label="gameType" name="gameType" value={gameType} onChange={(e) => toggleGameType(e.target.value)}>
                     <FormControlLabel value={CREATE_GAME} control={<Radio />} label="Create Game"></FormControlLabel>

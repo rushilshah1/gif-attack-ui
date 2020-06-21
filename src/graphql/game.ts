@@ -1,19 +1,9 @@
 import gql from 'graphql-tag';
 import { getQuery } from './api-client';
 
-// export type IGif = {
-//     gameId?: string,
-//     id?: string,
-//     gif?: string
-// }
-// export interface IGame {
-//     id: string
-//     users?: Array<string>
-//     started?: boolean;
-// }
 
 export const GAME_STATE_CHANGED_SUBSCRIPTION = gql`
-    subscription UserChangedInGameSubscription($gameId: ID!) {
+    subscription GameStateChangedSubscription($gameId: ID!) {
         gameStateChanged(gameId: $gameId) {
             id
             gameStarted
@@ -45,50 +35,12 @@ export const CREATE_GAME_MUTATION = gql`
     }
 `
 
-export const ADD_USER_MUTATION = gql`
-    mutation AddUserMutation($user: AddUserInput!, $gameId: ID!) {
-        addUser(user: $user, gameId: $gameId) {
-            id
-            name
-            score
-        }
-    }
-`
 
-export const REMOVE_USER_MUTATION = gql`
-    mutation RemoveUserMutation($user: ModifyUserInput!, $gameId: ID!) {
-        removeUser(user: $user, gameId: $gameId) {
-            id
-            name
-            score
-        }
-    }
-`
-
-export const UPDATE_USER_MUTATION = gql`
-    mutation UpdateUserMutation($user: ModifyUserInput!, $gameId: ID!) {
-        updateUser(user: $user, gameId: $gameId) {
-            id
-            name
-            score
-        }
-    }
-`
 export const START_GAME_MUTATION = gql`
     mutation StartGameMutation($gameId: ID!) {
         startGame(gameId: $gameId) {
             id
             gameStarted
-        }
-    }
-`
-
-export const GET_USERS_IN_GAME_QUERY = gql`
-    query GetUsersInGameQuery($gameId: ID!) {
-        getUsers(gameId: $gameId) {
-            id
-            name
-            score
         }
     }
 `

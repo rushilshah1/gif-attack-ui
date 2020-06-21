@@ -31,11 +31,9 @@ interface TopicProps {
 
 
 export const Topic: React.FC<TopicProps> = props => {
-
     return (
         <div className="topic">
             <StyledInputText className="topicText" id="standard-basic" label="Enter a topic" value={props.topic} onChange={(e) => props.setTopic(e.target.value)} multiline></StyledInputText>
-
             <SubmitButton variant="contained" color="primary" onClick={() => {
                 props.submitTopic(props.topic)
             }}> Submit</SubmitButton>
