@@ -4,7 +4,7 @@ import { Container, CircularProgress, withStyles } from '@material-ui/core';
 import { RoundResult } from '../round/RoundResult';
 import { SubmittedGif, IGif } from '../models/SubmittedGif';
 import { useMutation, useSubscription, useQuery } from '@apollo/react-hooks';
-import { ROUND_CHANGED_SUBSCRIPTION, NEW_ROUND_MUTATION, UPDATE_ROUND_STATUS_MUTATION, IRound } from '../graphql/round';
+import { NEW_ROUND_MUTATION, IRound } from '../graphql/round';
 import { useParams } from "react-router-dom";
 import { LOCAL_STORAGE_USER_NAME, LOCAL_STORAGE_USER_ID } from '../common/constants';
 import { START_GAME_MUTATION, GAME_STATE_CHANGED_SUBSCRIPTION, GET_GAME_BY_ID_QUERY_HOOK } from '../graphql/game';
@@ -47,6 +47,12 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
             window.removeEventListener("beforeunload", leaveGame);
         }
     });
+
+    const [gameStatusStarted, gameStatusStartedResult] = useMutation(START_GAME_MUTATION);
+    const [startNextRound, startNextRoundResult] = useMutation(NEW_ROUND_MUTATION);
+    const [updateTopic, updateTopicResult] = useMutation(UPDATE_TOPIC_MUTATION);
+    const [updateSubmittedGif, updateSubmittedGifResult] = useMutation(UPDATE_GIF_MUTATION);
+    const [updateUser, updateUserResult] = useMutation(UPDATE_USER_MUTATION);
     const gameState = useQuery<IGameData, IGameVars>(GET_GAME_BY_ID_QUERY_HOOK, {
         variables: { gameId: params.gameId }, onCompleted: async (response) => {
             gameStateChanged(response.getGameById);
@@ -69,15 +75,6 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
         }
     });
 
-    /** Start Game Hooks */
-    const [gameStatusStarted, gameStatusStartedResult] = useMutation(START_GAME_MUTATION);
-    /**  New Round Hooks */
-    const [startNextRound, startNextRoundResult] = useMutation(NEW_ROUND_MUTATION);
-    const [updateTopic, updateTopicResult] = useMutation(UPDATE_TOPIC_MUTATION);
-    /** Update Gif */
-    const [updateSubmittedGif, updateSubmittedGifResult] = useMutation(UPDATE_GIF_MUTATION);
-    /** Update User Hook */
-    const [updateUser, updateUserResult] = useMutation(UPDATE_USER_MUTATION);
 
     /**  Used for Game Lobby*/
     const gameStateChanged = async (updatedGame: IGame) => {

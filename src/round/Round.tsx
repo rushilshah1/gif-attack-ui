@@ -90,9 +90,9 @@ export const Round: React.FC<RoundProps> = props => {
                         <StyledHelpIcon />
                     </Icon>
                 </div>
-                {/* <div className="round-timer">
-                    {props.submittedGifs.length > 0 && <Timer completeRound={() => props.completeRound()}></Timer>}
-                </div> */}
+                <div className="round-timer">
+                    <Timer gameId={props.currentGame.id}></Timer>
+                </div>
             </div>
             {openInstructions && <Modal
                 open={openInstructions}
