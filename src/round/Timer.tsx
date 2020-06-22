@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import './Timer.css';
 import ENVIRONMENT from '../common/environments';
 import { ENVIRONMENT_LOCAL } from '../common/constants';
+import { ROUND_CLOCK_SUBSCRIPTION } from '../graphql/round';
+import { useSubscription } from '@apollo/react-hooks';
 
 interface IClock {
     minutes: number;
@@ -9,12 +11,20 @@ interface IClock {
 }
 
 interface TimerProps {
-    completeRound: () => void;
+    gameId: string;
+    // completeRound: () => void;
 }
 export const Timer: React.FC<TimerProps> = props => {
-    const initialClock: IClock = (ENVIRONMENT.ENV === ENVIRONMENT_LOCAL) ? { minutes: 0, seconds: 50 } : { minutes: 2, seconds: 30 }
-    const [clock, setClock] = useState<IClock>(initialClock);
+    //const initialClock: IClock = (ENVIRONMENT.ENV === ENVIRONMENT_LOCAL) ? { minutes: 0, seconds: 50 } : { minutes: 2, seconds: 30 }
+    const [clock, setClock] = useState<IClock | null>(null);
 
+    const roundClockSubscription = useSubscription(ROUND_CLOCK_SUBSCRIPTION, {
+        variables: { gameId: props.gameId },
+        onSubscriptionData: (response) => {
+            setClock(response.subscriptionData.data.roundClock)
+        }
+    });
+    /*
     useEffect(() => {
         let interval = setInterval(() => {
             if (clock.seconds > 0) {
@@ -37,7 +47,10 @@ export const Timer: React.FC<TimerProps> = props => {
         }, 1000);
         return () => clearInterval(interval);
     }, [clock]);
-
+    */
+    if (!clock) {
+        return <div></div>;
+    }
     return (
         <div>
             {clock.minutes === 0 && clock.seconds <= 30 ?

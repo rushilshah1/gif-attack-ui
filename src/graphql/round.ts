@@ -5,27 +5,11 @@ export interface IRound {
     roundActive?: boolean;
 }
 
-export const ROUND_CHANGED_SUBSCRIPTION = gql`
-    subscription RoundChangedSubscription($gameId: ID!) {
-        roundChanged(gameId: $gameId) {
-            id
-            gameStarted
-            roundActive
-            topic
-            roundNumber
-            users {
-                id
-                name
-                score
-            }
-            submittedGifs {
-                id
-                gifId
-                content
-                userId
-                gifSearchText
-                numVotes
-            }
+export const ROUND_CLOCK_SUBSCRIPTION = gql`
+    subscription RoundClockSubscription($gameId: ID!) {
+        roundClock(gameId: $gameId) {
+            minutes
+            seconds
         }
     }
 `
