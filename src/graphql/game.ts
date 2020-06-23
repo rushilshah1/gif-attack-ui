@@ -1,7 +1,6 @@
 import gql from 'graphql-tag';
 import { getQuery } from './api-client';
 
-
 export const GAME_STATE_CHANGED_SUBSCRIPTION = gql`
     subscription GameStateChangedSubscription($gameId: ID!) {
         gameStateChanged(gameId: $gameId) {

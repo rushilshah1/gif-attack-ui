@@ -47,14 +47,17 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
     const classes = useStyles();
     const [winnerGifs, setWinnerGifs] = useState<Array<SubmittedGif>>([]);
     const [consolationGifs, setConsolationGifs] = useState<Array<SubmittedGif>>([]);
-
+    //TODO: Add message if there are no submitted gifs
     useEffect(() => {
         //Sort descending order
-        const sortedGifs: Array<SubmittedGif> = props.submittedGifs.sort((a: SubmittedGif, b: SubmittedGif) => b.numVotes - a.numVotes);
-        const maxVotes: number = sortedGifs[0].numVotes;
-        const victoryLine: number = _.findLastIndex(sortedGifs, (gif: SubmittedGif) => gif.numVotes === maxVotes);
-        setWinnerGifs(sortedGifs.slice(0, victoryLine + 1));
-        setConsolationGifs(sortedGifs.slice(victoryLine + 1));
+        if (props.submittedGifs && props.submittedGifs.length) {
+            const sortedGifs: Array<SubmittedGif> = props.submittedGifs.sort((a: SubmittedGif, b: SubmittedGif) => b.numVotes - a.numVotes);
+            const maxVotes: number = sortedGifs[0].numVotes;
+            const victoryLine: number = _.findLastIndex(sortedGifs, (gif: SubmittedGif) => gif.numVotes === maxVotes);
+            setWinnerGifs(sortedGifs.slice(0, victoryLine + 1));
+            setConsolationGifs(sortedGifs.slice(victoryLine + 1));
+        }
+
     }, []);
 
     const generateVoteIcons = (numVotes: number) => {

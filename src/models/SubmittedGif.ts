@@ -1,4 +1,4 @@
-//TODO: Break interface/ into two so content is string and object and not "any"
+//TOD: Break interface/ into two so content is string and object and
 export interface IGif {
     id?: string
     gifId?: string;

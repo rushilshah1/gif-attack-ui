@@ -9,8 +9,6 @@ import { ApolloLink } from 'apollo-boost';
 import ENVIRONMENT from '../common/environments';
 import { setContext } from 'apollo-link-context';
 import { LOCAL_STORAGE_USER_NAME, LOCAL_STORAGE_USER_ID } from '../common/constants';
-import { SubscriptionClient } from 'subscriptions-transport-ws';
-
 
 // Create an http link:
 const httpLink = new HttpLink({
@@ -27,23 +25,7 @@ const wsLink = new WebSocketLink({
         lazy: true
     },
 });
-// const wsClient = new SubscriptionClient(ENVIRONMENT.WS_ENDPOINT, {
-//     reconnect: true
-// });
-// wsClient.use([
-//     {
-//         applyMiddleware(options, next) {
-//             options.user = localStorage.getItem(LOCAL_STORAGE_USER) ? localStorage.getItem(LOCAL_STORAGE_USER) : ''
-//             console.log(`WS user ${options.user}`);
-//             next()
-//         }
-//     }
-// ])
-// const wsLink = new WebSocketLink(wsClient);
 
-// wsLink.subscriptionClient.use([subscriptionMiddleware]);
-// using the ability to split links, you can send data to each link
-// depending on what kind of operation is being sent
 const apiLink = split(
     // split based on operation type
     ({ query }) => {
@@ -65,7 +47,6 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 /**
  * For now simply sending user name in header so server can understand who is making the requests,
- * and more importantly when a user has unsubscribed (exited) the game.
  */
 const authLink = setContext((_, { headers, connectionParams }) => {
     const user = localStorage.getItem(LOCAL_STORAGE_USER_NAME);

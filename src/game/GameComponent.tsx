@@ -79,7 +79,7 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
     /**  Used for Game Lobby*/
     const gameStateChanged = async (updatedGame: IGame) => {
         if (updatedGame.submittedGifs) {
-            updatedGame.submittedGifs = await updatedGame.submittedGifs.map((rawGif: IGif) => new SubmittedGif(rawGif));
+            updatedGame.submittedGifs = updatedGame.submittedGifs.map((rawGif: IGif) => new SubmittedGif(rawGif));
         }
         setCurrentGame(prevGame => { return { ...prevGame, ...updatedGame } });
         setSelectedTopic(currentTopic => updatedGame.topic);

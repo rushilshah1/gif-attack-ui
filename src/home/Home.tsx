@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './Home.css';
-import { Input, FormControl, InputLabel, TextField, Button, RadioGroup, FormControlLabel, FormLabel, Radio, CircularProgress, withStyles, Divider, Container, Grid } from '@material-ui/core';
-import { useForm, Controller } from "react-hook-form";
+import { TextField, Button, RadioGroup, FormControlLabel, FormLabel, Radio, CircularProgress, withStyles, Divider, Container, Grid } from '@material-ui/core';
+import { useForm } from "react-hook-form";
 import { useMutation, useLazyQuery, useQuery } from '@apollo/react-hooks';
 import { CREATE_GAME_MUTATION, getGameById } from '../graphql/game';
 import { Redirect } from "react-router-dom";
 import { CREATE_GAME, JOIN_GAME, LOCAL_STORAGE_USER_ID, LOCAL_STORAGE_USER_NAME } from '../common/constants';
-import { getQuery } from '../graphql/api-client';
-import { Timer } from '../round/Timer';
 import { User, IUser } from '../models/User';
 import { ADD_USER_MUTATION } from '../graphql/user';
-
-
 
 const GameSelection = withStyles({
     root: {
@@ -21,7 +17,6 @@ const GameSelection = withStyles({
 
     }
 })(RadioGroup);
-
 
 const SubmitButton = withStyles({
     root: {
@@ -45,11 +40,6 @@ const NameInput = withStyles({
     }
 })(TextField);
 
-const StyledContainer = withStyles({
-    root: {
-        textAlign: 'center'
-    }
-})(Container);
 
 export const Home: React.FC = props => {
     const [username, setUsername] = useState<string>('');
@@ -102,11 +92,15 @@ export const Home: React.FC = props => {
             setError("userInputGameId", "invalidId", "Game ID is not valid")
             return false;
         }
+        return true;
+        /*
+        Only letting users join a game if it has not been started yet
         const gameHasStarted: boolean = game.gameStarted;
         if (gameHasStarted) {
             setError("userInputGameId", "startedGame", "Game ID has already started and cannot be joined")
         }
         return !gameHasStarted;
+        */
     }
     const joinGame = async (name: string, gameId: string) => {
         const result = await addUserToGame({ variables: { user: { name: name }, gameId: gameId } })

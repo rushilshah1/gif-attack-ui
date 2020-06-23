@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Icon, withStyles, Modal, Theme, makeStyles, createStyles, Button } from '@material-ui/core';
 import { Topic } from '../topic/Topic';
-import { UPDATE_TOPIC_MUTATION, TOPIC_CHANGED_SUBSCRIPTION, ITopic } from '../graphql/topic';
+import { UPDATE_TOPIC_MUTATION } from '../graphql/topic';
 import './Round.css';
 import { useMutation, useSubscription } from '@apollo/react-hooks';
 import { GifSelect } from '../gif/GifSelect';
-import { CREATE_GIF_MUTATION, GIF_CHANGED_SUBSCRIPTION, UPDATE_GIF_MUTATION } from '../graphql/gif';
+import { CREATE_GIF_MUTATION, UPDATE_GIF_MUTATION } from '../graphql/gif';
 import { GifSubmit } from '../gif/GifSubmit';
 import { SubmittedGif, IGif } from '../models/SubmittedGif';
 import { User } from '../models/User';
@@ -44,8 +44,6 @@ export const Round: React.FC<RoundProps> = props => {
 
     /** Topic Creation hooks */
     const [updateTopic, updateTopicResult] = useMutation(UPDATE_TOPIC_MUTATION);
-
-
 
     const submitGif = async (gifObject: any, searchText: string) => {
         const gifString: string = JSON.stringify(gifObject);
