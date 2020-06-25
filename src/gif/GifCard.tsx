@@ -68,7 +68,7 @@ export const GifCard: React.FC<IGifCardProps> = props => {
                 <Typography variant="subtitle1">
                     {props.title}
                 </Typography>
-                <Gif className="gif" gif={props.gif.content} width={props.width} height={props.height} hideAttribution={true} noLink={true}></Gif>
+                <Gif gif={props.gif.content} width={props.width} height={props.height} hideAttribution={true} noLink={true}></Gif>
             </CardContent>
             <CardActions disableSpacing className="cardActions">
                 {props.showVoteIcons && generateVoteIcons(props.gif.numVotes)}
