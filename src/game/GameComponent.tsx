@@ -121,7 +121,6 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
                     <Round player={currentUser} currentGame={currentGame} topic={selectedTopic} setTopic={(text) => setSelectedTopic(text)} submitTopic={(text) => submitTopicToGame(text)} /> :
                     <RoundResult submittedGifs={currentGame.submittedGifs} players={currentGame.users} startNewRound={() => startNewRound()}
                     />
-
                 )}
             </StyledContainer>
         </div>

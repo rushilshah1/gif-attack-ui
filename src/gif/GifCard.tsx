@@ -67,6 +67,7 @@ export const GifCard: React.FC<IGifCardProps> = props => {
             <CardContent>
                 <Typography variant="subtitle1">
                     {props.title}
+                    <br />
                 </Typography>
                 <Gif gif={props.gif.content} width={props.width} height={props.height} hideAttribution={true} noLink={true}></Gif>
             </CardContent>
