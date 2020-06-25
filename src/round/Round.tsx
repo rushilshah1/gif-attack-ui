@@ -58,14 +58,9 @@ export const Round: React.FC<RoundProps> = props => {
     };
 
     const submitGifVote = async (gif: SubmittedGif) => {
-        const updateGifInput: IGif = {
-            id: gif.id,
-            gifId: gif.gifId,
-            content: JSON.stringify(gif.content),
-            userId: gif.userId,
-            gifSearchText: gif.gifSearchText,
-            numVotes: gif.numVotes + 1
-        }
+        let updateGifInput: IGif = gif;
+        updateGifInput.content = JSON.stringify(gif.content);
+        updateGifInput.numVotes = gif.numVotes + 1;
         await updateGif({ variables: { gif: updateGifInput, gameId: props.currentGame.id } });
         console.log(`Gif ${gif.id} has been voted for`);
     }

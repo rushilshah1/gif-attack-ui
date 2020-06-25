@@ -5,6 +5,8 @@ import './GifSubmit.css';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import { SubmittedGif } from '../models/SubmittedGif';
 import ENVIRONMENT from '../common/environments';
+import { GifCard, GifCardStyle } from './GifCard';
+import { SUBMITTED_GIF_SIZE } from '../common/constants';
 
 
 export interface GifSubmitProps {
@@ -48,6 +50,18 @@ export const GifSubmit: React.FC<GifSubmitProps> = props => {
         <Container>
             <div>
                 {props.submittedGifs.length > 0 && props.submittedGifs.map((submittedGif: SubmittedGif) =>
+                    // <GifCard
+                    //     gif={submittedGif}
+                    //     height={SUBMITTED_GIF_SIZE}
+                    //     width={SUBMITTED_GIF_SIZE}
+                    //     title={submittedGif.gifSearchText}
+                    //     voteGif={(gif) => {
+                    //         setGifVotedFor(gif.id)
+                    //         props.voteGif(gif)
+                    //     }}
+                    //     disableVoting={gifVotedFor ? true : false}
+                    // type={gifVotedFor ? GifCardStyle.Highlighted : GifCardStyle.Regular}>
+                    // </GifCard>
                     <Card className={gifVotedFor === submittedGif.id ? classes.votedGif : classes.submittedGif} variant="elevation" square={true} key={submittedGif.id}>
                         {/* <CardHeader title={submittedGif.gifSearchText + "-" + submittedGif.numVotes}></CardHeader> */}
                         {/* <CardHeader title={submittedGif.gifSearchText} titleTypographyProps={{ variant: 'subtitle1' }}></CardHeader> */}

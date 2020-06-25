@@ -1,28 +1,3 @@
-/* .winnerGif {
-    display: inline-block;
-    padding: 5px;
-    justify-content: space-between;
-    margin-right: 20px;
-    margin-top: 20px;
-    border-radius: 25px;
-}
-
-.consolationGif {
-    display: inline-block;
-    padding: 5px;
-    justify-content: space-between;
-    margin-right: 20px;
-    margin-top: 20px;
-    border-radius: 25px;
-} */
-/* .next-round {
-    
-} */
-/* .next-round-title {
-    width: 100%;
-    justify-content: center;
-    text-align: center;
-} */
 .next-round-action {
     /* width: max-content; */
     display: flex;
