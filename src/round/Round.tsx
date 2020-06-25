@@ -64,7 +64,8 @@ export const Round: React.FC<RoundProps> = props => {
             content: JSON.stringify(gif.content),
             userId: gif.userId,
             gifSearchText: gif.gifSearchText,
-            numVotes: gif.numVotes + 1
+            numVotes: gif.numVotes + 1,
+            isWinner: gif.isWinner
         }
         await updateGif({ variables: { gif: updateGifInput, gameId: props.currentGame.id } });
         console.log(`Gif ${gif.id} has been voted for`);

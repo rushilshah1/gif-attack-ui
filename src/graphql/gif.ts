@@ -9,6 +9,7 @@ export const CREATE_GIF_MUTATION = gql`
             userId
             gifSearchText
             numVotes
+            isWinner
         }
     }
 `
@@ -22,6 +23,7 @@ export const REMOVE_GIF_MUTATION = gql`
             userId
             gifSearchText
             numVotes
+            isWinner
         }
     }
 `
@@ -35,6 +37,7 @@ export const UPDATE_GIF_MUTATION = gql`
             userId
             gifSearchText
             numVotes
+            isWinner
         }
     }
 `

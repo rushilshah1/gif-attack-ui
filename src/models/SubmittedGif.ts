@@ -6,6 +6,7 @@ export interface IGif {
     userId?: string
     gifSearchText?: string
     numVotes?: number;
+    isWinner?: boolean;
 }
 
 export class SubmittedGif implements IGif {
@@ -16,6 +17,7 @@ export class SubmittedGif implements IGif {
     userId!: string;
     gifSearchText!: string;
     numVotes!: number;
+    isWinner!: boolean;
 
     constructor(gif?: Partial<SubmittedGif>) {
         Object.assign(this, gif);

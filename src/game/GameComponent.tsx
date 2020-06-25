@@ -80,8 +80,11 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
     const gameStateChanged = async (updatedGame: IGame) => {
         if (updatedGame.submittedGifs) {
             updatedGame.submittedGifs = updatedGame.submittedGifs.map((rawGif: IGif) => new SubmittedGif(rawGif));
+            console.log(updatedGame.submittedGifs);
         }
-        setCurrentGame(prevGame => { return { ...prevGame, ...updatedGame } });
+        console.log("Changing game state")
+        setCurrentGame(prevGame => updatedGame);
+        // setCurrentGame(prevGame => { return { ...prevGame, ...updatedGame } });
         setSelectedTopic(currentTopic => updatedGame.topic);
         console.log(`Game state has changed:`);
         console.log(updatedGame);
@@ -118,7 +121,6 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
                     <Round player={currentUser} currentGame={currentGame} topic={selectedTopic} setTopic={(text) => setSelectedTopic(text)} submitTopic={(text) => submitTopicToGame(text)} /> :
                     <RoundResult submittedGifs={currentGame.submittedGifs} players={currentGame.users} startNewRound={() => startNewRound()}
                     />
-
                 )}
             </StyledContainer>
         </div>

@@ -6,3 +6,4 @@ export const ENVIRONMENT_LOCAL = 'local';
 export const ENVIRONMENT_PROD = 'prod';
 export const WINNER_GIF_SIZE: number = 250;
 export const CONSOLIDATION_GIF_SIZE: number = 150;
+export const SUBMITTED_GIF_SIZE: number = 225;

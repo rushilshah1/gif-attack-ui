@@ -21,6 +21,7 @@ export const GAME_STATE_CHANGED_SUBSCRIPTION = gql`
                 userId
                 gifSearchText
                 numVotes
+                isWinner
             }
         }
     }
@@ -72,6 +73,7 @@ export const GET_GAME_BY_ID_QUERY_HOOK = gql`
                 userId
                 gifSearchText
                 numVotes
+                isWinner
             }
         }
     }
@@ -99,6 +101,7 @@ export const GET_GAMES_BY_ID_QUERY = (id): string =>
                 userId
                 gifSearchText
                 numVotes
+                isWinner
             }
         }
     }
