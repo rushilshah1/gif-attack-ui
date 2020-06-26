@@ -133,7 +133,7 @@ export const Home: React.FC = props => {
                 <Grid container justify="center" alignContent='center'>
                     <form onSubmit={handleSubmit(onSubmit)} className="gameForm">
 
-                        <NameInput required name="name" label="Name" error={errors.name} onChange={(e) => setUsername(e.target.value)} inputRef={register({ required: true })}> </NameInput>
+                        <NameInput required name="name" label="Name" error={errors.name} onChange={(e) => setUsername(e.target.value)} inputRef={register({ required: true })} color="secondary"> </NameInput>
 
                         {gameType === JOIN_GAME &&
 
@@ -141,11 +141,11 @@ export const Home: React.FC = props => {
                                 onChange={(e) => {
                                     clearError();
                                     setUserInputGameId(e.target.value)
-                                }} inputRef={register({ required: true })} > </NameInput>
+                                }} inputRef={register({ required: true })} color="secondary"> </NameInput>
                         }
                         {errors.userInputGameId && <p className="error">{errors.userInputGameId.message}</p>}
 
-                        <SubmitButton type="submit" variant="contained" color="primary">{gameType}</SubmitButton>
+                        <SubmitButton type="submit" variant="contained" color="primary">{gameType} <img src={require('../assets/dagger.png')} alt="logo" width="20" height="20"></img></SubmitButton>
                     </form>
                 </Grid>
             </Container>

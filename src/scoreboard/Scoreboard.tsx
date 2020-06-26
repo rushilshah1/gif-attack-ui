@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { Container, Avatar, Button, makeStyles, Theme, createStyles, Grid, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
+import { Container, Avatar, Button, makeStyles, Theme, createStyles, Grid, List, ListItem, ListItemIcon, ListItemText, TableContainer, Paper, Table, TableHead, TableRow, TableCell, Typography, TableBody } from '@material-ui/core';
 import { deepOrange, deepPurple, cyan, pink } from '@material-ui/core/colors';
 import './Scoreboard.css';
 import { User } from '../models/User';
+import MaterialTable from "material-table";
+
 
 interface ScoreboardProps {
     players: Array<User>;
 }
-
+/*
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
@@ -44,44 +46,80 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const COLORS: Array<string> = ['orange', 'purple', 'cyan', 'pink'];
+*/
+const tableCellStyle = {
+
+    // padding: 5
+}
+const useStyles = makeStyles({
+    table: {
+        height: "auto"
+    },
+    tableContainer: {
+        minWidth: "25%",
+        // minHeight: "100%",
+    },
+    header: {
+        backgroundColor: '#14AFF2',
+        width: '100%',
+        minWidth: '100%',
+        color: 'white'
+
+    },
+    headerCell: {
+        ...tableCellStyle
+    },
+    nameCell: {
+        ...tableCellStyle,
+        backgroundColor: '#F3FCFF',
+        minWidth: '80%'
+    },
+    iconCell: {
+        ...tableCellStyle,
+        backgroundColor: '#F3FCFF',
+        minWidth: '10%',
+        paddingRight: 5
+    },
+    scoreCell: {
+        ...tableCellStyle,
+        backgroundColor: '#D5F4FF',
+        minWidth: '10%'
+    }
+});
+
 
 export const Scoreboard: React.FC<ScoreboardProps> = props => {
     const classes = useStyles();
     const [playerAvatarsMap, setPlayerAvatarsMap] = useState<Map<string, string>>(new Map());
-
-    const generateAvatarIcons = () => {
-        return props.players.map((player: User) => {
-            const playerName: string = player.name
-            const nameSplit: Array<string> = playerName.split(" ", 2);
-            let avatarName: string = nameSplit[0].charAt(0).toUpperCase();
-            if (nameSplit.length > 1) {
-                avatarName += nameSplit[1].charAt(0).toUpperCase()
-            }
-            let randomColor: string = playerAvatarsMap.has(playerName) ? playerAvatarsMap.get(playerName)! : COLORS[Math.floor(Math.random() * Math.floor(COLORS.length))];
-            if (!playerAvatarsMap.has(playerName)) {
-                playerAvatarsMap.set(playerName, randomColor);
-            }
-
-            return (<ListItem key={playerName}>
-                <ListItemIcon>
-                    <Avatar alt={playerName} className={classes[randomColor]}>
-
-                        {avatarName}</Avatar>
-                </ListItemIcon>
-                <ListItemText primary={playerName} className="playerName" />
-                <ListItemText primary={player.score} className="playerScore" />
-            </ListItem>
-            )
-        })
-    }
+    const maxScore: number = Math.max(...props.players.map(player => player.score));
 
     return (
-        <List className="playerList">
-            <div className="player-title">
-                <h3 >Players:</h3>
-            </div>
-            {generateAvatarIcons()}
-        </List>
+
+        // <TableContainer component={Paper} className={classes.tableContainer}>
+        <Table className={classes.table} size="small" aria-label="scoreboard">
+            <TableHead>
+                <TableRow className={classes.header}>
+                    <TableCell className={classes.headerCell}>
+                        <Typography >ATTACKERS</Typography>
+                    </TableCell>
+                    <TableCell className={classes.headerCell} />
+                    <TableCell className={classes.headerCell} />
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {props.players.map(player => (
+                    <TableRow key={player.id}>
+                        <TableCell className={classes.nameCell} align="left">{player.name}</TableCell>
+                        <TableCell className={classes.iconCell} align="right">{player.score === maxScore && maxScore !== 0
+                            ? <img src={require('../assets/leader.png')} />
+                            : <img src={require('../assets/attacker.png')} />}
+                        </TableCell >
+                        <TableCell className={classes.scoreCell} align="center">{player.score}</ TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
+        // </TableContainer>
 
     )
 }
