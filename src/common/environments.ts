@@ -15,7 +15,7 @@ const ENVIRONMENT = {
     }
 }
 let env = ENVIRONMENT.LOCAL
-if (window.location.hostname.includes('gif-attack.com')) {
+if (window.location.hostname.includes('gif-attack.com') || window.location.hostname.includes('.amplifyapp.com')) {
     console.log("PROD mode");
     env = ENVIRONMENT.PROD;
 }

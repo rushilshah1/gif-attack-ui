@@ -58,10 +58,11 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
     }
     const showWinningGifs = () => {
         if (winnerGifs.length > 0) {
-            return (<div >
-                {showWinnerHeading()}
-                <div className="winnerCards">{generateGifPanel(winnerGifs, true)}</div>
-            </div>)
+            return (
+                <div className="winnerCards">
+                    {generateGifPanel(winnerGifs, true)}
+                </div>
+            )
         }
     };
     const showConsolationHeading = () => {
@@ -78,9 +79,8 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
     const showConsolationGifs = () => {
         if (consolationGifs.length > 0) {
             return (
-                <div >
-                    {showConsolationHeading()}
-                    <div className="consolationCards">{generateGifPanel(consolationGifs, false)}</div>
+                <div className="consolationCards">
+                    {generateGifPanel(consolationGifs, false)}
                 </div>
             )
         }
@@ -94,7 +94,9 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
                 </Fab>
                 <h4 className="next-round-text">Next Round</h4>
                 <div className="results">
+                    {showWinnerHeading()}
                     {showWinningGifs()}
+                    {showConsolationHeading()}
                     {showConsolationGifs()}
                 </div>
             </div>
