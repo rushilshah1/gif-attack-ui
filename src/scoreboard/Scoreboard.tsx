@@ -62,12 +62,11 @@ const useStyles = makeStyles({
     header: {
         backgroundColor: '#14AFF2',
         width: '100%',
-        minWidth: '100%',
-        color: 'white'
-
+        minWidth: '100%'
     },
     headerCell: {
-        ...tableCellStyle
+        ...tableCellStyle,
+        color: 'white'
     },
     nameCell: {
         ...tableCellStyle,
@@ -100,7 +99,8 @@ export const Scoreboard: React.FC<ScoreboardProps> = props => {
             <TableHead>
                 <TableRow className={classes.header}>
                     <TableCell className={classes.headerCell}>
-                        <Typography >ATTACKERS</Typography>
+                        ATTACKERS
+                        {/* <Typography>ATTACKERS</Typography> */}
                     </TableCell>
                     <TableCell className={classes.headerCell} />
                     <TableCell className={classes.headerCell} />
