@@ -13,13 +13,11 @@ const StyledInputText = withStyles({
 const SubmitButton = withStyles({
     root: {
         display: 'block',
-
         padding: '10px',
         textAlign: 'center',
         justifyContent: 'normal',
         marginLeft: '20px',
         minWidth: '50px'
-        // width: '50%'
     }
 })(Button);
 

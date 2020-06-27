@@ -30,17 +30,6 @@ const theme = createMuiTheme({
     fontFamily: 'BlinkMacSystemFont'
   }
 })
-// const StyledHomeIcon = withStyles({
-//   root: {
-//     fontSize: "50px",
-//     margin: "10px",
-//     width: 'auto',
-//     textAlign: 'left',
-//     display: 'inline-block',
-//     // color: 'blue'
-
-//   }
-// })(HomeIcon);
 
 const TitleDivider = withStyles({
   root: {
@@ -74,12 +63,8 @@ function App() {
 
               <a href="/" className="homeButton" >
                 <img src={require('./assets/logo.png')} alt="logo" width="100" height="100" />
-                {/* <StyledHomeIcon color="primary" /> */}
               </a>
-              {/* <Typography variant="h2" className="title">Gif Attack</Typography> */}
-              {/* <h2 className="title">Gif Attack</h2> */}
             </div>
-            {/* <TitleDivider /> */}
             <Route exact path="/home" component={Home}></Route>
             <Route exact path="/game/:gameId" component={GameComponent}></Route>
             <Route path="/" render={() => <Redirect to="/home" />} />
