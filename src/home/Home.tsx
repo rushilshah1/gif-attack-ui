@@ -22,38 +22,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const GameSelection = withStyles({
-    root: {
-        padding: "10px",
-        textAlign: 'center',
-        alignContent: 'center'
-
-    }
-})(RadioGroup);
-
-const SubmitButton = withStyles({
-    root: {
-        display: 'block',
-        padding: '10px',
-        alignContent: 'stretch',
-        textAlign: 'center',
-        justifyContent: 'normal',
-        marginTop: '25px',
-
-    }
-})(Button);
-
-const NameInput = withStyles({
-    root: {
-        width: "200px",
-        alignContent: 'center',
-        textAlign: 'center',
-        marginTop: '25px',
-        display: 'flex',
-    }
-})(TextField);
-
-
 export const Home: React.FC = props => {
     const [username, setUsername] = useState<string>('');
     const [currentUser, setCurrentUser] = useState<User | undefined>(undefined);
@@ -139,18 +107,22 @@ export const Home: React.FC = props => {
     }
     return (
         <div>
-          <Container>
-
-            <div className={classes.root}>
-              <Grid container className={classes.alignItemsAndJustifyContent}>
-                <Grid item>
-                  <a href="/">
-                    <img className="logo" src={require('./../assets/logo.png')}/>
-                  </a>
-                </Grid>
+          <Container className={classes.root}>
+            <Grid container className="logo-spacing">
+              <Grid item lg={12} className={classes.alignItemsAndJustifyContent}>
+                <img className="logo" src={require('./../assets/logo.png')}/>
               </Grid>
-            </div>
+            </Grid>
 
+            <Grid container direction="column" justify="center" alignItems="center">
+              <Grid item lg={6} className="home-button-spacing">
+                <Button variant="contained" color="primary" className="home-button">Create Game</Button>
+              </Grid>
+
+              <Grid item lg={6} className="home-button-spacing">
+                <Button variant="contained" color="primary" className="home-button">Join Game</Button>
+              </Grid>
+            </Grid>
           </Container>
         </div >
     )
