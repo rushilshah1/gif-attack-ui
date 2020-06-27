@@ -8,6 +8,19 @@ import { Redirect } from "react-router-dom";
 import { CREATE_GAME, JOIN_GAME, LOCAL_STORAGE_USER_ID, LOCAL_STORAGE_USER_NAME } from '../common/constants';
 import { User, IUser } from '../models/User';
 import { ADD_USER_MUTATION } from '../graphql/user';
+import { makeStyles } from '@material-ui/core/styles';
+
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  alignItemsAndJustifyContent: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+}));
 
 const GameSelection = withStyles({
     root: {
@@ -116,6 +129,8 @@ export const Home: React.FC = props => {
         setGameType(gameType);
     }
 
+    const classes = useStyles();
+
     if (gameId && currentUser) {
         localStorage.setItem(LOCAL_STORAGE_USER_NAME, currentUser.name);
         localStorage.setItem(LOCAL_STORAGE_USER_ID, currentUser.id);
@@ -123,32 +138,20 @@ export const Home: React.FC = props => {
         return <Redirect to={`/game/${gameId}`} />
     }
     return (
-        <div className="title">
-            <Container>
-                <GameSelection aria-label="gameType" name="gameType" value={gameType} onChange={(e) => toggleGameType(e.target.value)}>
-                    <FormControlLabel value={CREATE_GAME} control={<Radio />} label="Create Game"></FormControlLabel>
-                    <FormControlLabel value={JOIN_GAME} control={<Radio />} label="Join Game"></FormControlLabel>
-                </GameSelection>
+        <div>
+          <Container>
 
-                <Grid container justify="center" alignContent='center'>
-                    <form onSubmit={handleSubmit(onSubmit)} className="gameForm">
-
-                        <NameInput required name="name" label="Name" error={errors.name} onChange={(e) => setUsername(e.target.value)} inputRef={register({ required: true })} color="secondary"> </NameInput>
-
-                        {gameType === JOIN_GAME &&
-
-                            <NameInput required name="userInputGameId" label="Game ID" error={errors.gameId}
-                                onChange={(e) => {
-                                    clearError();
-                                    setUserInputGameId(e.target.value)
-                                }} inputRef={register({ required: true })} color="secondary"> </NameInput>
-                        }
-                        {errors.userInputGameId && <p className="error">{errors.userInputGameId.message}</p>}
-
-                        <SubmitButton type="submit" variant="contained" color="primary">{gameType} <img src={require('../assets/dagger.png')} alt="logo" width="20" height="20"></img></SubmitButton>
-                    </form>
+            <div className={classes.root}>
+              <Grid container className={classes.alignItemsAndJustifyContent}>
+                <Grid item>
+                  <a href="/">
+                    <img className="logo" src={require('./../assets/logo.png')}/>
+                  </a>
                 </Grid>
-            </Container>
+              </Grid>
+            </div>
+
+          </Container>
         </div >
     )
 }

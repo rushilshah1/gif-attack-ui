@@ -18,7 +18,6 @@ import { createMuiTheme, MuiThemeProvider, makeStyles } from '@material-ui/core/
 import HomeIcon from '@material-ui/icons/Home';
 import { Container, withStyles, Divider, Typography, CardMedia, Grid } from '@material-ui/core';
 import './App.css';
-import logo from './logo.svg';
 
 
 const theme = createMuiTheme({
