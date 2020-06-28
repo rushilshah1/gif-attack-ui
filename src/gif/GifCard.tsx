@@ -58,24 +58,35 @@ export const GifCard: React.FC<IGifCardProps> = props => {
             <IconButton aria-label="Vote for gif" onClick={() => {
                 if (!props.voteGif) return;
                 props.voteGif(props.gif)
-            }} color='primary' disabled={props.disableVoting ? true : false}>
-                <ThumbUpIcon />
+            }} color='secondary' disabled={props.disableVoting ? true : false}>
+                <FavoriteOutlinedIcon />
             </IconButton>)
     }
     return (
-        <Card className={classes[props.type]} variant="elevation" square={true} key={props.gif.id}>
-            <CardContent>
-                <Typography variant="subtitle1">
-                    {props.title}
-                    <br />
-                </Typography>
-                <Gif gif={props.gif.content} width={props.width} height={props.height} hideAttribution={true} noLink={true}></Gif>
-            </CardContent>
-            <CardActions disableSpacing className="cardActions">
+        // <Card className={classes[props.type]} variant="elevation" square={true} key={props.gif.id}>
+        //     <CardContent>
+        //         <Typography variant="subtitle1">
+        //             {props.title}
+        //             <br />
+        //         </Typography>
+        //         <Gif gif={props.gif.content} width={props.width} height={props.height} hideAttribution={true} noLink={true}></Gif>
+        //     </CardContent>
+        //     <CardActions disableSpacing className="cardActions">
+        //         {props.showVoteIcons && generateVoteIcons(props.gif.numVotes)}
+        //         {props.voteGif && generateVoteButton()}
+        //     </CardActions>
+        // </Card>
+        <div className="gif-card">
+            <Typography variant="subtitle1">
+                {props.title}
+            </Typography>
+            <Gif gif={props.gif.content} width={props.width} height={props.height} hideAttribution={true} noLink={true}></Gif>
+            <div className="num-votes">
                 {props.showVoteIcons && generateVoteIcons(props.gif.numVotes)}
+            </div>
+            <div className="vote-icon">
                 {props.voteGif && generateVoteButton()}
-            </CardActions>
-
-        </Card>
+            </div>
+        </div>
     )
 }

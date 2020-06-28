@@ -19,3 +19,21 @@
     margin-top: 20px;
     border-radius: 25px;
 }
+
+.gif-card {
+    margin-top: 15px;
+    padding: 15px;
+    border: 1pt;
+    border-color: #14AFF2;
+    /* border-radius: 25px; */
+    border-style: ridge;
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+    box-shadow: 0 5px 10px #14AFF2
+}
+.vote-icon {
+    position: absolute;
+    right: -22px;
+    bottom: -22px;
+}
