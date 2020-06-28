@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 export const Home: React.FC = props => {
     const [username, setUsername] = useState<string>('');
     const [currentUser, setCurrentUser] = useState<User | undefined>(undefined);
-    const [gameType, setGameType] = useState<string>(CREATE_GAME);
+    const [gameType, setGameType] = useState<string>('');
     const [userInputGameId, setUserInputGameId] = useState<string>('');
     const [gameId, setGameId] = useState<string>('');
     const { handleSubmit, register, errors, setError, clearError } = useForm({ mode: 'onSubmit', reValidateMode: 'onSubmit' });
@@ -114,15 +114,38 @@ export const Home: React.FC = props => {
               </Grid>
             </Grid>
 
+            {/* hide this grid container if a button has been selected */ }
             <Grid container direction="column" justify="center" alignItems="center">
               <Grid item lg={6} className="home-button-spacing">
-                <Button variant="contained" color="primary" className="home-button">Create Game</Button>
+                <Button variant="contained" color="primary" className="home-button" onClick={() => toggleGameType(CREATE_GAME)}>Create Game</Button>
               </Grid>
 
               <Grid item lg={6} className="home-button-spacing">
-                <Button variant="contained" color="primary" className="home-button">Join Game</Button>
+                <Button variant="contained" color="primary" className="home-button" onClick={() => toggleGameType(JOIN_GAME)}>Join Game</Button>
               </Grid>
             </Grid>
+
+
+            { gameType === CREATE_GAME &&
+              <Grid container justify="center" alignItems="center">
+                <Grid item className="home-button-spacing">
+                  <TextField id="outlined-basic" label="Name" variant="outlined" />
+                </Grid>
+              </Grid>
+            }
+
+            { gameType === JOIN_GAME &&
+              <Grid container direction="column" justify="center" alignItems="center">
+                <Grid item className="home-button-spacing">
+                  <TextField id="outlined-basic" label="Name" variant="outlined" />
+                </Grid>
+
+                <Grid item className="home-button-spacing">
+                  <TextField id="outlined-basic" label="Game ID" variant="outlined" />
+                </Grid>
+              </Grid>
+            }
+
           </Container>
         </div >
     )
