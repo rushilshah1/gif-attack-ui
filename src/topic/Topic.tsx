@@ -6,7 +6,7 @@ import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import './Topic.css';
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button, Grid } from '@material-ui/core';
 
 interface TopicProps {
     submitTopic: (text: string) => void;
@@ -38,17 +38,13 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         submitButton: {
             textAlign: 'center',
-            marginLeft: '20px',
+            // marginLeft: '20px',
             width: 'auto',
-            minWidth: '50px',
-            height: 'fit-content',
-            // height: 'fit-content',
-            bottom: 0
+            // minWidth: '50px',
+            height: 'fit-content'
         },
         topicText: {
-            width: "auto",
-            minWidth: "200px",
-            // height: 'fit-content',
+            minWidth: "100%",
         },
         boldText: {
             fontWeight: "bold"
@@ -125,16 +121,28 @@ export const Topic: React.FC<TopicProps> = props => {
                     <Typography className={classes.heading}>I have a topic!</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                    <div className="topic-form">
-                        <TextField className={classes.topicText} color="secondary" id="standard-basic" label="Enter a topic" value={userSelectedTopic} onChange={(e) => setUserSelectedTopic(e.target.value)} multiline />
-                        <Button variant="contained" color="primary"
-                            onClick={() => {
-                                props.submitTopic(userSelectedTopic);
-                                setExpanded(false);
-                                setUserSelectedTopic('');
-                            }}
-                            className={classes.submitButton}> Submit</Button>
-                    </div>
+                    <Grid container direction="row">
+                        <Grid item lg={8}>
+                            <TextField
+                                // className={classes.topicText}
+                                color="secondary"
+                                id="standard-basic"
+                                label="Enter a topic"
+                                value={userSelectedTopic}
+                                onChange={(e) => setUserSelectedTopic(e.target.value)}
+                                multiline />
+                        </Grid>
+                        <Grid item lg={4}>
+                            <Button variant="contained" color="primary"
+                                onClick={() => {
+                                    props.submitTopic(userSelectedTopic);
+                                    setExpanded(false);
+                                    setUserSelectedTopic('');
+                                }}
+                            // className={classes.submitButton}
+                            > Submit</Button>
+                        </Grid>
+                    </Grid>
                 </ExpansionPanelDetails>
             </ExpansionPanel>
 
