@@ -37,7 +37,7 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
 
     const generateGifPanel = (gifList: Array<SubmittedGif>, isWinner: boolean) => {
         const size: number = isWinner ? WINNER_GIF_SIZE : CONSOLIDATION_GIF_SIZE;
-        const cardType = isWinner ? GifCardStyle.Highlighted : GifCardStyle.Regular;
+        const cardType = isWinner ? GifCardStyle.Voted : GifCardStyle.Unvotable;
         const userNameByIdMap: Map<string, string> = new Map(props.players.map((player: User) => [player.id, player.name]));
         return gifList.map((gif: SubmittedGif) => {
             const gifCardTitle: string = userNameByIdMap.get(gif.userId) + (gif.gifSearchText ? ` - ${gif.gifSearchText}` : '');

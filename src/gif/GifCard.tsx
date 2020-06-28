@@ -4,11 +4,12 @@ import { Card, CardContent, Typography, CardActions, makeStyles, IconButton } fr
 import { Gif } from '@giphy/react-components'
 import FavoriteOutlinedIcon from '@material-ui/icons/FavoriteOutlined';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
-import './GifCard.css';
+import './GifCard.scss';
 
 export enum GifCardStyle {
-    Highlighted = "highlightedGif",
-    Regular = "regularGif",
+    Votable = "votable-gif-card",
+    Unvotable = "unvotable-gif-card",
+    Voted = "voted-gif-card",
 }
 interface IGifCardProps {
     gif: SubmittedGif;
@@ -18,9 +19,10 @@ interface IGifCardProps {
     title?: string;
     showVoteIcons?: boolean;
     voteGif?: (gif: SubmittedGif) => void;
-    disableVoting?: boolean;
+    gifVotedFor?: string | null;
 }
 
+/*
 const cardRootStyle = {
     display: 'inline-block',
     borderRadius: '25px',
@@ -41,9 +43,9 @@ const useStyles = makeStyles({
         backgroundColor: 'lightgrey',
     }
 });
-
+*/
 export const GifCard: React.FC<IGifCardProps> = props => {
-    const classes = useStyles();
+    // const classes = useStyles();
     const generateVoteIcons = (numVotes: number) => {
         const arrVotes: Array<any> = Array.from(new Array(numVotes), x => Math.random());
         return arrVotes.map(index =>
@@ -55,10 +57,7 @@ export const GifCard: React.FC<IGifCardProps> = props => {
 
     const generateVoteButton = () => {
         return (
-            <IconButton aria-label="Vote for gif" onClick={() => {
-                if (!props.voteGif) return;
-                props.voteGif(props.gif)
-            }} color='secondary' disabled={props.disableVoting ? true : false}>
+            <IconButton aria-label="Vote for gif" color='secondary'>
                 <FavoriteOutlinedIcon />
             </IconButton>)
     }
@@ -76,16 +75,31 @@ export const GifCard: React.FC<IGifCardProps> = props => {
         //         {props.voteGif && generateVoteButton()}
         //     </CardActions>
         // </Card>
-        <div className="gif-card">
-            <Typography variant="subtitle1">
-                {props.title}
-            </Typography>
-            <Gif gif={props.gif.content} width={props.width} height={props.height} hideAttribution={true} noLink={true}></Gif>
+        <div className={props.type}>
+            <div className="gif-title">
+                <Typography variant="subtitle1">
+                    {props.title}
+                </Typography>
+            </div>
+            <Gif
+                gif={props.gif.content}
+                width={props.width}
+                height={props.height}
+                hideAttribution={true}
+                noLink={true}
+                onGifClick={() => {
+                    if (!props.voteGif || props.gifVotedFor) return;
+                    props.voteGif(props.gif)
+                }}
+            ></Gif>
             <div className="num-votes">
                 {props.showVoteIcons && generateVoteIcons(props.gif.numVotes)}
             </div>
             <div className="vote-icon">
-                {props.voteGif && generateVoteButton()}
+                {props.voteGif && !props.gifVotedFor &&
+                    <IconButton aria-label="Vote for gif" color='secondary'>
+                        <FavoriteOutlinedIcon />
+                    </IconButton>}
             </div>
         </div>
     )

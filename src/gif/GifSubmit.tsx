@@ -13,8 +13,16 @@ export interface GifSubmitProps {
 }
 
 export const GifSubmit: React.FC<GifSubmitProps> = props => {
-    const [gifVotedFor, setGifVotedFor] = useState<string | null>(null);
+    const [gifVotedFor, setGifVotedFor] = useState<string | null>(null); //either null or gif id user voted for
 
+    const getGifCardType = (id: string): GifCardStyle => {
+        if (!gifVotedFor) {
+            return GifCardStyle.Votable;
+        }
+        else {
+            return gifVotedFor === id ? GifCardStyle.Voted : GifCardStyle.Unvotable;
+        }
+    }
     //TODO: Add helper function for more rules on disabling voting. i.e cannot vote for your own gif
     return (
         <Container>
@@ -30,8 +38,8 @@ export const GifSubmit: React.FC<GifSubmitProps> = props => {
                             setGifVotedFor(gif.id)
                             props.voteGif(gif)
                         }}
-                        disableVoting={gifVotedFor === submittedGif.id ? true : false}
-                        type={gifVotedFor === submittedGif.id ? GifCardStyle.Highlighted : GifCardStyle.Regular}>
+                        gifVotedFor={gifVotedFor}
+                        type={getGifCardType(submittedGif.id)}>
                     </GifCard>
                 )}
             </div>
