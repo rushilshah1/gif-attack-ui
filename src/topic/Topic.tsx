@@ -37,14 +37,8 @@ const useStyles = makeStyles((theme: Theme) =>
             fontWeight: theme.typography.fontWeightRegular,
         },
         submitButton: {
-            textAlign: 'center',
-            // marginLeft: '20px',
-            width: 'auto',
-            // minWidth: '50px',
-            height: 'fit-content'
         },
         topicText: {
-            minWidth: "100%",
         },
         boldText: {
             fontWeight: "bold"
@@ -124,7 +118,8 @@ export const Topic: React.FC<TopicProps> = props => {
                     <Grid container direction="row">
                         <Grid item lg={8}>
                             <TextField
-                                // className={classes.topicText}
+                                fullWidth={true}
+                                className={classes.topicText}
                                 color="secondary"
                                 id="standard-basic"
                                 label="Enter a topic"
@@ -133,13 +128,13 @@ export const Topic: React.FC<TopicProps> = props => {
                                 multiline />
                         </Grid>
                         <Grid item lg={4}>
-                            <Button variant="contained" color="primary"
+                            <Button variant="contained" color="primary" fullWidth={true}
                                 onClick={() => {
                                     props.submitTopic(userSelectedTopic);
                                     setExpanded(false);
                                     setUserSelectedTopic('');
                                 }}
-                            // className={classes.submitButton}
+                                className={classes.submitButton}
                             > Submit</Button>
                         </Grid>
                     </Grid>
