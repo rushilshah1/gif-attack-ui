@@ -21,6 +21,11 @@ const useStyles = makeStyles((theme: Theme) =>
             marginLeft: 'auto',
             marginRight: 'auto'
         },
+        alignItemsAndJustifyContent: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+        },
         '&:not(:last-child)': {
             borderBottom: 0,
         },
@@ -35,10 +40,6 @@ const useStyles = makeStyles((theme: Theme) =>
         heading: {
             fontSize: theme.typography.pxToRem(15),
             fontWeight: theme.typography.fontWeightRegular,
-        },
-        submitButton: {
-        },
-        topicText: {
         },
         boldText: {
             fontWeight: "bold"
@@ -115,11 +116,10 @@ export const Topic: React.FC<TopicProps> = props => {
                     <Typography className={classes.heading}>I have a topic!</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                    <Grid container direction="row">
+                    <Grid container direction="row" className={classes.alignItemsAndJustifyContent}>
                         <Grid item lg={8}>
                             <TextField
                                 fullWidth={true}
-                                className={classes.topicText}
                                 color="secondary"
                                 id="standard-basic"
                                 label="Enter a topic"
@@ -127,14 +127,14 @@ export const Topic: React.FC<TopicProps> = props => {
                                 onChange={(e) => setUserSelectedTopic(e.target.value)}
                                 multiline />
                         </Grid>
-                        <Grid item lg={4}>
-                            <Button variant="contained" color="primary" fullWidth={true}
+                        <Grid item lg={1}></Grid>
+                        <Grid item lg={3}>
+                            <Button variant="contained" color="primary" fullWidth={true} size="small"
                                 onClick={() => {
                                     props.submitTopic(userSelectedTopic);
                                     setExpanded(false);
                                     setUserSelectedTopic('');
                                 }}
-                                className={classes.submitButton}
                             > Submit</Button>
                         </Grid>
                     </Grid>
