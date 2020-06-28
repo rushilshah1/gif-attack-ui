@@ -11,12 +11,9 @@ import { START_GAME_MUTATION, GAME_STATE_CHANGED_SUBSCRIPTION, GET_GAME_BY_ID_QU
 import { Lobby } from '../lobby/Lobby';
 import './GameComponent.css';
 import { Scoreboard } from '../scoreboard/Scoreboard';
-import { User, IUser } from '../models/User';
-import { Redirect } from "react-router-dom";
-import { UPDATE_GIF_MUTATION } from '../graphql/gif';
+import { User } from '../models/User';
 import { IGame, IGameVars, IGameData, Game } from '../models/Game';
-import { REMOVE_USER_MUTATION, UPDATE_USER_MUTATION } from '../graphql/user';
-import { UPDATE_TOPIC_MUTATION, ITopic } from '../graphql/topic';
+import { REMOVE_USER_MUTATION } from '../graphql/user';
 
 
 export interface IGameComponentProps {
@@ -32,42 +29,26 @@ const StyledContainer = withStyles({
 })(Container);
 
 export const GameComponent: React.FC<IGameComponentProps> = props => {
+    /*Retrieve info needed to enter a game */
     let params: IGameComponentProps = useParams();
     const localStorageUserName: string | null = localStorage.getItem(LOCAL_STORAGE_USER_NAME)
     const localStorageUserId: string | null = localStorage.getItem(LOCAL_STORAGE_USER_ID)
 
+    /*State of user and game */
     const [currentUser, setCurrentUser] = useState<User>(
         localStorageUserName && localStorageUserId ? new User({ id: localStorageUserId, name: localStorageUserName, score: 0 }) : new User());
     const [currentGame, setCurrentGame] = useState<Game>(new Game());
-    const [selectedTopic, setSelectedTopic] = useState<string>('');
 
-    useEffect(() => {
-        window.addEventListener("beforeunload", leaveGame);
-        return () => {
-            window.removeEventListener("beforeunload", leaveGame);
-        }
-    });
-
+    /*Apollo Hooks */
     const [gameStatusStarted, gameStatusStartedResult] = useMutation(START_GAME_MUTATION);
     const [startNextRound, startNextRoundResult] = useMutation(NEW_ROUND_MUTATION);
-    const [updateTopic, updateTopicResult] = useMutation(UPDATE_TOPIC_MUTATION);
-    const [updateSubmittedGif, updateSubmittedGifResult] = useMutation(UPDATE_GIF_MUTATION);
-    const [updateUser, updateUserResult] = useMutation(UPDATE_USER_MUTATION);
+    const [removeUser, removeUserResult] = useMutation(REMOVE_USER_MUTATION);
+
     const gameState = useQuery<IGameData, IGameVars>(GET_GAME_BY_ID_QUERY_HOOK, {
         variables: { gameId: params.gameId }, onCompleted: async (response) => {
             gameStateChanged(response.getGameById);
         }
     })
-    /** Remove User On Component Destroy */
-    const [removeUser, removeUserResult] = useMutation(REMOVE_USER_MUTATION);
-    const leaveGame = async (event) => {
-        event.preventDefault();
-        await removeUser({ variables: { user: currentUser, gameId: currentGame.id } });
-
-
-    };
-
-    /** Get Game state */
     const gameStateChangedSubscription = useSubscription(GAME_STATE_CHANGED_SUBSCRIPTION, {
         variables: { gameId: currentGame.id },
         onSubscriptionData: (response) => {
@@ -75,24 +56,30 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
         }
     });
 
+    /** Remove user from game if they leave/close the screen. TODO: Handle tab close bug */
+    useEffect(() => {
+        window.addEventListener("beforeunload", leaveGame);
+        return () => {
+            window.removeEventListener("beforeunload", leaveGame);
+        }
+    });
+    const leaveGame = async (event) => {
+        event.preventDefault();
+        await removeUser({ variables: { user: currentUser, gameId: currentGame.id } });
+    };
 
-    /**  Used for Game Lobby*/
+    /** Captures any change in game state*/
     const gameStateChanged = async (updatedGame: IGame) => {
         if (updatedGame.submittedGifs) {
             updatedGame.submittedGifs = updatedGame.submittedGifs.map((rawGif: IGif) => new SubmittedGif(rawGif));
-            console.log(updatedGame.submittedGifs);
         }
-        console.log("Changing game state")
         setCurrentGame(prevGame => updatedGame);
-        // setCurrentGame(prevGame => { return { ...prevGame, ...updatedGame } });
-        setSelectedTopic(currentTopic => updatedGame.topic);
         console.log(`Game state has changed:`);
-        console.log(updatedGame);
     }
 
     /** Start Game */
     const startGame = async () => {
-        //Mutation to change game status
+        //Mutation to change game status and start new round. Will change game state twice
         await gameStatusStarted({ variables: { gameId: currentGame.id } })
         await startNewRound();
     }
@@ -104,11 +91,6 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
         console.log(`Round ${currentGame.roundNumber} has finished, a new round is about to start...`);
     };
 
-    const submitTopicToGame = async (topic: string) => {
-        const topicInput: ITopic = { topic: topic }
-        await updateTopic({ variables: { topicInput: topicInput, gameId: currentGame.id } });
-    };
-
     if (!currentGame.id) {
         return <CircularProgress />
     }
@@ -118,7 +100,7 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
             <StyledContainer>
                 {currentGame.roundNumber === 0 && <Lobby gameId={currentGame.id} players={currentGame.users} startGame={() => startGame()} />}
                 {currentGame.roundNumber > 0 && (currentGame.roundActive ?
-                    <Round player={currentUser} currentGame={currentGame} topic={selectedTopic} setTopic={(text) => setSelectedTopic(text)} submitTopic={(text) => submitTopicToGame(text)} /> :
+                    <Round player={currentUser} currentGame={currentGame} /> :
                     <RoundResult submittedGifs={currentGame.submittedGifs} players={currentGame.users} startNewRound={() => startNewRound()}
                     />
                 )}

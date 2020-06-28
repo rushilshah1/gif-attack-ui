@@ -1,13 +1,14 @@
 .topic {
-    display: inline-flex;
-    border: medium;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    text-align: center;
 }
 
-.Button {
-    padding-top: 50px;
-}
-
-.submitButton {
-    /* display: inline-block; */
-    padding-top: 10px;
+.topic-form {
+    display: flex;
+    vertical-align: bottom;
+    margin-bottom: auto;
+    margin-top: auto;
 }
