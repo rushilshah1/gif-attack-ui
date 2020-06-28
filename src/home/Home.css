@@ -3,10 +3,6 @@
   margin-bottom: 40px;
 }
 
-.gameForm {
-  display: block;
-}
-
 .error {
   color: red;
   font-size: small;

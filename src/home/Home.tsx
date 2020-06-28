@@ -125,27 +125,38 @@ export const Home: React.FC = props => {
               </Grid>
             </Grid>
 
-
-            { gameType === CREATE_GAME &&
-              <Grid container justify="center" alignItems="center">
-                <Grid item className="home-button-spacing">
-                  <TextField id="outlined-basic" label="Name" variant="outlined" />
+            <form onSubmit={handleSubmit(onSubmit)}>
+              { (gameType !== '') &&
+                <Grid container justify="center" alignItems="center">
+                  <Grid item className="home-button-spacing">
+                    <TextField required label="Name" name="name" variant="outlined"  error={errors.name} onChange={(e) => setUsername(e.target.value)} inputRef={register({ required: true })} color="secondary"/>
+                  </Grid>
                 </Grid>
-              </Grid>
-            }
+              }
 
-            { gameType === JOIN_GAME &&
-              <Grid container direction="column" justify="center" alignItems="center">
-                <Grid item className="home-button-spacing">
-                  <TextField id="outlined-basic" label="Name" variant="outlined" />
+              { gameType === JOIN_GAME &&
+                <Grid container direction="column" justify="center" alignItems="center">
+                  <Grid item className="home-button-spacing">
+                    <TextField required name="userInputGameId" label="Game ID" error={errors.gameId}
+                      onChange={(e) => { clearError(); setUserInputGameId(e.target.value) }}
+                      variant="outlined"
+                      inputRef={register({ required: true })}
+                      color="secondary"/>
+                  </Grid>
                 </Grid>
+              }
 
-                <Grid item className="home-button-spacing">
-                  <TextField id="outlined-basic" label="Game ID" variant="outlined" />
+              { gameType !== '' &&
+                <Grid container justify="center" alignItems="center">
+                  <Grid item className="home-button-spacing">
+                    <Button type="submit" variant="contained" color="primary">
+                      Submit <img src={require('../assets/dagger.png')} alt="logo"></img>
+                    </Button>
+                  </Grid>
                 </Grid>
-              </Grid>
-            }
+              }
 
+            </form>
           </Container>
         </div >
     )
