@@ -146,6 +146,9 @@ export const Home: React.FC = props => {
               { gameType !== '' &&
                 <Grid container justify="center" alignItems="center">
                   <Grid item className="home-button-spacing">
+
+                    {errors.userInputGameId && <p className="error">{errors.userInputGameId.message}</p>}
+
                     <Button type="submit" variant="contained" color="primary">
                       Submit <img src={require('../assets/dagger.png')} alt="logo"></img>
                     </Button>
