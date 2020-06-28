@@ -108,13 +108,10 @@ export const Home: React.FC = props => {
     return (
         <div>
           <Container className={classes.root}>
-            <Grid container className="logo-spacing">
-              <Grid item lg={12} className={classes.alignItemsAndJustifyContent}>
-                <img className="logo" src={require('./../assets/logo.png')}/>
-              </Grid>
+            <Grid container className="logo-spacing" justify="center" alignItems="center">
+              <img className="logo" src={require('./../assets/logo.png')}/>
             </Grid>
 
-            {/* hide this grid container if a button has been selected */ }
             <Grid container direction="column" justify="center" alignItems="center">
               <Grid item lg={6} className="home-button-spacing">
                 <Button variant="contained" color="primary" className="home-button" onClick={() => toggleGameType(CREATE_GAME)}>Create Game</Button>
