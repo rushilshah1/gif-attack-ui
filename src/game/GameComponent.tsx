@@ -39,7 +39,6 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
     const [currentUser, setCurrentUser] = useState<User>(
         localStorageUserName && localStorageUserId ? new User({ id: localStorageUserId, name: localStorageUserName, score: 0 }) : new User());
     const [currentGame, setCurrentGame] = useState<Game>(new Game());
-    const [selectedTopic, setSelectedTopic] = useState<string>('');
 
     useEffect(() => {
         window.addEventListener("beforeunload", leaveGame);
@@ -85,7 +84,6 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
         console.log("Changing game state")
         setCurrentGame(prevGame => updatedGame);
         // setCurrentGame(prevGame => { return { ...prevGame, ...updatedGame } });
-        setSelectedTopic(currentTopic => updatedGame.topic);
         console.log(`Game state has changed:`);
         console.log(updatedGame);
     }
@@ -118,7 +116,7 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
             <StyledContainer>
                 {currentGame.roundNumber === 0 && <Lobby gameId={currentGame.id} players={currentGame.users} startGame={() => startGame()} />}
                 {currentGame.roundNumber > 0 && (currentGame.roundActive ?
-                    <Round player={currentUser} currentGame={currentGame} topic={selectedTopic} setTopic={(text) => setSelectedTopic(text)} submitTopic={(text) => submitTopicToGame(text)} /> :
+                    <Round player={currentUser} currentGame={currentGame} topic={currentGame.topic} submitTopic={(text) => submitTopicToGame(text)} /> :
                     <RoundResult submittedGifs={currentGame.submittedGifs} players={currentGame.users} startNewRound={() => startNewRound()}
                     />
                 )}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Container, Icon, withStyles, Modal, Theme, makeStyles, createStyles, Button } from '@material-ui/core';
+import { Container, Icon, withStyles, Modal, Theme, makeStyles, createStyles, Button, Typography } from '@material-ui/core';
 import { Topic } from '../topic/Topic';
 import { UPDATE_TOPIC_MUTATION } from '../graphql/topic';
 import './Round.css';
@@ -17,7 +17,6 @@ import { Game } from '../models/Game';
 export interface RoundProps {
     currentGame: Game;
     player: User;
-    setTopic: (text: string) => void;
     submitTopic: (text: string) => void;
     topic: string;
 
@@ -32,7 +31,7 @@ const StyledHelpIcon = withStyles({
 
 export const Round: React.FC<RoundProps> = props => {
 
-    const [selectedTopic, setSelectedTopic] = useState<string>('');
+    // const [selectedTopic, setSelectedTopic] = useState<string>('');
     const [hasUserSubmittedGif, setHasUserSubmittedGif] = useState<boolean>(false);
     const [openInstructions, setOpenInstructions] = useState<boolean>(false);
 
@@ -98,7 +97,7 @@ export const Round: React.FC<RoundProps> = props => {
                 onClose={closeInstructionsModal}>
                 <InstructionsModal closeInstructionsModal={() => closeInstructionsModal()} />
             </Modal>}
-            <Topic topic={props.topic} submitTopic={text => (props.submitTopic(text))} setTopic={text => (props.setTopic(text))} />
+            <Topic topic={props.topic} submitTopic={text => (props.submitTopic(text))} />
             <GifSubmit submittedGifs={props.currentGame.submittedGifs} voteGif={(gif) => (submitGifVote(gif))}></GifSubmit>
             {!hasUserSubmittedGif && <GifSelect selectGif={(gif, searchText) => (submitGif(gif, searchText))}></GifSelect>}
         </Container>
