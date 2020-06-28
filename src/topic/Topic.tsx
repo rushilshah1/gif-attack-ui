@@ -67,7 +67,9 @@ const ExpansionPanel = withStyles({
             display: 'none',
         },
         '&$expanded': {
-            margin: 'auto',
+            marginTop: 20,
+            marginLeft: 'auto',
+            marginRight: 'auto'
         },
     },
     expanded: {},
@@ -127,8 +129,9 @@ export const Topic: React.FC<TopicProps> = props => {
                         <TextField className={classes.topicText} color="secondary" id="standard-basic" label="Enter a topic" value={userSelectedTopic} onChange={(e) => setUserSelectedTopic(e.target.value)} multiline />
                         <Button variant="contained" color="primary"
                             onClick={() => {
-                                props.submitTopic(userSelectedTopic)
+                                props.submitTopic(userSelectedTopic);
                                 setExpanded(false);
+                                setUserSelectedTopic('');
                             }}
                             className={classes.submitButton}> Submit</Button>
                     </div>

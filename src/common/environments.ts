@@ -20,7 +20,7 @@ const ENVIRONMENT = {
         GIPHY_KEY: process.env.REACT_APP_GIPHY_KEY
     }
 }
-let env = ENVIRONMENT.LOCAL;
+let env = ENVIRONMENT.DEV;
 if (window.location.hostname.includes('gif-attack.com') || window.location.hostname.includes('.amplifyapp.com')) {
     console.log("PROD mode");
     env = ENVIRONMENT.PROD;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Icon, withStyles, Modal, Theme, makeStyles, createStyles, Button, Typography } from '@material-ui/core';
 import { Topic } from '../topic/Topic';
-import { UPDATE_TOPIC_MUTATION } from '../graphql/topic';
+import { UPDATE_TOPIC_MUTATION, ITopic } from '../graphql/topic';
 import './Round.css';
 import { useMutation, useSubscription } from '@apollo/react-hooks';
 import { GifSelect } from '../gif/GifSelect';
@@ -17,9 +17,6 @@ import { Game } from '../models/Game';
 export interface RoundProps {
     currentGame: Game;
     player: User;
-    submitTopic: (text: string) => void;
-    topic: string;
-
 }
 
 const StyledHelpIcon = withStyles({
@@ -30,20 +27,16 @@ const StyledHelpIcon = withStyles({
 })(HelpIcon);
 
 export const Round: React.FC<RoundProps> = props => {
-
-    // const [selectedTopic, setSelectedTopic] = useState<string>('');
+    /**State for instructions modal and user gif submission */
     const [hasUserSubmittedGif, setHasUserSubmittedGif] = useState<boolean>(false);
     const [openInstructions, setOpenInstructions] = useState<boolean>(false);
 
-    /** Gif Submission hooks */
+    /** Apollo Hooks */
     const [createGif, createGifResult] = useMutation(CREATE_GIF_MUTATION);
-
-    /** Gif Updating hooks */
     const [updateGif, updateGifResult] = useMutation(UPDATE_GIF_MUTATION);
-
-    /** Topic Creation hooks */
     const [updateTopic, updateTopicResult] = useMutation(UPDATE_TOPIC_MUTATION);
 
+    /**Action functions using Apollo Hooks */
     const submitGif = async (gifObject: any, searchText: string) => {
         const gifString: string = JSON.stringify(gifObject);
         const createGifInput: IGif = {
@@ -69,6 +62,11 @@ export const Round: React.FC<RoundProps> = props => {
         await updateGif({ variables: { gif: updateGifInput, gameId: props.currentGame.id } });
         console.log(`Gif ${gif.id} has been voted for`);
     }
+
+    const submitTopic = async (topic: string) => {
+        const topicInput: ITopic = { topic: topic }
+        await updateTopic({ variables: { topicInput: topicInput, gameId: props.currentGame.id } });
+    };
 
     /** Instructions Modal Functions */
     const openInstructionsModal = () => {
@@ -97,7 +95,7 @@ export const Round: React.FC<RoundProps> = props => {
                 onClose={closeInstructionsModal}>
                 <InstructionsModal closeInstructionsModal={() => closeInstructionsModal()} />
             </Modal>}
-            <Topic topic={props.topic} submitTopic={text => (props.submitTopic(text))} />
+            <Topic topic={props.currentGame.topic} submitTopic={text => (submitTopic(text))} />
             <GifSubmit submittedGifs={props.currentGame.submittedGifs} voteGif={(gif) => (submitGifVote(gif))}></GifSubmit>
             {!hasUserSubmittedGif && <GifSelect selectGif={(gif, searchText) => (submitGif(gif, searchText))}></GifSelect>}
         </Container>
