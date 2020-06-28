@@ -8,43 +8,24 @@ import { Redirect } from "react-router-dom";
 import { CREATE_GAME, JOIN_GAME, LOCAL_STORAGE_USER_ID, LOCAL_STORAGE_USER_NAME } from '../common/constants';
 import { User, IUser } from '../models/User';
 import { ADD_USER_MUTATION } from '../graphql/user';
+import { makeStyles } from '@material-ui/core/styles';
 
-const GameSelection = withStyles({
-    root: {
-        padding: "10px",
-        textAlign: 'center',
-        alignContent: 'center'
 
-    }
-})(RadioGroup);
-
-const SubmitButton = withStyles({
-    root: {
-        display: 'block',
-        padding: '10px',
-        alignContent: 'stretch',
-        textAlign: 'center',
-        justifyContent: 'normal',
-        marginTop: '25px',
-
-    }
-})(Button);
-
-const NameInput = withStyles({
-    root: {
-        width: "200px",
-        alignContent: 'center',
-        textAlign: 'center',
-        marginTop: '25px',
-        display: 'flex',
-    }
-})(TextField);
-
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  alignItemsAndJustifyContent: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+}));
 
 export const Home: React.FC = props => {
     const [username, setUsername] = useState<string>('');
     const [currentUser, setCurrentUser] = useState<User | undefined>(undefined);
-    const [gameType, setGameType] = useState<string>(CREATE_GAME);
+    const [gameType, setGameType] = useState<string>('');
     const [userInputGameId, setUserInputGameId] = useState<string>('');
     const [gameId, setGameId] = useState<string>('');
     const { handleSubmit, register, errors, setError, clearError } = useForm({ mode: 'onSubmit', reValidateMode: 'onSubmit' });
@@ -116,6 +97,8 @@ export const Home: React.FC = props => {
         setGameType(gameType);
     }
 
+    const classes = useStyles();
+
     if (gameId && currentUser) {
         localStorage.setItem(LOCAL_STORAGE_USER_NAME, currentUser.name);
         localStorage.setItem(LOCAL_STORAGE_USER_ID, currentUser.id);
@@ -123,32 +106,58 @@ export const Home: React.FC = props => {
         return <Redirect to={`/game/${gameId}`} />
     }
     return (
-        <div className="title">
-            <Container>
-                <GameSelection aria-label="gameType" name="gameType" value={gameType} onChange={(e) => toggleGameType(e.target.value)}>
-                    <FormControlLabel value={CREATE_GAME} control={<Radio />} label="Create Game"></FormControlLabel>
-                    <FormControlLabel value={JOIN_GAME} control={<Radio />} label="Join Game"></FormControlLabel>
-                </GameSelection>
+        <div>
+          <Container className={classes.root}>
+            <Grid container className="logo-spacing" justify="center" alignItems="center">
+              <img className="logo" src={require('./../assets/logo.png')}/>
+            </Grid>
 
-                <Grid container justify="center" alignContent='center'>
-                    <form onSubmit={handleSubmit(onSubmit)} className="gameForm">
+            <Grid container direction="column" justify="center" alignItems="center">
+              <Grid item lg={6} className="home-button-spacing">
+                <Button variant="contained" color="primary" className="home-button" onClick={() => toggleGameType(CREATE_GAME)}>Create Game</Button>
+              </Grid>
 
-                        <NameInput required name="name" label="Name" error={errors.name} onChange={(e) => setUsername(e.target.value)} inputRef={register({ required: true })} color="secondary"> </NameInput>
+              <Grid item lg={6} className="home-button-spacing">
+                <Button variant="contained" color="primary" className="home-button" onClick={() => toggleGameType(JOIN_GAME)}>Join Game</Button>
+              </Grid>
+            </Grid>
 
-                        {gameType === JOIN_GAME &&
-
-                            <NameInput required name="userInputGameId" label="Game ID" error={errors.gameId}
-                                onChange={(e) => {
-                                    clearError();
-                                    setUserInputGameId(e.target.value)
-                                }} inputRef={register({ required: true })} color="secondary"> </NameInput>
-                        }
-                        {errors.userInputGameId && <p className="error">{errors.userInputGameId.message}</p>}
-
-                        <SubmitButton type="submit" variant="contained" color="primary">{gameType} <img src={require('../assets/dagger.png')} alt="logo" width="20" height="20"></img></SubmitButton>
-                    </form>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              { (gameType !== '') &&
+                <Grid container justify="center" alignItems="center">
+                  <Grid item className="home-button-spacing">
+                    <TextField required label="Name" name="name" variant="outlined"  error={errors.name} onChange={(e) => setUsername(e.target.value)} inputRef={register({ required: true })} color="secondary"/>
+                  </Grid>
                 </Grid>
-            </Container>
+              }
+
+              { gameType === JOIN_GAME &&
+                <Grid container direction="column" justify="center" alignItems="center">
+                  <Grid item className="home-button-spacing">
+                    <TextField required name="userInputGameId" label="Game ID" error={errors.gameId}
+                      onChange={(e) => { clearError(); setUserInputGameId(e.target.value) }}
+                      variant="outlined"
+                      inputRef={register({ required: true })}
+                      color="secondary"/>
+                  </Grid>
+                </Grid>
+              }
+
+              { gameType !== '' &&
+                <Grid container justify="center" alignItems="center">
+                  <Grid item className="home-button-spacing">
+
+                    {errors.userInputGameId && <p className="error">{errors.userInputGameId.message}</p>}
+
+                    <Button type="submit" variant="contained" color="primary">
+                      Submit <img src={require('../assets/dagger.png')} alt="logo"></img>
+                    </Button>
+                  </Grid>
+                </Grid>
+              }
+
+            </form>
+          </Container>
         </div >
     )
 }
