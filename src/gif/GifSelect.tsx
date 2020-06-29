@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './GifSelect.css';
+import './GifSelect.scss';
 import ENVIRONMENT from '../common/environments';
 import { ENVIRONMENT_LOCAL } from '../common/constants';
 import ReactGiphySearchbox from 'react-giphy-searchbox';
@@ -13,7 +13,7 @@ export const GifSelect: React.FC<GifSelectProps> = props => {
     const [gifSearchInput, setGifSearchInput] = useState<string>('');
 
     return (
-        <div className="gifSelection" >
+        <div className="gif-selection" >
             <ReactGiphySearchbox
                 apiKey={ENVIRONMENT.GIPHY_KEY}
                 onSelect={(gif) => {

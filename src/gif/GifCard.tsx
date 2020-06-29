@@ -22,53 +22,21 @@ interface IGifCardProps {
     gifVotedFor?: string | null;
 }
 
-/*
-const cardRootStyle = {
-    display: 'inline-block',
-    borderRadius: '25px',
-    justifyContent: 'space-between',
-    marginTop: '15px',
-    marginRight: '15px',
-    borderStyle: 'outset'
-};
-
-const useStyles = makeStyles({
-    root: cardRootStyle,
-    highlightedGif: {
-        ...cardRootStyle,
-        borderColor: 'gold'
-    },
-    regularGif: {
-        ...cardRootStyle,
-        backgroundColor: 'lightgrey',
-    }
-});
-*/
 export const GifCard: React.FC<IGifCardProps> = props => {
     // const classes = useStyles();
     const generateVoteIcons = (numVotes: number) => {
-        const arrVotes: Array<any> = Array.from(new Array(numVotes), x => Math.random());
-        return arrVotes.map(index =>
-            < IconButton color='secondary' key={index}>
-                <FavoriteOutlinedIcon />
+        const arrVotes: Array<number> = Array.from(new Array(numVotes), x => Math.random());
+        if (!arrVotes || !arrVotes.length) {
+            return <IconButton />
+        }
+        return arrVotes.map(index => (
+            < IconButton color='secondary' key={index} size="small" disableRipple={true}>
+                <FavoriteOutlinedIcon color="secondary" />
             </IconButton >
-        );
+        ));
     }
 
     return (
-        // <Card className={classes[props.type]} variant="elevation" square={true} key={props.gif.id}>
-        //     <CardContent>
-        //         <Typography variant="subtitle1">
-        //             {props.title}
-        //             <br />
-        //         </Typography>
-        //         <Gif gif={props.gif.content} width={props.width} height={props.height} hideAttribution={true} noLink={true}></Gif>
-        //     </CardContent>
-        //     <CardActions disableSpacing className="cardActions">
-        //         {props.showVoteIcons && generateVoteIcons(props.gif.numVotes)}
-        //         {props.voteGif && generateVoteButton()}
-        //     </CardActions>
-        // </Card>
         <div className={props.type}>
             <div className="gif-title">
                 <Typography variant="subtitle1">
@@ -86,11 +54,9 @@ export const GifCard: React.FC<IGifCardProps> = props => {
                     props.voteGif(props.gif)
                 }}
             ></Gif>
-            <div className="num-votes">
-                {props.showVoteIcons && generateVoteIcons(props.gif.numVotes)}
-            </div>
+            {props.showVoteIcons && generateVoteIcons(props.gif.numVotes)}
             <div className="vote-icon">
-                {props.voteGif && !props.gifVotedFor &&
+                {(props.voteGif && !props.gifVotedFor) &&
                     <IconButton
                         aria-label="Vote for gif"
                         color='secondary'

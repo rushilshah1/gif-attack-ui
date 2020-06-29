@@ -96,9 +96,10 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
     if (!currentGame.id) {
         return <CircularProgress />
     }
-    if (!localStorageUserName || !localStorageUserId) {
-        return <Redirect to={'/home'} />
-    }
+    //TODO: Fix this
+    // if (!localStorageUserName || !localStorageUserId) {
+    //     return <Redirect to={'/home'} />
+    // }
     return (
         <div className="game">
             <Scoreboard players={currentGame.users}></Scoreboard>

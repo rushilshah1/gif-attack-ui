@@ -27,7 +27,7 @@ export const GifSubmit: React.FC<GifSubmitProps> = props => {
     return (
         <Grid container direction="row">
             {props.submittedGifs.length > 0 && props.submittedGifs.map((submittedGif: SubmittedGif) =>
-                <Grid item lg={4}>
+                <Grid item lg={4} key={submittedGif.id}>
                     <GifCard
                         key={submittedGif.id}
                         gif={submittedGif}

@@ -46,6 +46,7 @@ function App() {
         <MuiThemeProvider theme={theme}>
           <BrowserRouter>
             <Container fixed>
+              {/*TODO: Guard Game route by ensuring there is a valid user in the gmae, otherwise re-route to Home */}
               <Switch>
                 <Route exact path="/home" component={Home}></Route>
                 <Route exact path="/game/:gameId" component={GameComponent}></Route>
