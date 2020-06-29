@@ -25,10 +25,6 @@ const ResultDivider = withStyles({
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-        },
-        alignItemsAndJustifyContent: {
-            // alignItems: 'center',
-            // justifyContent: 'center'
         }
     })
 );
