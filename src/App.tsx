@@ -5,7 +5,7 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { apolloClient } from './graphql/apollo-client';
 
 // Router
-import { Router, BrowserRouter, Route, Redirect, useHistory } from 'react-router-dom';
+import { Router, BrowserRouter, Route, Redirect, useHistory, Switch } from 'react-router-dom';
 import { GuardProvider, GuardedRoute } from 'react-router-guards';
 import { gameGuard } from './guards/game.guard';
 
@@ -46,9 +46,11 @@ function App() {
         <MuiThemeProvider theme={theme}>
           <BrowserRouter>
             <Container fixed>
-              <Route exact path="/home" component={Home}></Route>
-              <Route exact path="/game/:gameId" component={GameComponent}></Route>
-              <Route path="/" render={() => <Redirect to="/home" />} />
+              <Switch>
+                <Route exact path="/home" component={Home}></Route>
+                <Route exact path="/game/:gameId" component={GameComponent}></Route>
+                <Route path="/" render={() => <Redirect to="/home" />} />
+              </Switch>
             </Container>
           </BrowserRouter>
         </MuiThemeProvider>

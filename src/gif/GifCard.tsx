@@ -55,12 +55,6 @@ export const GifCard: React.FC<IGifCardProps> = props => {
         );
     }
 
-    const generateVoteButton = () => {
-        return (
-            <IconButton aria-label="Vote for gif" color='secondary'>
-                <FavoriteOutlinedIcon />
-            </IconButton>)
-    }
     return (
         // <Card className={classes[props.type]} variant="elevation" square={true} key={props.gif.id}>
         //     <CardContent>
@@ -97,7 +91,13 @@ export const GifCard: React.FC<IGifCardProps> = props => {
             </div>
             <div className="vote-icon">
                 {props.voteGif && !props.gifVotedFor &&
-                    <IconButton aria-label="Vote for gif" color='secondary'>
+                    <IconButton
+                        aria-label="Vote for gif"
+                        color='secondary'
+                        onClick={() => {
+                            if (!props.voteGif || props.gifVotedFor) return;
+                            props.voteGif(props.gif)
+                        }}>
                         <FavoriteOutlinedIcon />
                     </IconButton>}
             </div>

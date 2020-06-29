@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { Container } from '@material-ui/core'
-import './GifSubmit.css';
+import { Container, Grid } from '@material-ui/core'
+import './GifSubmit.scss';
 import { SubmittedGif } from '../models/SubmittedGif';
 import ENVIRONMENT from '../common/environments';
 import { SUBMITTED_GIF_SIZE } from '../common/constants';
@@ -25,9 +25,9 @@ export const GifSubmit: React.FC<GifSubmitProps> = props => {
     }
     //TODO: Add helper function for more rules on disabling voting. i.e cannot vote for your own gif
     return (
-        <Container>
-            <div>
-                {props.submittedGifs.length > 0 && props.submittedGifs.map((submittedGif: SubmittedGif) =>
+        <Grid container direction="row">
+            {props.submittedGifs.length > 0 && props.submittedGifs.map((submittedGif: SubmittedGif) =>
+                <Grid item lg={4}>
                     <GifCard
                         key={submittedGif.id}
                         gif={submittedGif}
@@ -41,8 +41,8 @@ export const GifSubmit: React.FC<GifSubmitProps> = props => {
                         gifVotedFor={gifVotedFor}
                         type={getGifCardType(submittedGif.id)}>
                     </GifCard>
-                )}
-            </div>
-        </Container>
+                </Grid>
+            )}
+        </Grid>
     )
 }

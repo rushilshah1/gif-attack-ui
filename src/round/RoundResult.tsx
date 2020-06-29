@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './RoundResult.css';
 import { SubmittedGif } from '../models/SubmittedGif';
 import * as _ from "lodash";
-import { Container, Card, CardHeader, CardContent, CardActions, IconButton, Divider, Fab, makeStyles, withStyles, Typography } from '@material-ui/core'
+import { Container, Card, CardHeader, CardContent, CardActions, IconButton, Divider, Fab, makeStyles, withStyles, Typography, Grid, Theme, createStyles } from '@material-ui/core'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import { User } from '../models/User';
 import { WINNER_GIF_SIZE, CONSOLIDATION_GIF_SIZE } from '../common/constants';
@@ -22,7 +22,19 @@ const ResultDivider = withStyles({
     }
 })(Divider);
 
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+        },
+        alignItemsAndJustifyContent: {
+            // alignItems: 'center',
+            // justifyContent: 'center'
+        }
+    })
+);
+
 export const RoundResult: React.FC<RoundResultProps> = props => {
+    const classes = useStyles();
     const [winnerGifs, setWinnerGifs] = useState<Array<SubmittedGif>>([]);
     const [consolationGifs, setConsolationGifs] = useState<Array<SubmittedGif>>([]);
     useEffect(() => {
@@ -30,7 +42,8 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
         if (props.submittedGifs && props.submittedGifs.length) {
             const partitionedGifsByTag: Array<Array<SubmittedGif>> = partition(props.submittedGifs, 'isWinner');
             setWinnerGifs(winnerGifs => partitionedGifsByTag[0]);
-            setConsolationGifs(consolationGifs => partitionedGifsByTag[1]);
+            const sortedConsolationGifs = partitionedGifsByTag[1].sort((a: SubmittedGif, b: SubmittedGif) => b.numVotes - a.numVotes);
+            setConsolationGifs(consolationGifs => sortedConsolationGifs);
         }
 
     }, []);
@@ -41,7 +54,18 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
         const userNameByIdMap: Map<string, string> = new Map(props.players.map((player: User) => [player.id, player.name]));
         return gifList.map((gif: SubmittedGif) => {
             const gifCardTitle: string = userNameByIdMap.get(gif.userId) + (gif.gifSearchText ? ` - ${gif.gifSearchText}` : '');
-            return <GifCard gif={gif} height={size} width={size} title={gifCardTitle} showVoteIcons={true} type={cardType} key={gif.id}></GifCard>
+            return (
+                <Grid item lg={6} key={gif.id}>
+                    <GifCard
+                        gif={gif}
+                        height={size}
+                        width={size}
+                        title={gifCardTitle}
+                        showVoteIcons={true}
+                        type={cardType}
+                        key={gif.id}>
+                    </GifCard>
+                </Grid>)
         });
     }
 
@@ -59,9 +83,9 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
     const showWinningGifs = () => {
         if (winnerGifs.length > 0) {
             return (
-                <div className="winnerCards">
+                <Grid container direction="row" className={classes.root}>
                     {generateGifPanel(winnerGifs, true)}
-                </div>
+                </Grid>
             )
         }
     };
@@ -79,9 +103,9 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
     const showConsolationGifs = () => {
         if (consolationGifs.length > 0) {
             return (
-                <div className="consolationCards">
+                <Grid container direction="row" className={classes.root}>
                     {generateGifPanel(consolationGifs, false)}
-                </div>
+                </Grid>
             )
         }
 

@@ -1,30 +1,9 @@
-.cardActions {
-    justify-content: flex-end;
-}
-.highlightedGif {
-    display: inline-block;
-    /* padding: 5px; */
-    justify-content: space-between;
-    /* box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22); */
-    margin-right: 20px;
-    margin-top: 20px;
-    border-radius: 25px;
-}
-.regularGif {
-    display: inline-block;
-    /* padding: 5px; */
-    justify-content: space-between;
-    /* box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22); */
-    margin-right: 20px;
-    margin-top: 20px;
-    border-radius: 25px;
-}
 .gif-title {
     padding-top: 0px;
 }
 
 .gif-card {
-    margin-top: 15px;
+    margin: 15px;
     padding: 15px 15px 15px 15px;
     border: 1pt;
     border-radius: 15px;
@@ -50,6 +29,8 @@
 }
 .votable-gif-card:hover {
     cursor: pointer;
+    border-color: #FFC000;;
+    box-shadow: 0 5px 10px #FFC000;
 }
 .votable-gif-card:hover .vote-icon {
     opacity: 1;
