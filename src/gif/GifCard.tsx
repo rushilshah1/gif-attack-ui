@@ -18,8 +18,8 @@ interface IGifCardProps {
     type: GifCardStyle;
     title?: string;
     showVoteIcons?: boolean;
-    voteGif?: (gif: SubmittedGif) => void;
-    gifVotedFor?: string | null;
+    voteForGif?: (gif: SubmittedGif) => void;
+    gifIdVotedFor?: string | null;
 }
 
 export const GifCard: React.FC<IGifCardProps> = props => {
@@ -50,19 +50,19 @@ export const GifCard: React.FC<IGifCardProps> = props => {
                 hideAttribution={true}
                 noLink={true}
                 onGifClick={() => {
-                    if (!props.voteGif || props.gifVotedFor) return;
-                    props.voteGif(props.gif)
+                    if (!props.voteForGif || props.gifIdVotedFor) return;
+                    props.voteForGif(props.gif)
                 }}
             ></Gif>
             {props.showVoteIcons && generateVoteIcons(props.gif.numVotes)}
             <div className="vote-icon">
-                {(props.voteGif && !props.gifVotedFor) &&
+                {(props.voteForGif && !props.gifIdVotedFor) &&
                     <IconButton
                         aria-label="Vote for gif"
                         color='secondary'
                         onClick={() => {
-                            if (!props.voteGif || props.gifVotedFor) return;
-                            props.voteGif(props.gif)
+                            if (!props.voteForGif || props.gifIdVotedFor) return;
+                            props.voteForGif(props.gif)
                         }}>
                         <FavoriteOutlinedIcon />
                     </IconButton>}

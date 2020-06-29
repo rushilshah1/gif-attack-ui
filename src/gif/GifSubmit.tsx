@@ -9,18 +9,18 @@ import { GifCard, GifCardStyle } from './GifCard';
 
 export interface GifSubmitProps {
     submittedGifs: Array<SubmittedGif>;
-    voteGif: (gif: SubmittedGif) => void;
+    voteForGif: (gif: SubmittedGif) => void;
 }
 
 export const GifSubmit: React.FC<GifSubmitProps> = props => {
-    const [gifVotedFor, setGifVotedFor] = useState<string | null>(null); //either null or gif id user voted for
+    const [gifIdVotedFor, setGifIdVotedFor] = useState<string | null>(null); //either null or gif id user voted for
 
     const getGifCardType = (id: string): GifCardStyle => {
-        if (!gifVotedFor) {
+        if (!gifIdVotedFor) {
             return GifCardStyle.Votable;
         }
         else {
-            return gifVotedFor === id ? GifCardStyle.Voted : GifCardStyle.Unvotable;
+            return gifIdVotedFor === id ? GifCardStyle.Voted : GifCardStyle.Unvotable;
         }
     }
     //TODO: Add helper function for more rules on disabling voting. i.e cannot vote for your own gif
@@ -34,11 +34,11 @@ export const GifSubmit: React.FC<GifSubmitProps> = props => {
                         height={SUBMITTED_GIF_SIZE}
                         width={SUBMITTED_GIF_SIZE}
                         title={submittedGif.gifSearchText}
-                        voteGif={(gif) => {
-                            setGifVotedFor(gif.id)
-                            props.voteGif(gif)
+                        voteForGif={(gif) => {
+                            setGifIdVotedFor(gif.id)
+                            props.voteForGif(gif)
                         }}
-                        gifVotedFor={gifVotedFor}
+                        gifIdVotedFor={gifIdVotedFor}
                         type={getGifCardType(submittedGif.id)}>
                     </GifCard>
                 </Grid>
