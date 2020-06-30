@@ -1,21 +1,35 @@
 import React, { useState, useEffect } from 'react'
-import { Round } from '../round/Round'
-import { Container, CircularProgress, withStyles } from '@material-ui/core';
-import { RoundResult } from '../round/RoundResult';
-import { SubmittedGif, IGif } from '../models/SubmittedGif';
-import { useMutation, useSubscription, useQuery } from '@apollo/react-hooks';
-import { NEW_ROUND_MUTATION, IRound } from '../graphql/round';
 import { useParams } from "react-router-dom";
-import { LOCAL_STORAGE_USER_NAME, LOCAL_STORAGE_USER_ID } from '../common/constants';
-import { START_GAME_MUTATION, GAME_STATE_CHANGED_SUBSCRIPTION, GET_GAME_BY_ID_QUERY_HOOK } from '../graphql/game';
-import { Lobby } from '../lobby/Lobby';
-import './GameComponent.css';
-import { Scoreboard } from '../scoreboard/Scoreboard';
-import { User } from '../models/User';
-import { IGame, IGameVars, IGameData, Game } from '../models/Game';
-import { REMOVE_USER_MUTATION } from '../graphql/user';
 import { Redirect } from "react-router-dom";
 
+// Model Components
+import { User } from '../models/User';
+import { Lobby } from '../lobby/Lobby';
+import { Round } from '../round/Round';
+import { IGame, IGameVars, IGameData, Game } from '../models/Game';
+import { Scoreboard } from '../scoreboard/Scoreboard';
+import { RoundResult } from '../round/RoundResult';
+import { SubmittedGif, IGif } from '../models/SubmittedGif';
+
+// UI + CSS
+import { Grid, Container, CircularProgress, withStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import './GameComponent.css';
+
+// Graphql + Apollo
+import { useMutation, useSubscription, useQuery } from '@apollo/react-hooks';
+import { NEW_ROUND_MUTATION, IRound } from '../graphql/round';
+import { START_GAME_MUTATION, GAME_STATE_CHANGED_SUBSCRIPTION, GET_GAME_BY_ID_QUERY_HOOK } from '../graphql/game';
+import { REMOVE_USER_MUTATION } from '../graphql/user';
+import { LOCAL_STORAGE_USER_NAME, LOCAL_STORAGE_USER_ID } from '../common/constants';
+
+const useStyles = makeStyles((theme) => ({
+  alignItemsAndJustifyContent: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+}));
 
 export interface IGameComponentProps {
     gameId: string
