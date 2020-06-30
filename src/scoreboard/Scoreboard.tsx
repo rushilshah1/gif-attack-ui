@@ -9,46 +9,8 @@ import MaterialTable from "material-table";
 interface ScoreboardProps {
     players: Array<User>;
 }
-/*
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            display: 'flex',
-            '& > *': {
-                margin: theme.spacing(1),
-            },
-        },
-        orange: {
-            color: theme.palette.getContrastText(deepOrange[500]),
-            backgroundColor: deepOrange[500],
-            width: theme.spacing(7),
-            height: theme.spacing(7),
-        },
-        purple: {
-            color: theme.palette.getContrastText(deepPurple[500]),
-            backgroundColor: deepPurple[500],
-            width: theme.spacing(7),
-            height: theme.spacing(7),
-        },
-        cyan: {
-            color: theme.palette.getContrastText(cyan[500]),
-            backgroundColor: cyan[500],
-            width: theme.spacing(7),
-            height: theme.spacing(7),
-        },
-        pink: {
-            color: theme.palette.getContrastText(pink[500]),
-            backgroundColor: pink[500],
-            width: theme.spacing(7),
-            height: theme.spacing(7),
-        },
-    }),
-);
 
-const COLORS: Array<string> = ['orange', 'purple', 'cyan', 'pink'];
-*/
 const tableCellStyle = {
-
     // padding: 5
 }
 const useStyles = makeStyles({
@@ -93,14 +55,11 @@ export const Scoreboard: React.FC<ScoreboardProps> = props => {
     const maxScore: number = Math.max(...props.players.map(player => player.score));
 
     return (
-
-        // <TableContainer component={Paper} className={classes.tableContainer}>
         <Table className={classes.table} size="small" aria-label="scoreboard">
             <TableHead>
                 <TableRow className={classes.header}>
                     <TableCell className={classes.headerCell}>
                         ATTACKERS
-                        {/* <Typography>ATTACKERS</Typography> */}
                     </TableCell>
                     <TableCell className={classes.headerCell} />
                     <TableCell className={classes.headerCell} />
@@ -119,7 +78,5 @@ export const Scoreboard: React.FC<ScoreboardProps> = props => {
                 ))}
             </TableBody>
         </Table>
-        // </TableContainer>
-
     )
 }

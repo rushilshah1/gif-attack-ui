@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Container, Icon, withStyles, Modal, Theme, makeStyles, createStyles, Button, Typography } from '@material-ui/core';
+import { Container, Icon, withStyles, Modal, Theme, makeStyles, createStyles, Button, Typography, Grid } from '@material-ui/core';
 import { Topic } from '../topic/Topic';
 import { UPDATE_TOPIC_MUTATION, ITopic } from '../graphql/topic';
 import './Round.css';
@@ -79,6 +79,9 @@ export const Round: React.FC<RoundProps> = props => {
 
     return (
         <Container>
+            <Grid container>
+            </Grid>
+
             <div className="round-heading">
                 <div className="round-number">
                     <h1>Round {props.currentGame.roundNumber}</h1>
@@ -99,8 +102,6 @@ export const Round: React.FC<RoundProps> = props => {
             <GifSubmit submittedGifs={props.currentGame.submittedGifs} voteGif={(gif) => (submitGifVote(gif))}></GifSubmit>
             {!hasUserSubmittedGif && <GifSelect selectGif={(gif, searchText) => (submitGif(gif, searchText))}></GifSelect>}
         </Container>
-
-
     )
 }
 
