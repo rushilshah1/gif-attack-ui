@@ -9,13 +9,13 @@
 }
 
 .logo {
-  width: 190px;
+  width: 215px;
   height: 190px;
 }
 
 .home-button {
   width: 275px;
-  height: 25px;
+  height: 30px;
 }
 
 .home-button-spacing {
@@ -24,4 +24,11 @@
 
 .logo-spacing {
   padding-bottom: 75px;
+}
+.home-form {
+  margin-top: 30px;
+}
+.form-field {
+  width: 275px;
+  height: 30px;
 }
