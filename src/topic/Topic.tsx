@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react'
+
+// UI + CSS
+import './Topic.css';
+import { TextField, Button, Grid } from '@material-ui/core';
 import { Theme, createStyles, makeStyles, withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
+// ExpansionPanel
 import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
 import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import Typography from '@material-ui/core/Typography';
+
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import './Topic.css';
-import { TextField, Button, Grid } from '@material-ui/core';
 
 interface TopicProps {
     submitTopic: (text: string) => void;
@@ -68,15 +73,11 @@ const ExpansionPanel = withStyles({
 
 const ExpansionPanelSummary = withStyles({
     root: {
-        // backgroundColor: 'rgba(0, 0, 0, .03)',
-        // borderBottom: '1px solid rgba(0, 0, 0, .125)',
-        // marginBottom: -1,
         '&$expanded': {
         },
     },
     content: {
         '&$expanded': {
-            // margin: '12px 0',
         },
     },
     expanded: {},
@@ -96,17 +97,20 @@ export const Topic: React.FC<TopicProps> = props => {
     const [expanded, setExpanded] = React.useState<string | false>(false);
 
     const handleChange = (panel: string) => (event: React.ChangeEvent<{}>, newExpanded: boolean) => {
-        setExpanded(newExpanded ? panel : false);
+    setExpanded(newExpanded ? panel : false);
     };
 
     return (
-        <div>
-            {!props.topic && <Typography variant="h5" component="h5">There is no topic selected for the round yet</Typography>}
-            {props.topic && <div className="topic">
-                <Typography variant="h5" component="h5" className={classes.boldText}>Topic: &nbsp;</Typography>
-                <Typography variant="h5" component="h5">{props.topic} </Typography>
-            </div>
-            }
+        <Grid container direction="column" alignItems="center">
+            <Grid item>
+                {props.topic && 
+                    <div className="topic">
+                        <Typography variant="h5" component="h5" className={classes.boldText}>Topic: &nbsp;</Typography>
+                        <Typography variant="h5" component="h5">{props.topic} </Typography>
+                    </div>
+                }
+            </Grid>
+
             <ExpansionPanel expanded={expanded === 'topicSubmitForm'} onChange={handleChange('topicSubmitForm')} className={classes.root}>
                 <ExpansionPanelSummary
                     expandIcon={<ExpandMoreIcon />}
@@ -140,8 +144,6 @@ export const Topic: React.FC<TopicProps> = props => {
                     </Grid>
                 </ExpansionPanelDetails>
             </ExpansionPanel>
-
-        </div>
-
+        </Grid>
     )
 }
