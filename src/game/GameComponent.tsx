@@ -21,27 +21,13 @@ import { useMutation, useSubscription, useQuery } from '@apollo/react-hooks';
 import { NEW_ROUND_MUTATION, IRound } from '../graphql/round';
 import { START_GAME_MUTATION, GAME_STATE_CHANGED_SUBSCRIPTION, GET_GAME_BY_ID_QUERY_HOOK } from '../graphql/game';
 import { REMOVE_USER_MUTATION } from '../graphql/user';
-import { LOCAL_STORAGE_USER_NAME, LOCAL_STORAGE_USER_ID } from '../common/constants';
 
-const useStyles = makeStyles((theme) => ({
-  alignItemsAndJustifyContent: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-}));
+// constants
+import { LOCAL_STORAGE_USER_NAME, LOCAL_STORAGE_USER_ID } from '../common/constants';
 
 export interface IGameComponentProps {
     gameId: string
 }
-
-const StyledContainer = withStyles({
-    root: {
-        textAlign: 'center',
-        minWidth: '85%',
-        justifyContent: 'center'
-    }
-})(Container);
 
 export const GameComponent: React.FC<IGameComponentProps> = props => {
     /*Retrieve info needed to enter a game */
@@ -115,16 +101,31 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
     //     return <Redirect to={'/home'} />
     // }
     return (
-        <div className="game">
-            <Scoreboard players={currentGame.users}></Scoreboard>
-            <StyledContainer>
-                {currentGame.roundNumber === 0 && <Lobby gameId={currentGame.id} players={currentGame.users} startGame={() => startGame()} />}
-                {currentGame.roundNumber > 0 && (currentGame.roundActive ?
-                    <Round player={currentUser} currentGame={currentGame} /> :
-                    <RoundResult submittedGifs={currentGame.submittedGifs} players={currentGame.users} startNewRound={() => startNewRound()}
-                    />
-                )}
-            </StyledContainer>
-        </div>
+      <Container>
+        <Grid container direction="row" justify="center" alignItems="flex-start">
+          <Grid item lg={2}>
+            <Grid container justify="center">
+              <Grid item>
+                <Scoreboard players={currentGame.users}></Scoreboard>
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item lg={8}>
+            { currentGame.roundNumber === 0 &&
+              <Lobby gameId={currentGame.id} players={currentGame.users} startGame={() => startGame()} />
+            }
+
+            {currentGame.roundNumber > 0 &&
+              (currentGame.roundActive ?
+                <Round player={currentUser} currentGame={currentGame} /> :
+                <RoundResult submittedGifs={currentGame.submittedGifs} players={currentGame.users} startNewRound={() => startNewRound()}/>
+            )}
+          </Grid>
+
+          <Grid item lg={2}>
+          </Grid>
+        </Grid>
+      </Container>
     )
 }
