@@ -68,39 +68,13 @@ export const Round: React.FC<RoundProps> = props => {
         await updateTopic({ variables: { topicInput: topicInput, gameId: props.currentGame.id } });
     };
 
-    /** Instructions Modal Functions */
-    const openInstructionsModal = () => {
-        setOpenInstructions(true);
-    }
-
-    const closeInstructionsModal = () => {
-        setOpenInstructions(false);
-    }
-
     return (
         <Container>
-            <div className="round-heading">
-                <div className="round-number">
-                    <h1>Round {props.currentGame.roundNumber}</h1>
-                    <Icon color='primary' className='round-help' onClick={() => openInstructionsModal()}>
-                        <StyledHelpIcon />
-                    </Icon>
-                </div>
-                <div className="round-timer">
-                    <Timer gameId={props.currentGame.id}></Timer>
-                </div>
-            </div>
-            {openInstructions && <Modal
-                open={openInstructions}
-                onClose={closeInstructionsModal}>
-                <InstructionsModal closeInstructionsModal={() => closeInstructionsModal()} />
-            </Modal>}
             <Topic topic={props.currentGame.topic} submitTopic={text => (submitTopic(text))} />
+
             <GifSubmit submittedGifs={props.currentGame.submittedGifs} voteForGif={(gif) => (submitGifVote(gif))}></GifSubmit>
             {!hasUserSubmittedGif && <GifSelect selectGif={(gif, searchText) => (submitGif(gif, searchText))}></GifSelect>}
         </Container>
-
-
     )
 }
 

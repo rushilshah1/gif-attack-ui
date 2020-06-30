@@ -124,6 +124,7 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
           </Grid>
 
           <Grid item lg={2}>
+            <h1>Round {currentGame.roundNumber}</h1>
           </Grid>
         </Grid>
       </Container>
