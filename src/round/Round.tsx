@@ -99,7 +99,7 @@ export const Round: React.FC<RoundProps> = props => {
                 <InstructionsModal closeInstructionsModal={() => closeInstructionsModal()} />
             </Modal>}
             <Topic topic={props.currentGame.topic} submitTopic={text => (submitTopic(text))} />
-            <GifSubmit submittedGifs={props.currentGame.submittedGifs} voteGif={(gif) => (submitGifVote(gif))}></GifSubmit>
+            <GifSubmit submittedGifs={props.currentGame.submittedGifs} voteForGif={(gif) => (submitGifVote(gif))}></GifSubmit>
             {!hasUserSubmittedGif && <GifSelect selectGif={(gif, searchText) => (submitGif(gif, searchText))}></GifSelect>}
         </Container>
     )

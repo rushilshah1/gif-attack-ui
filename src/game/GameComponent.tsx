@@ -15,6 +15,7 @@ import { User } from '../models/User';
 import { IGame, IGameVars, IGameData, Game } from '../models/Game';
 import { REMOVE_USER_MUTATION } from '../graphql/user';
 import { makeStyles } from '@material-ui/core/styles';
+import { Redirect } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   alignItemsAndJustifyContent: {
@@ -35,7 +36,6 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
 
     const localStorageUserName: string | null = localStorage.getItem(LOCAL_STORAGE_USER_NAME)
     const localStorageUserId: string | null = localStorage.getItem(LOCAL_STORAGE_USER_ID)
-
     /*State of user and game */
     const [currentUser, setCurrentUser] = useState<User>(
         localStorageUserName && localStorageUserId ? new User({ id: localStorageUserId, name: localStorageUserName, score: 0 }) : new User());
@@ -59,12 +59,14 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
     });
 
     /** Remove user from game if they leave/close the screen. TODO: Handle tab close bug */
+    /*
     useEffect(() => {
         window.addEventListener("beforeunload", leaveGame);
         return () => {
             window.removeEventListener("beforeunload", leaveGame);
         }
     });
+    */
     const leaveGame = async (event) => {
         event.preventDefault();
         await removeUser({ variables: { user: currentUser, gameId: currentGame.id } });
@@ -96,6 +98,10 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
     if (!currentGame.id) {
         return <CircularProgress />
     }
+    //TODO: Fix this
+    // if (!localStorageUserName || !localStorageUserId) {
+    //     return <Redirect to={'/home'} />
+    // }
     return (
       <Container>
         <Grid container direction="row" justify="center" alignItems="flex-start">
