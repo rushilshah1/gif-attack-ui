@@ -1,5 +1,4 @@
 .next-round-action {
-    /* width: max-content; */
     display: flex;
     width: 100%;
 }
@@ -7,13 +6,6 @@
 .next-round-text {
     display: inline-flex;
     margin-left: 10px;
-    /* width: 100vh; */
-}
-.results {
-    /* display: inline-block; */
-    text-align: center;
-    justify-content: center;
-    width: 50%;
 }
 
 .winnerCards {
