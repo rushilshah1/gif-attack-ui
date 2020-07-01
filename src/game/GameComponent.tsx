@@ -12,7 +12,6 @@ import { RoundResult } from '../round/RoundResult';
 import { SubmittedGif, IGif } from '../models/SubmittedGif';
 // UI + CSS
 import { Grid, Container, CircularProgress, Fab, withStyles } from '@material-ui/core';
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import { makeStyles } from '@material-ui/core/styles';
 import './GameComponent.css';
 // Graphql + Apollo
@@ -116,20 +115,14 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
                     {currentGame.roundNumber > 0 &&
                         (currentGame.roundActive ?
                             <Round player={currentUser} currentGame={currentGame} /> :
-                            <RoundResult submittedGifs={currentGame.submittedGifs} players={currentGame.users}/>
+                            <RoundResult submittedGifs={currentGame.submittedGifs} players={currentGame.users} startNewRound={() => startNewRound()}/>
                         )}
                 </Grid>
 
                 <Grid item lg={2}>
                     <Grid container direction="column" alignItems="center">
                         <Grid item>
-                            <div className='next-round'>
-                                <h1 className='next-round-text'>Round {currentGame.roundNumber}</h1>
-
-                                <Fab color="secondary" aria-label="next round" onClick={() => startNewRound()} size="medium">
-                                    <ArrowForwardIosIcon />
-                                </Fab>
-                            </div>
+                            <h1>Round {currentGame.roundNumber}</h1>
                         </Grid>
 
                         <Grid item>

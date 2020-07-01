@@ -1,0 +1,9 @@
+.next-round {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.next-round-icon {
+	padding-left: 10px;
+}
