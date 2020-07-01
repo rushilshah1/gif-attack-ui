@@ -23,7 +23,6 @@ import { createRemoveUserPayload } from '../graphql/user';
 import ENVIRONMENT from '../common/environments';
 import { LOCAL_STORAGE_USER_NAME, LOCAL_STORAGE_USER_ID } from '../common/constants';
 
-
 export interface IGameComponentProps {
     gameId: string
 }
@@ -116,11 +115,20 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
                     {currentGame.roundNumber > 0 &&
                         (currentGame.roundActive ?
                             <Round player={currentUser} currentGame={currentGame} /> :
-                            <RoundResult submittedGifs={currentGame.submittedGifs} players={currentGame.users} startNewRound={() => startNewRound()} />
+                            <RoundResult submittedGifs={currentGame.submittedGifs} players={currentGame.users}/>
                         )}
                 </Grid>
 
                 <Grid item lg={2}>
+                    <h1>Round {currentGame.roundNumber}</h1>
+
+                    <div className='next-round'>
+                        <Fab color="secondary" aria-label="next round" onClick={() => startNewRound()} size="medium">
+                            <ArrowForwardIosIcon />
+                        </Fab>
+
+                        <h4 className='next-round-text'>Next Round</h4>
+                    </div>
                 </Grid>
             </Grid>
         </Container>
