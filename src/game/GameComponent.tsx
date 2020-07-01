@@ -102,7 +102,7 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
     // }
     return (
       <Container>
-        <Grid container direction="row" justify="center" alignItems="flex-start">
+        <Grid container direction="row" justify="space-evenly" alignItems="flex-start">
           <Grid item lg={2}>
             <Grid container justify="center">
               <Grid item>

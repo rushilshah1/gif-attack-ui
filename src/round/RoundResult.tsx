@@ -68,10 +68,10 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
             return <h2>There were no submitted gifs this round!</h2>;
         }
         else if (winnerGifs.length === 1) {
-            return <h2>We have a Winner!</h2>
+            return <h1>Winner!</h1>
         }
         else if (winnerGifs.length > 1) {
-            return <h2>We have a Tie!</h2>;
+            return <h2>Tie!</h2>;
         }
     }
     const showWinningGifs = () => {
@@ -88,10 +88,12 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
             return <h2>There were no votes cast this round!</h2>
         }
         if (consolationGifs.length > 0) {
-            return (<div>
-                <ResultDivider />
-                <h2>Runner up(s):</h2>
-            </div>);
+            return (
+                <div>
+                    <ResultDivider />
+                    <h2>Runner up(s):</h2>
+                </div>
+            );
         }
     }
     const showConsolationGifs = () => {
@@ -105,21 +107,30 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
 
     };
     return (
-        <Grid container justify="center" alignItems="flex-start">
+        <Grid container justify="center" alignItems="center" direction="column">
             <Grid item>
-                <div className="results">
-                    {showWinnerHeading()}
-                    {showWinningGifs()}
-                    {showConsolationHeading()}
-                    {showConsolationGifs()}
-                </div>
+                {showWinnerHeading()}
 
-                <Fab color="secondary" aria-label="next round" onClick={() => props.startNewRound()} size="large">
+                <Fab color="secondary" aria-label="next round" onClick={() => props.startNewRound()} size="medium">
                     <ArrowForwardIosIcon />
                 </Fab>
 
-                <h4 className="next-round-text">Next Round</h4>
+                <h4>Next Round</h4>
             </Grid>
+
+            <Grid item>
+                {showWinningGifs()}
+            </Grid>
+
+            <Grid item>
+                {showConsolationHeading()}
+            </Grid>
+
+            <Grid item>
+                {showConsolationGifs()}
+            </Grid>
+
+                
         </Grid>
     )
 }
