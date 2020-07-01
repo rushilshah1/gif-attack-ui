@@ -5,7 +5,6 @@ import { partition } from 'lodash';
 // UI + CSS
 import './RoundResult.css';
 import { Container, Card, CardHeader, CardContent, CardActions, IconButton, Divider, Fab, makeStyles, withStyles, Typography, Grid, Theme, createStyles } from '@material-ui/core'
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 // Models
 import { SubmittedGif } from '../models/SubmittedGif';
@@ -18,7 +17,6 @@ import { WINNER_GIF_SIZE, CONSOLIDATION_GIF_SIZE } from '../common/constants';
 export interface RoundResultProps {
     players: Array<User>;
     submittedGifs: Array<SubmittedGif>;
-    startNewRound: () => void;
 }
 
 const ResultDivider = withStyles({
@@ -110,12 +108,6 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
         <Grid container justify="center" alignItems="center" direction="column">
             <Grid item>
                 {showWinnerHeading()}
-
-                <Fab color="secondary" aria-label="next round" onClick={() => props.startNewRound()} size="medium">
-                    <ArrowForwardIosIcon />
-                </Fab>
-
-                <h4>Next Round</h4>
             </Grid>
 
             <Grid item>
@@ -129,8 +121,6 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
             <Grid item>
                 {showConsolationGifs()}
             </Grid>
-
-                
         </Grid>
     )
 }
