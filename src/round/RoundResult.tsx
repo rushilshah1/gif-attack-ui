@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import './RoundResult.css';
-import { SubmittedGif } from '../models/SubmittedGif';
 import * as _ from "lodash";
+import { partition } from 'lodash';
+
+// UI + CSS
+import './RoundResult.css';
 import { Container, Card, CardHeader, CardContent, CardActions, IconButton, Divider, Fab, makeStyles, withStyles, Typography, Grid, Theme, createStyles } from '@material-ui/core'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+
+// Models
+import { SubmittedGif } from '../models/SubmittedGif';
 import { User } from '../models/User';
-import { WINNER_GIF_SIZE, CONSOLIDATION_GIF_SIZE } from '../common/constants';
-import { partition } from 'lodash';
 import { GifCard, GifCardStyle } from '../gif/GifCard';
+
+// Constants
+import { WINNER_GIF_SIZE, CONSOLIDATION_GIF_SIZE } from '../common/constants';
 
 export interface RoundResultProps {
     players: Array<User>;
@@ -22,15 +28,7 @@ const ResultDivider = withStyles({
     }
 })(Divider);
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-        }
-    })
-);
-
 export const RoundResult: React.FC<RoundResultProps> = props => {
-    const classes = useStyles();
     const [winnerGifs, setWinnerGifs] = useState<Array<SubmittedGif>>([]);
     const [consolationGifs, setConsolationGifs] = useState<Array<SubmittedGif>>([]);
     useEffect(() => {
@@ -79,7 +77,7 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
     const showWinningGifs = () => {
         if (winnerGifs.length > 0) {
             return (
-                <Grid container direction="row" className={classes.root}>
+                <Grid container direction="row">
                     {generateGifPanel(winnerGifs, true)}
                 </Grid>
             )
@@ -99,7 +97,7 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
     const showConsolationGifs = () => {
         if (consolationGifs.length > 0) {
             return (
-                <Grid container direction="row" className={classes.root}>
+                <Grid container direction="row">
                     {generateGifPanel(consolationGifs, false)}
                 </Grid>
             )
@@ -107,21 +105,21 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
 
     };
     return (
-        <Container>
-            <div className="next-round-action">
-                <Fab color="secondary" aria-label="next round" onClick={() => props.startNewRound()} size="large">
-                    <ArrowForwardIosIcon />
-                </Fab>
-                <h4 className="next-round-text">Next Round</h4>
+        <Grid container justify="center" alignItems="flex-start">
+            <Grid item>
                 <div className="results">
                     {showWinnerHeading()}
                     {showWinningGifs()}
                     {showConsolationHeading()}
                     {showConsolationGifs()}
                 </div>
-            </div>
 
+                <Fab color="secondary" aria-label="next round" onClick={() => props.startNewRound()} size="large">
+                    <ArrowForwardIosIcon />
+                </Fab>
 
-        </Container>
+                <h4 className="next-round-text">Next Round</h4>
+            </Grid>
+        </Grid>
     )
 }
