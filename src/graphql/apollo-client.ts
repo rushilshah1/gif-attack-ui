@@ -45,9 +45,6 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (networkError) console.log(`[Network error]: ${networkError}`);
 })
 
-/**
- * For now simply sending user name in header so server can understand who is making the requests,
- */
 const authLink = setContext((_, { headers, connectionParams }) => {
     const user = localStorage.getItem(LOCAL_STORAGE_USER_NAME);
     return {
