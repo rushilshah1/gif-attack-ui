@@ -1,3 +1,4 @@
+import './GameComponent.css';
 import React, { useState, useEffect } from 'react'
 import { Round } from '../round/Round'
 import { Container, CircularProgress, withStyles } from '@material-ui/core';
@@ -9,13 +10,11 @@ import { useParams } from "react-router-dom";
 import { LOCAL_STORAGE_USER_NAME, LOCAL_STORAGE_USER_ID } from '../common/constants';
 import { START_GAME_MUTATION, GAME_STATE_CHANGED_SUBSCRIPTION, GET_GAME_BY_ID_QUERY_HOOK } from '../graphql/game';
 import { Lobby } from '../lobby/Lobby';
-import './GameComponent.css';
 import { Scoreboard } from '../scoreboard/Scoreboard';
 import { User } from '../models/User';
 import { IGame, IGameVars, IGameData, Game } from '../models/Game';
-import { REMOVE_USER_MUTATION } from '../graphql/user';
-import { Redirect } from "react-router-dom";
-
+import { createRemoveUserPayload } from '../graphql/user';
+import ENVIRONMENT from '../common/environments';
 
 export interface IGameComponentProps {
     gameId: string
@@ -42,7 +41,6 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
     /*Apollo Hooks */
     const [gameStatusStarted, gameStatusStartedResult] = useMutation(START_GAME_MUTATION);
     const [startNextRound, startNextRoundResult] = useMutation(NEW_ROUND_MUTATION);
-    const [removeUser, removeUserResult] = useMutation(REMOVE_USER_MUTATION);
 
     const gameState = useQuery<IGameData, IGameVars>(GET_GAME_BY_ID_QUERY_HOOK, {
         variables: { gameId: params.gameId }, onCompleted: async (response) => {
@@ -57,17 +55,18 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
     });
 
     /** Remove user from game if they leave/close the screen. TODO: Handle tab close bug */
-    /*
     useEffect(() => {
-        window.addEventListener("beforeunload", leaveGame);
+        window.addEventListener("unload", leaveGame);
         return () => {
-            window.removeEventListener("beforeunload", leaveGame);
+            window.removeEventListener("unload", leaveGame);
         }
     });
-    */
+
     const leaveGame = async (event) => {
         event.preventDefault();
-        await removeUser({ variables: { user: currentUser, gameId: currentGame.id } });
+        const leaveGamePayload = createRemoveUserPayload(currentUser, currentGame.id);
+        let blob = new Blob([leaveGamePayload], { type: 'application/json;charset=UTF-8' })
+        navigator.sendBeacon(ENVIRONMENT.API_ENDPOINT, blob);
     };
 
     /** Captures any change in game state*/
@@ -76,7 +75,6 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
             updatedGame.submittedGifs = updatedGame.submittedGifs.map((rawGif: IGif) => new SubmittedGif(rawGif));
         }
         setCurrentGame(prevGame => updatedGame);
-        console.log(`Game state has changed:`);
     }
 
     /** Start Game */
@@ -90,7 +88,6 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
     const startNewRound = async () => {
         const changeRoundInput: IRound = { roundNumber: currentGame.roundNumber + 1, roundActive: true };
         await startNextRound({ variables: { round: changeRoundInput, gameId: currentGame.id } });
-        console.log(`Round ${currentGame.roundNumber} has finished, a new round is about to start...`);
     };
 
     if (!currentGame.id) {
