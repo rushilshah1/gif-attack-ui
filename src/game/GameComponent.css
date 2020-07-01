@@ -2,3 +2,14 @@
   width: 120px;
   height: 100px;
 }
+
+.next-round {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.next-round-text {
+	margin-left: -20px;
+	padding-right: 10px;
+}
