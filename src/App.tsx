@@ -47,11 +47,11 @@ function App() {
           <BrowserRouter>
             <Container fixed>
               {/*TODO: Guard Game route by ensuring there is a valid user in the gmae, otherwise re-route to Home */}
-              <Switch>
-                <Route exact path="/home" component={Home}></Route>
-                <Route exact path="/game/:gameId" component={GameComponent}></Route>
-                <Route path="/" render={() => <Redirect to="/home" />} />
-              </Switch>
+              {/* <Switch> */}
+              <Route exact path="/home" component={Home}></Route>
+              <Route exact path="/game/:gameId" component={GameComponent}></Route>
+              <Route path="/" render={() => <Redirect to="/home" />} />
+              {/* </Switch> */}
             </Container>
           </BrowserRouter>
         </MuiThemeProvider>
