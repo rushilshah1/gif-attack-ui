@@ -47,7 +47,7 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
         return gifList.map((gif: SubmittedGif) => {
             const gifCardTitle: string = userNameByIdMap.get(gif.userId) + (gif.gifSearchText ? ` - ${gif.gifSearchText}` : '');
             return (
-                <Grid item lg={6} key={gif.id}>
+                <Grid item lg={3} key={gif.id}>
                     <GifCard
                         gif={gif}
                         height={size}
@@ -97,7 +97,7 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
     const showConsolationGifs = () => {
         if (consolationGifs.length > 0) {
             return (
-                <Grid container direction="row">
+                <Grid container direction="row" justify="center" alignItems="flex-start">
                     {generateGifPanel(consolationGifs, false)}
                 </Grid>
             )
