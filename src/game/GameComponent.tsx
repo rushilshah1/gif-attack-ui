@@ -5,7 +5,6 @@ import { Redirect } from "react-router-dom";
 import { User } from '../models/User';
 import { Lobby } from '../lobby/Lobby';
 import { Round } from '../round/Round';
-import { Timer } from '../round/Timer';
 import { IGame, IGameVars, IGameData, Game } from '../models/Game';
 import { Scoreboard } from '../scoreboard/Scoreboard';
 import { RoundResult } from '../round/RoundResult';
@@ -123,10 +122,6 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
                     <Grid container direction="column" alignItems="center">
                         <Grid item>
                             <h1>Round {currentGame.roundNumber}</h1>
-                        </Grid>
-
-                        <Grid item>
-                            <Timer gameId={currentGame.id}></Timer>
                         </Grid>
                     </Grid>
                 </Grid>
