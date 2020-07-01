@@ -13,7 +13,6 @@ import { Container, Grid, Icon, withStyles, Modal, Theme, makeStyles, createStyl
 import { InstructionsModal } from './InstructionsModal';
 import { Game } from '../models/Game';
 import { User } from '../models/User';
-import { Timer } from './Timer';
 import { Topic } from '../topic/Topic';
 
 //Icons
