@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Container, Icon, withStyles, Modal, Theme, makeStyles, createStyles, Button, Typography } from '@material-ui/core';
+import { Container, Icon, withStyles, Modal, Theme, makeStyles, createStyles, Button, Typography, Backdrop } from '@material-ui/core';
 import { Topic } from '../topic/Topic';
 import { UPDATE_TOPIC_MUTATION, ITopic } from '../graphql/topic';
 import './Round.css';
@@ -13,6 +13,7 @@ import { Timer } from './Timer';
 import HelpIcon from '@material-ui/icons/Help';
 import { InstructionsModal } from './InstructionsModal';
 import { Game } from '../models/Game';
+import { LOCAL_STORAGE_PLAYED_BEFORE } from '../common/constants';
 
 export interface RoundProps {
     currentGame: Game;
@@ -29,7 +30,7 @@ const StyledHelpIcon = withStyles({
 export const Round: React.FC<RoundProps> = props => {
     /**State for instructions modal and user gif submission */
     const [hasUserSubmittedGif, setHasUserSubmittedGif] = useState<boolean>(false);
-    const [openInstructions, setOpenInstructions] = useState<boolean>(false);
+    const [openInstructions, setOpenInstructions] = useState<boolean>(localStorage.getItem(LOCAL_STORAGE_PLAYED_BEFORE) ? false : true);
 
     /** Apollo Hooks */
     const [createGif, createGifResult] = useMutation(CREATE_GIF_MUTATION);
@@ -75,6 +76,7 @@ export const Round: React.FC<RoundProps> = props => {
 
     const closeInstructionsModal = () => {
         setOpenInstructions(false);
+        localStorage.setItem(LOCAL_STORAGE_PLAYED_BEFORE, 'true');
     }
 
     return (
@@ -92,7 +94,12 @@ export const Round: React.FC<RoundProps> = props => {
             </div>
             {openInstructions && <Modal
                 open={openInstructions}
-                onClose={closeInstructionsModal}>
+                onClose={closeInstructionsModal}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                    timeout: 1500,
+                }}>
                 <InstructionsModal closeInstructionsModal={() => closeInstructionsModal()} />
             </Modal>}
             <Topic topic={props.currentGame.topic} submitTopic={text => (submitTopic(text))} />
