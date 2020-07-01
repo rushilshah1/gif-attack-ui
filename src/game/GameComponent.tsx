@@ -1,8 +1,6 @@
-import './GameComponent.css';
 import React, { useState, useEffect } from 'react'
 import { useParams } from "react-router-dom";
 import { Redirect } from "react-router-dom";
-
 // Model Components
 import { User } from '../models/User';
 import { Lobby } from '../lobby/Lobby';
@@ -11,23 +9,17 @@ import { IGame, IGameVars, IGameData, Game } from '../models/Game';
 import { Scoreboard } from '../scoreboard/Scoreboard';
 import { RoundResult } from '../round/RoundResult';
 import { SubmittedGif, IGif } from '../models/SubmittedGif';
-
 // UI + CSS
 import { Grid, Container, CircularProgress, withStyles } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import './GameComponent.css';
-
 // Graphql + Apollo
 import { useMutation, useSubscription, useQuery } from '@apollo/react-hooks';
 import { NEW_ROUND_MUTATION, IRound } from '../graphql/round';
 import { START_GAME_MUTATION, GAME_STATE_CHANGED_SUBSCRIPTION, GET_GAME_BY_ID_QUERY_HOOK } from '../graphql/game';
-import { Lobby } from '../lobby/Lobby';
-import { Scoreboard } from '../scoreboard/Scoreboard';
-import { User } from '../models/User';
-import { IGame, IGameVars, IGameData, Game } from '../models/Game';
 import { createRemoveUserPayload } from '../graphql/user';
-import ENVIRONMENT from '../common/environments';
 // constants
+import ENVIRONMENT from '../common/environments';
 import { LOCAL_STORAGE_USER_NAME, LOCAL_STORAGE_USER_ID } from '../common/constants';
 
 
@@ -105,31 +97,31 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
     //     return <Redirect to={'/home'} />
     // }
     return (
-      <Container>
-        <Grid container direction="row" justify="center" alignItems="flex-start">
-          <Grid item lg={2}>
-            <Grid container justify="center">
-              <Grid item>
-                <Scoreboard players={currentGame.users}></Scoreboard>
-              </Grid>
+        <Container>
+            <Grid container direction="row" justify="center" alignItems="flex-start">
+                <Grid item lg={2}>
+                    <Grid container justify="center">
+                        <Grid item>
+                            <Scoreboard players={currentGame.users}></Scoreboard>
+                        </Grid>
+                    </Grid>
+                </Grid>
+
+                <Grid item lg={8}>
+                    {currentGame.roundNumber === 0 &&
+                        <Lobby gameId={currentGame.id} players={currentGame.users} startGame={() => startGame()} />
+                    }
+
+                    {currentGame.roundNumber > 0 &&
+                        (currentGame.roundActive ?
+                            <Round player={currentUser} currentGame={currentGame} /> :
+                            <RoundResult submittedGifs={currentGame.submittedGifs} players={currentGame.users} startNewRound={() => startNewRound()} />
+                        )}
+                </Grid>
+
+                <Grid item lg={2}>
+                </Grid>
             </Grid>
-          </Grid>
-
-          <Grid item lg={8}>
-            { currentGame.roundNumber === 0 &&
-              <Lobby gameId={currentGame.id} players={currentGame.users} startGame={() => startGame()} />
-            }
-
-            {currentGame.roundNumber > 0 &&
-              (currentGame.roundActive ?
-                <Round player={currentUser} currentGame={currentGame} /> :
-                <RoundResult submittedGifs={currentGame.submittedGifs} players={currentGame.users} startNewRound={() => startNewRound()}/>
-            )}
-          </Grid>
-
-          <Grid item lg={2}>
-          </Grid>
-        </Grid>
-      </Container>
+        </Container>
     )
 }
