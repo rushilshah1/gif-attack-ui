@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { IUser } from '../models/User';
 
 export const ADD_USER_MUTATION = gql`
     mutation AddUserMutation($user: AddUserInput!, $gameId: ID!) {
@@ -29,3 +30,12 @@ export const UPDATE_USER_MUTATION = gql`
         }
     }
 `
+
+export const createRemoveUserPayload = (user: IUser, gameId: string): string => {
+    const payload: Object = {
+        "query": "mutation RemoveUserMutation($user: ModifyUserInput!, $gameId: ID!) {removeUser(user: $user, gameId: $gameId) {name}}",
+        "operationName": "RemoveUserMutation",
+        "variables": { "user": { "id": user.id, "name": user.name, "score": user.score }, "gameId": gameId }
+    };
+    return JSON.stringify(payload);
+}

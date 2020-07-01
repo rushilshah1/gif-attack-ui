@@ -35,7 +35,7 @@ const theme = createMuiTheme({
     button: {
       fontFamily: 'BlinkMacSystemFont',
     },
-    fontFamily: 'BlinkMacSystemFont'
+    fontFamily: 'BlinkMacSystemFont',
   }
 })
 
