@@ -120,14 +120,13 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
                 </Grid>
 
                 <Grid item lg={2}>
-                    <h1>Round {currentGame.roundNumber}</h1>
 
                     <div className='next-round'>
+                        <h1 className='next-round-text'>Round {currentGame.roundNumber}</h1>
+
                         <Fab color="secondary" aria-label="next round" onClick={() => startNewRound()} size="medium">
                             <ArrowForwardIosIcon />
                         </Fab>
-
-                        <h4 className='next-round-text'>Next Round</h4>
                     </div>
                 </Grid>
             </Grid>
