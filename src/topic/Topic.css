@@ -5,10 +5,3 @@
     justify-content: center;
     text-align: center;
 }
-
-.topic-form {
-    display: flex;
-    vertical-align: bottom;
-    margin-bottom: auto;
-    margin-top: auto;
-}

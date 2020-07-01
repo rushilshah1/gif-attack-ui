@@ -1,18 +1,28 @@
 import React, { useState, useEffect } from 'react'
-import { Container, Icon, withStyles, Modal, Theme, makeStyles, createStyles, Button, Typography } from '@material-ui/core';
-import { Topic } from '../topic/Topic';
-import { UPDATE_TOPIC_MUTATION, ITopic } from '../graphql/topic';
-import './Round.css';
+
+// Apollo + Graphql
 import { useMutation, useSubscription } from '@apollo/react-hooks';
-import { GifSelect } from '../gif/GifSelect';
 import { CREATE_GIF_MUTATION, UPDATE_GIF_MUTATION } from '../graphql/gif';
-import { GifSubmit } from '../gif/GifSubmit';
-import { SubmittedGif, IGif } from '../models/SubmittedGif';
-import { User } from '../models/User';
-import { Timer } from './Timer';
-import HelpIcon from '@material-ui/icons/Help';
+import { UPDATE_TOPIC_MUTATION, ITopic } from '../graphql/topic';
+
+//UI + CSS
+import './Round.css';
+import { Container, Grid, Icon, withStyles, Modal, Theme, makeStyles, createStyles, Button, Typography } from '@material-ui/core';
+
+// Components
 import { InstructionsModal } from './InstructionsModal';
 import { Game } from '../models/Game';
+import { User } from '../models/User';
+import { Timer } from './Timer';
+import { Topic } from '../topic/Topic';
+
+//Icons
+import HelpIcon from '@material-ui/icons/Help';
+
+//Giphy
+import { GifSubmit } from '../gif/GifSubmit';
+import { GifSelect } from '../gif/GifSelect';
+import { SubmittedGif, IGif } from '../models/SubmittedGif';
 
 export interface RoundProps {
     currentGame: Game;
@@ -68,40 +78,14 @@ export const Round: React.FC<RoundProps> = props => {
         await updateTopic({ variables: { topicInput: topicInput, gameId: props.currentGame.id } });
     };
 
-    /** Instructions Modal Functions */
-    const openInstructionsModal = () => {
-        setOpenInstructions(true);
-    }
-
-    const closeInstructionsModal = () => {
-        setOpenInstructions(false);
-    }
-
     return (
         <Container>
-            <div className="round-heading">
-                <div className="round-number">
-                    <h1>Round {props.currentGame.roundNumber}</h1>
-                    <Icon color='primary' className='round-help' onClick={() => openInstructionsModal()}>
-                        <StyledHelpIcon />
-                    </Icon>
-                </div>
-                <div className="round-timer">
-                    <Timer gameId={props.currentGame.id}></Timer>
-                </div>
-            </div>
-            {openInstructions && <Modal
-                open={openInstructions}
-                onClose={closeInstructionsModal}>
-                <InstructionsModal closeInstructionsModal={() => closeInstructionsModal()} />
-            </Modal>}
-            <Topic topic={props.currentGame.topic} submitTopic={text => (submitTopic(text))} />
-            <GifSubmit submittedGifs={props.currentGame.submittedGifs} voteForGif={(gif) => (submitGifVote(gif))}></GifSubmit>
-            {!hasUserSubmittedGif && <GifSelect selectGif={(gif, searchText) => (submitGif(gif, searchText))}></GifSelect>}
+            <Grid container justify="center">
+                <Topic topic={props.currentGame.topic} submitTopic={text => (submitTopic(text))} />
+
+                <GifSubmit submittedGifs={props.currentGame.submittedGifs} voteForGif={(gif) => (submitGifVote(gif))}></GifSubmit>
+                {!hasUserSubmittedGif && <GifSelect selectGif={(gif, searchText) => (submitGif(gif, searchText))}></GifSelect>}
+            </Grid>
         </Container>
-
-
     )
 }
-
-
