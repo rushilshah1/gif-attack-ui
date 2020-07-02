@@ -10,6 +10,7 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 // Models
 import { SubmittedGif } from '../models/SubmittedGif';
 import { User } from '../models/User';
+import { Game } from '../models/Game';
 import { GifCard, GifCardStyle } from '../gif/GifCard';
 
 // Constants
@@ -19,6 +20,7 @@ export interface RoundResultProps {
     players: Array<User>;
     submittedGifs: Array<SubmittedGif>;
     startNewRound: () => void;
+    currentGame: Game;
 }
 
 const ResultDivider = withStyles({
@@ -107,27 +109,35 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
 
     };
     return (
-        <Grid container justify="center" alignItems="center" direction="column">
-            <Grid item className="next-round">
-                {showWinnerHeading()}
+        <Grid container>
+            <Grid item md={10}>
+                <Grid container justify="center" alignItems="center" direction="column">
+                    <Grid item className="next-round">
+                        {showWinnerHeading()}
 
-                <div className="next-round-icon">
-                    <Fab color="secondary" aria-label="next round" onClick={() => props.startNewRound()} size="small">
-                        <ArrowForwardIosIcon />
-                    </Fab>
-                </div>
+                        <div className="next-round-icon">
+                            <Fab color="secondary" aria-label="next round" onClick={() => props.startNewRound()} size="small">
+                                <ArrowForwardIosIcon />
+                            </Fab>
+                        </div>
+                    </Grid>
+
+                    <Grid item>
+                        {showWinningGifs()}
+                    </Grid>
+
+                    <Grid item>
+                        {showConsolationHeading()}
+                    </Grid>
+
+                    <Grid item>
+                        {showConsolationGifs()}
+                    </Grid>
+                </Grid>
             </Grid>
 
-            <Grid item>
-                {showWinningGifs()}
-            </Grid>
-
-            <Grid item>
-                {showConsolationHeading()}
-            </Grid>
-
-            <Grid item>
-                {showConsolationGifs()}
+            <Grid item md={2}>
+                <h1>Round {props.currentGame.roundNumber}</h1>
             </Grid>
         </Grid>
     )

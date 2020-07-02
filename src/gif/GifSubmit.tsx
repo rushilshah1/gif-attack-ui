@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
-import { Container, Grid } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import './GifSubmit.scss';
 import { SubmittedGif } from '../models/SubmittedGif';
 import ENVIRONMENT from '../common/environments';
 import { SUBMITTED_GIF_SIZE } from '../common/constants';
 import { GifCard, GifCardStyle } from './GifCard';
-
 
 export interface GifSubmitProps {
     submittedGifs: Array<SubmittedGif>;
