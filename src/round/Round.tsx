@@ -29,14 +29,20 @@ export interface RoundProps {
     player: User;
 }
 
-const StyledHelpIcon = withStyles({
-    root: {
-        fontSize: "15px",
-        width: 'auto'
-    }
-})(HelpIcon);
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+
+        },
+        boldText: {
+            fontWeight: "bold"
+        }
+    })
+);
 
 export const Round: React.FC<RoundProps> = props => {
+    /**Classes for Material Components */
+    const classes = useStyles();
     /**State for instructions modal and user gif submission */
     const [hasUserSubmittedGif, setHasUserSubmittedGif] = useState<boolean>(false);
     const [openInstructions, setOpenInstructions] = useState<boolean>(false);
@@ -90,7 +96,7 @@ export const Round: React.FC<RoundProps> = props => {
             <Grid item md={2}>
                 <Grid container spacing={0} direction="column" justify="flex-start" alignItems="center">
                     <Grid item>
-                        <h1>Round {props.currentGame.roundNumber}</h1>
+                        <Typography variant="h4" component="h4" className={classes.boldText}>Round {props.currentGame.roundNumber}</Typography>
                     </Grid>
 
                     <Grid item>
