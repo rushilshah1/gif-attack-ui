@@ -73,6 +73,14 @@ export const Round: React.FC<RoundProps> = props => {
         console.log(`Gif ${gif.id} has been voted for`);
     }
 
+    const openInstructionsModal = () => {
+        setOpenInstructions(true);
+    }
+
+    const closeInstructionsModal = () => {
+        setOpenInstructions(false);
+    }
+
     const submitTopic = async (topic: string) => {
         const topicInput: ITopic = { topic: topic }
         await updateTopic({ variables: { topicInput: topicInput, gameId: props.currentGame.id } });
@@ -90,7 +98,21 @@ export const Round: React.FC<RoundProps> = props => {
             <Grid item md={2}>
                 <Grid container spacing={0} direction="column" justify="flex-start" alignItems="center">
                     <Grid item>
-                        <h1>Round {props.currentGame.roundNumber}</h1>
+
+                        <div className="round-heading">
+                            <div className="round-number">
+                                <h1>Round {props.currentGame.roundNumber}</h1>
+                                <Icon color='primary' className='round-help' onClick={() => openInstructionsModal()}>
+                                    <StyledHelpIcon />
+                                </Icon>
+                            </div>
+                        </div>
+
+                        {openInstructions && <Modal
+                            open={openInstructions}
+                            onClose={closeInstructionsModal}>
+                            <InstructionsModal closeInstructionsModal={() => closeInstructionsModal()} />
+                        </Modal>}
                     </Grid>
 
                     <Grid item>
