@@ -25,12 +25,25 @@ export interface RoundResultProps {
 
 const ResultDivider = withStyles({
     root: {
-        marginTop: '2%',
-        marginBottom: '2%'
+        marginTop: '4%',
+        marginBottom: '4%',
     }
 })(Divider);
 
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+
+        },
+        boldText: {
+            fontWeight: "bold",
+            fontStyle: theme.typography.fontFamily
+        }
+    })
+);
+
 export const RoundResult: React.FC<RoundResultProps> = props => {
+    const classes = useStyles();
     const [winnerGifs, setWinnerGifs] = useState<Array<SubmittedGif>>([]);
     const [consolationGifs, setConsolationGifs] = useState<Array<SubmittedGif>>([]);
     useEffect(() => {
@@ -67,13 +80,13 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
 
     const showWinnerHeading = () => {
         if (!props.submittedGifs || !props.submittedGifs.length) {
-            return <h2>There were no submitted gifs this round!</h2>;
+            return <Typography variant="h5" component="h5" className={classes.boldText}>There were no submitted gifs this round!</Typography>;
         }
         else if (winnerGifs.length === 1) {
-            return <h2>Winner!</h2>
+            return <Typography variant="h5" component="h5" className={classes.boldText}>Winner!</Typography>
         }
         else if (winnerGifs.length > 1) {
-            return <h2>Tie!</h2>;
+            return <Typography variant="h5" component="h5" className={classes.boldText}>Tie!</Typography>;
         }
     }
     const showWinningGifs = () => {
@@ -87,21 +100,18 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
     };
     const showConsolationHeading = () => {
         if (winnerGifs.length === 0 && consolationGifs.length > 0) {
-            return <h2>There were no votes cast this round!</h2>
+            return <Typography variant="h5" component="h5" className={classes.boldText}>There were no votes cast this round!</Typography>
         }
         if (consolationGifs.length > 0) {
             return (
-                <div>
-                    <ResultDivider />
-                    <h2>Runner up(s):</h2>
-                </div>
+                <Typography variant="h5" component="h5" className={classes.boldText}>Runner up(s):</Typography>
             );
         }
     }
     const showConsolationGifs = () => {
         if (consolationGifs.length > 0) {
             return (
-                <Grid container direction="row" justify="center" alignItems="flex-start">
+                <Grid container direction="row">
                     {generateGifPanel(consolationGifs, false)}
                 </Grid>
             )
@@ -134,10 +144,6 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
                         {showConsolationGifs()}
                     </Grid>
                 </Grid>
-            </Grid>
-
-            <Grid item md={2}>
-                <h1>Round {props.currentGame.roundNumber}</h1>
             </Grid>
         </Grid>
     )

@@ -7,7 +7,7 @@ import { UPDATE_TOPIC_MUTATION, ITopic } from '../graphql/topic';
 
 //UI + CSS
 import './Round.css';
-import { Container, Grid, Icon, withStyles, Modal, Theme, makeStyles, createStyles, Button, Typography, Backdrop} from '@material-ui/core';
+import { Container, Grid, Icon, withStyles, Modal, Theme, makeStyles, createStyles, Button, Typography, Backdrop } from '@material-ui/core';
 
 // Components
 import { InstructionsModal } from './InstructionsModal';
@@ -30,6 +30,18 @@ export interface RoundProps {
     player: User;
 }
 
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+
+        },
+        boldText: {
+            fontWeight: "bold",
+            fontStyle: theme.typography.fontFamily
+        }
+    })
+);
+
 const StyledHelpIcon = withStyles({
     root: {
         fontSize: "15px",
@@ -38,6 +50,8 @@ const StyledHelpIcon = withStyles({
 })(HelpIcon);
 
 export const Round: React.FC<RoundProps> = props => {
+    /**Classes for Material Components */
+    const classes = useStyles();
     /**State for instructions modal and user gif submission */
     const [hasUserSubmittedGif, setHasUserSubmittedGif] = useState<boolean>(false);
     const [openInstructions, setOpenInstructions] = useState<boolean>(localStorage.getItem(LOCAL_STORAGE_PLAYED_BEFORE) ? false : true);
@@ -103,7 +117,7 @@ export const Round: React.FC<RoundProps> = props => {
 
                         <div className="round-heading">
                             <div className="round-number">
-                                <h1>Round {props.currentGame.roundNumber}</h1>
+                                <Typography variant="h4" component="h4" className={classes.boldText}>Round {props.currentGame.roundNumber}</Typography>
                                 <Icon color='primary' className='round-help' onClick={() => openInstructionsModal()}>
                                     <StyledHelpIcon />
                                 </Icon>

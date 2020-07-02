@@ -10,8 +10,8 @@ import { Scoreboard } from '../scoreboard/Scoreboard';
 import { RoundResult } from '../round/RoundResult';
 import { SubmittedGif, IGif } from '../models/SubmittedGif';
 // UI + CSS
-import { Grid, CircularProgress, Fab, withStyles } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Grid, CircularProgress, Fab, withStyles, Divider } from '@material-ui/core';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import './GameComponent.css';
 // Graphql + Apollo
 import { useMutation, useSubscription, useQuery } from '@apollo/react-hooks';
@@ -26,7 +26,19 @@ export interface IGameComponentProps {
     gameId: string
 }
 
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+
+        },
+        logo: {
+            paddingBottom: 20
+        }
+    })
+);
+
 export const GameComponent: React.FC<IGameComponentProps> = props => {
+    const classes = useStyles();
     /*Retrieve info needed to enter a game */
     let params: IGameComponentProps = useParams();
     const localStorageUserName: string | null = localStorage.getItem(LOCAL_STORAGE_USER_NAME)
@@ -93,31 +105,37 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
     if (!currentGame.id) {
         return <CircularProgress />
     }
-    //TODO: Fix this
-    // if (!localStorageUserName || !localStorageUserId) {
-    //     return <Redirect to={'/home'} />
-    // }
     return (
-        <Grid container direction="row" justify="center" alignItems="flex-start" spacing={1}>
-            <Grid item md={2}>
-                <Grid container justify="center">
+        <div>
+            {currentGame.roundNumber > 0 &&
+                <Grid container direction="row" justify="center" alignItems="center" spacing={0} className={classes.logo}>
                     <Grid item>
-                        <Scoreboard players={currentGame.users}></Scoreboard>
+                        <a href="/">
+                            <img className="small-logo" src={require('./../assets/logo.png')} />
+                        </a>
+                    </Grid>
+                </Grid>}
+            <Grid container direction="row" justify="center" alignItems="flex-start" spacing={1}>
+                <Grid item md={2}>
+                    <Grid container justify="center">
+                        <Grid item>
+                            <Scoreboard players={currentGame.users}></Scoreboard>
+                        </Grid>
                     </Grid>
                 </Grid>
-            </Grid>
 
-            <Grid item md={10}>
-                {currentGame.roundNumber === 0 &&
-                    <Lobby gameId={currentGame.id} players={currentGame.users} startGame={() => startGame()} />
-                }
+                <Grid item md={10}>
+                    {currentGame.roundNumber === 0 &&
+                        <Lobby gameId={currentGame.id} players={currentGame.users} startGame={() => startGame()} />
+                    }
 
-                {currentGame.roundNumber > 0 &&
-                    (currentGame.roundActive ?
-                        <Round player={currentUser} currentGame={currentGame} /> :
-                        <RoundResult currentGame={currentGame} submittedGifs={currentGame.submittedGifs} players={currentGame.users} startNewRound={() => startNewRound()}/>
-                    )}
+                    {currentGame.roundNumber > 0 &&
+                        (currentGame.roundActive ?
+                            <Round player={currentUser} currentGame={currentGame} /> :
+                            <RoundResult currentGame={currentGame} submittedGifs={currentGame.submittedGifs} players={currentGame.users} startNewRound={() => startNewRound()} />
+                        )}
+                </Grid>
             </Grid>
-        </Grid>
+        </div>
     )
 }
