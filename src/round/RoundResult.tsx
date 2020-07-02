@@ -51,7 +51,7 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
         return gifList.map((gif: SubmittedGif) => {
             const gifCardTitle: string = userNameByIdMap.get(gif.userId) + (gif.gifSearchText ? ` - ${gif.gifSearchText}` : '');
             return (
-                <Grid item lg={3} key={gif.id}>
+                <Grid item lg={isWinner ? 6 : 4} key={gif.id}>
                     <GifCard
                         gif={gif}
                         height={size}
@@ -70,7 +70,7 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
             return <h2>There were no submitted gifs this round!</h2>;
         }
         else if (winnerGifs.length === 1) {
-            return <h1>Winner!</h1>
+            return <h2>Winner!</h2>
         }
         else if (winnerGifs.length > 1) {
             return <h2>Tie!</h2>;
