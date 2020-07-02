@@ -10,7 +10,7 @@ import { Scoreboard } from '../scoreboard/Scoreboard';
 import { RoundResult } from '../round/RoundResult';
 import { SubmittedGif, IGif } from '../models/SubmittedGif';
 // UI + CSS
-import { Grid, Container, CircularProgress, Fab, withStyles } from '@material-ui/core';
+import { Grid, CircularProgress, Fab, withStyles } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import './GameComponent.css';
 // Graphql + Apollo
@@ -96,28 +96,26 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
     //     return <Redirect to={'/home'} />
     // }
     return (
-        <Container>
-            <Grid container direction="row" justify="center" alignItems="flex-start">
-                <Grid item md={2}>
-                    <Grid container justify="center">
-                        <Grid item>
-                            <Scoreboard players={currentGame.users}></Scoreboard>
-                        </Grid>
+        <Grid container direction="row" justify="center" alignItems="flex-start" spacing={1}>
+            <Grid item md={2}>
+                <Grid container justify="center">
+                    <Grid item>
+                        <Scoreboard players={currentGame.users}></Scoreboard>
                     </Grid>
                 </Grid>
-
-                <Grid item md={10}>
-                    {currentGame.roundNumber === 0 &&
-                        <Lobby gameId={currentGame.id} players={currentGame.users} startGame={() => startGame()} />
-                    }
-
-                    {currentGame.roundNumber > 0 &&
-                        (currentGame.roundActive ?
-                            <Round player={currentUser} currentGame={currentGame} /> :
-                            <RoundResult currentGame={currentGame} submittedGifs={currentGame.submittedGifs} players={currentGame.users} startNewRound={() => startNewRound()}/>
-                        )}
-                </Grid>
             </Grid>
-        </Container>
+
+            <Grid item md={10}>
+                {currentGame.roundNumber === 0 &&
+                    <Lobby gameId={currentGame.id} players={currentGame.users} startGame={() => startGame()} />
+                }
+
+                {currentGame.roundNumber > 0 &&
+                    (currentGame.roundActive ?
+                        <Round player={currentUser} currentGame={currentGame} /> :
+                        <RoundResult currentGame={currentGame} submittedGifs={currentGame.submittedGifs} players={currentGame.users} startNewRound={() => startNewRound()}/>
+                    )}
+            </Grid>
+        </Grid>
     )
 }
