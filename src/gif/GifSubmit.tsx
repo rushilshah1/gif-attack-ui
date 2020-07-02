@@ -22,7 +22,6 @@ export const GifSubmit: React.FC<GifSubmitProps> = props => {
             return gifIdVotedFor === id ? GifCardStyle.Voted : GifCardStyle.Unvotable;
         }
     }
-    //TODO: Add helper function for more rules on disabling voting. i.e cannot vote for your own gif
     return (
         <Grid container direction="row">
             {props.submittedGifs.length > 0 && props.submittedGifs.map((submittedGif: SubmittedGif) =>

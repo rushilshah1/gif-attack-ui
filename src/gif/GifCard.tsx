@@ -38,8 +38,8 @@ export const GifCard: React.FC<IGifCardProps> = props => {
 
     return (
         <div className={props.type}>
-            <Typography variant="subtitle1" hidden={!props.title}>
-                {props.title || "dummy text"}
+            <Typography variant="subtitle1" >
+                {props.title || <br />}
             </Typography>
             <Gif
                 gif={props.gif.content}
