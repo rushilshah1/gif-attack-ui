@@ -12,6 +12,7 @@ import { Container, Grid, Icon, withStyles, Modal, Theme, makeStyles, createStyl
 // Components
 import { InstructionsModal } from './InstructionsModal';
 import { Game } from '../models/Game';
+import { Timer } from './Timer';
 import { User } from '../models/User';
 import { Topic } from '../topic/Topic';
 
@@ -87,7 +88,15 @@ export const Round: React.FC<RoundProps> = props => {
             </Grid>
 
             <Grid item md={2}>
-                <h1>Round {props.currentGame.roundNumber}</h1>
+                <Grid container spacing={0} direction="column" justify="flex-start" alignItems="center">
+                    <Grid item>
+                        <h1>Round {props.currentGame.roundNumber}</h1>
+                    </Grid>
+
+                    <Grid item>
+                        <Timer gameId={props.currentGame.id}></Timer>
+                    </Grid>
+                </Grid>
             </Grid>
         </Grid>
     )
