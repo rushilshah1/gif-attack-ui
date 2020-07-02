@@ -97,7 +97,7 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
         <div>
             <Grid container direction="row" justify="center" alignItems="flex-start" spacing={1}>
                 <Grid item md={2}>
-                    <Grid container justify="center">
+                    <Grid container justify="center" spacing={1}>
                         <Grid item>
                             <Scoreboard players={currentGame.users}></Scoreboard>
                         </Grid>
