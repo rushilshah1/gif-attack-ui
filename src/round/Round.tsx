@@ -114,7 +114,11 @@ export const Round: React.FC<RoundProps> = props => {
             <Grid item md={2}>
                 <Grid container spacing={0} direction="column" justify="flex-start" alignItems="center">
                     <Grid item>
-
+                        <a href="/">
+                            <img className="small-logo" src={require('./../assets/logo.png')} />
+                        </a>
+                    </Grid>
+                    <Grid item>
                         <div className="round-heading">
                             <div className="round-number">
                                 <Typography variant="h4" component="h4" className={classes.boldText}>Round {props.currentGame.roundNumber}</Typography>

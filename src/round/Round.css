@@ -14,3 +14,8 @@
     margin-top: auto;
     margin-bottom: auto;
 }
+
+.small-logo {
+    padding-bottom: 20px;
+    margin-top: -20px;
+}

@@ -145,6 +145,12 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
                     </Grid>
                 </Grid>
             </Grid>
+
+            <Grid item md={2}>
+                <a href="/">
+                    <img className="small-logo" src={require('./../assets/logo.png')} />
+                </a>
+            </Grid>
         </Grid>
     )
 }
