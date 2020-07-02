@@ -1,17 +1,9 @@
-.next-round-action {
-    display: flex;
-    width: 100%;
+.next-round {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
 }
 
-.next-round-text {
-    display: inline-flex;
-    margin-left: 10px;
-}
-
-.winnerCards {
-    display: inline-flex;
-}
-
-.consolationCards {
-    display: inline-flex;
+.next-round-icon {
+	padding-left: 15px;
 }
