@@ -101,14 +101,13 @@ export const Topic: React.FC<TopicProps> = props => {
 
     return (
         <Grid container direction="column" alignItems="center">
-            {props.topic && <Grid item>
-
-                <div className="topic">
-                    <Typography variant="h5" component="h5" className={classes.boldText}>Topic: &nbsp;</Typography>
-                    <Typography variant="h5" component="h5">{props.topic} </Typography>
-                </div>
-
-            </Grid>
+            {props.topic &&
+                <Grid item>
+                    <div className="topic">
+                        <Typography variant="h5" component="h5" className={classes.boldText}>Topic: &nbsp;</Typography>
+                        <Typography variant="h5" component="h5">{props.topic} </Typography>
+                    </div>
+                </Grid>
             }
             <ExpansionPanel expanded={expanded === 'topicSubmitForm'} onChange={handleChange('topicSubmitForm')} className={classes.root}>
                 <ExpansionPanelSummary

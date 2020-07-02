@@ -26,19 +26,7 @@ export interface IGameComponentProps {
     gameId: string
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-
-        },
-        logo: {
-            paddingBottom: 20
-        }
-    })
-);
-
 export const GameComponent: React.FC<IGameComponentProps> = props => {
-    const classes = useStyles();
     /*Retrieve info needed to enter a game */
     let params: IGameComponentProps = useParams();
     const localStorageUserName: string | null = localStorage.getItem(LOCAL_STORAGE_USER_NAME)
@@ -107,14 +95,6 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
     }
     return (
         <div>
-            {currentGame.roundNumber > 0 &&
-                <Grid container direction="row" justify="center" alignItems="center" spacing={0} className={classes.logo}>
-                    <Grid item>
-                        <a href="/">
-                            <img className="small-logo" src={require('./../assets/logo.png')} />
-                        </a>
-                    </Grid>
-                </Grid>}
             <Grid container direction="row" justify="center" alignItems="flex-start" spacing={1}>
                 <Grid item md={2}>
                     <Grid container justify="center">
