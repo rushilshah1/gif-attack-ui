@@ -59,7 +59,7 @@ export const InstructionsModal: React.FC<InstructionsModalProps> = React.forward
             </ul>
             <p>
                 After a topic is submitted everyone needs to search and submit a gif that they feel best represents the topic.
-                Keep in mind, that there is no single judge - instead the entire group will vote on the submitted gif that they enjoyed the best.
+                Keep in mind, that there is no single judge - instead the entire group will vote by clicking on the submitted gif that they enjoyed the best.
                 After voting is complete, the results of the round will be shown and a winner will be crowned!
             </p>
             <p id="modal-closing">

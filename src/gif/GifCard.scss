@@ -1,0 +1,43 @@
+.gif-card {
+    margin: 15px;
+    padding: 15px 15px 15px 15px;
+    border: 1pt;
+    border-radius: 15px;
+    border-style: ridge;
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+    text-align: center;
+}
+.votable-gif-card {
+    @extend .gif-card;
+    border-color: #14AFF2;
+    box-shadow: 0 5px 10px #14AFF2
+}
+.unvotable-gif-card {
+    @extend .gif-card;
+    border-color: #14AFF2;
+    box-shadow: 0 5px 10px #14AFF2;
+}
+.voted-gif-card {
+    @extend .gif-card;
+    border-color: #FFC000;
+    box-shadow: 0 5px 10px #FFC000
+}
+.votable-gif-card:hover {
+    cursor: pointer;
+    border-color: #FFC000;;
+    box-shadow: 0 5px 10px #FFC000;
+}
+.votable-gif-card:hover .vote-icon {
+    opacity: 1;
+}
+.vote-icon {
+    position: absolute;
+    right: -22px;
+    bottom: -22px;
+    opacity: 0.0;
+}
+.vote-icon:hover {
+    opacity: 1;
+}

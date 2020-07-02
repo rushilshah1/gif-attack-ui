@@ -1,29 +1,34 @@
-.title {
-  /* padding-top: 20px;
-  padding-bottom: 20px; */
-  display: inline;
-  justify-content: space-between;
-  text-align: center;
-  font-weight: bold;
-  font-size: xx-large;
-  vertical-align: text-bottom;
-  /* color: blue; */
-  
+.App {
+  margin-top: 100px;
+  margin-bottom: 40px;
 }
-.gameForm {
-  display: block;
 
-}
 .error {
   color: red;
   font-size: small;
 }
-/* .gameType {
-    text-align: center;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    color: blue
 
-} */
+.logo {
+  width: 215px;
+  height: 190px;
+}
 
+.home-button {
+  width: 275px;
+  height: 30px;
+}
+
+.home-button-spacing {
+  padding: 5px;
+}
+
+.logo-spacing {
+  padding-bottom: 75px;
+}
+.home-form {
+  margin-top: 30px;
+}
+.form-field {
+  width: 275px;
+  height: 30px;
+}

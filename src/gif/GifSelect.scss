@@ -1,0 +1,14 @@
+.gif-selection {
+    margin-top: 70px;
+    height: auto;
+    width: auto;
+    border-radius: 0.3rem;
+    border: 1px solid #ddd;
+    display: inline-block;
+    padding: 15px;
+    box-shadow: 0 0.3rem 1rem rgba(8, 38, 78, 0.2);
+}
+.searchbox-image:hover {
+    border-color: #FFC000;
+    box-shadow: 0 5px 10px #FFC000;
+}
