@@ -7,7 +7,7 @@ import { UPDATE_TOPIC_MUTATION, ITopic } from '../graphql/topic';
 
 //UI + CSS
 import './Round.css';
-import { Container, Grid, Icon, withStyles, Modal, Theme, makeStyles, createStyles, Button, Typography } from '@material-ui/core';
+import { Container, Grid, Icon, withStyles, Modal, Theme, makeStyles, createStyles, Button, Typography, Backdrop } from '@material-ui/core';
 
 // Components
 import { InstructionsModal } from './InstructionsModal';
@@ -15,6 +15,7 @@ import { Game } from '../models/Game';
 import { Timer } from './Timer';
 import { User } from '../models/User';
 import { Topic } from '../topic/Topic';
+import { LOCAL_STORAGE_PLAYED_BEFORE } from '../common/constants';
 
 //Icons
 import HelpIcon from '@material-ui/icons/Help';
@@ -40,12 +41,19 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
+const StyledHelpIcon = withStyles({
+    root: {
+        fontSize: "15px",
+        width: 'auto'
+    }
+})(HelpIcon);
+
 export const Round: React.FC<RoundProps> = props => {
     /**Classes for Material Components */
     const classes = useStyles();
     /**State for instructions modal and user gif submission */
     const [hasUserSubmittedGif, setHasUserSubmittedGif] = useState<boolean>(false);
-    const [openInstructions, setOpenInstructions] = useState<boolean>(false);
+    const [openInstructions, setOpenInstructions] = useState<boolean>(localStorage.getItem(LOCAL_STORAGE_PLAYED_BEFORE) ? false : true);
 
     /** Apollo Hooks */
     const [createGif, createGifResult] = useMutation(CREATE_GIF_MUTATION);
@@ -79,6 +87,15 @@ export const Round: React.FC<RoundProps> = props => {
         console.log(`Gif ${gif.id} has been voted for`);
     }
 
+    const openInstructionsModal = () => {
+        setOpenInstructions(true);
+    }
+
+    const closeInstructionsModal = () => {
+        setOpenInstructions(false);
+        localStorage.setItem(LOCAL_STORAGE_PLAYED_BEFORE, 'true');
+    }
+
     const submitTopic = async (topic: string) => {
         const topicInput: ITopic = { topic: topic }
         await updateTopic({ variables: { topicInput: topicInput, gameId: props.currentGame.id } });
@@ -96,7 +113,26 @@ export const Round: React.FC<RoundProps> = props => {
             <Grid item md={2}>
                 <Grid container spacing={0} direction="column" justify="flex-start" alignItems="center">
                     <Grid item>
-                        <Typography variant="h4" component="h4" className={classes.boldText}>Round {props.currentGame.roundNumber}</Typography>
+
+                        <div className="round-heading">
+                            <div className="round-number">
+                                <Typography variant="h4" component="h4" className={classes.boldText}>Round {props.currentGame.roundNumber}</Typography>
+                                <Icon color='primary' className='round-help' onClick={() => openInstructionsModal()}>
+                                    <StyledHelpIcon />
+                                </Icon>
+                            </div>
+                        </div>
+
+                        {openInstructions && <Modal
+                            open={openInstructions}
+                            onClose={closeInstructionsModal}
+                            closeAfterTransition
+                            BackdropComponent={Backdrop}
+                            BackdropProps={{
+                                timeout: 1500,
+                            }}>
+                            <InstructionsModal closeInstructionsModal={() => closeInstructionsModal()} />
+                        </Modal>}
                     </Grid>
 
                     <Grid item>

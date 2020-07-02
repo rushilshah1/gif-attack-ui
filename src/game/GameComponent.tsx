@@ -62,6 +62,8 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
 
     const leaveGame = async (event) => {
         event.preventDefault();
+        localStorage.removeItem(LOCAL_STORAGE_USER_NAME);
+        localStorage.removeItem(LOCAL_STORAGE_USER_ID);
         const leaveGamePayload = createRemoveUserPayload(currentUser, currentGame.id);
         let blob = new Blob([leaveGamePayload], { type: 'application/json;charset=UTF-8' })
         navigator.sendBeacon(ENVIRONMENT.API_ENDPOINT, blob);
