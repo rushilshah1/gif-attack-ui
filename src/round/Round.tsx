@@ -36,7 +36,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
         },
         boldText: {
-            fontWeight: "bold"
+            fontWeight: "bold",
+            fontStyle: theme.typography.fontFamily
         }
     })
 );

@@ -21,7 +21,6 @@ interface TopicProps {
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            marginTop: 20,
             width: '50%',
             marginLeft: 'auto',
             marginRight: 'auto'
@@ -97,20 +96,20 @@ export const Topic: React.FC<TopicProps> = props => {
     const [expanded, setExpanded] = React.useState<string | false>(false);
 
     const handleChange = (panel: string) => (event: React.ChangeEvent<{}>, newExpanded: boolean) => {
-    setExpanded(newExpanded ? panel : false);
+        setExpanded(newExpanded ? panel : false);
     };
 
     return (
         <Grid container direction="column" alignItems="center">
-            <Grid item>
-                {props.topic && 
-                    <div className="topic">
-                        <Typography variant="h5" component="h5" className={classes.boldText}>Topic: &nbsp;</Typography>
-                        <Typography variant="h5" component="h5">{props.topic} </Typography>
-                    </div>
-                }
-            </Grid>
+            {props.topic && <Grid item>
 
+                <div className="topic">
+                    <Typography variant="h5" component="h5" className={classes.boldText}>Topic: &nbsp;</Typography>
+                    <Typography variant="h5" component="h5">{props.topic} </Typography>
+                </div>
+
+            </Grid>
+            }
             <ExpansionPanel expanded={expanded === 'topicSubmitForm'} onChange={handleChange('topicSubmitForm')} className={classes.root}>
                 <ExpansionPanelSummary
                     expandIcon={<ExpandMoreIcon />}

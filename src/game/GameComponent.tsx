@@ -11,7 +11,7 @@ import { RoundResult } from '../round/RoundResult';
 import { SubmittedGif, IGif } from '../models/SubmittedGif';
 // UI + CSS
 import { Grid, CircularProgress, Fab, withStyles, Divider } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import './GameComponent.css';
 // Graphql + Apollo
 import { useMutation, useSubscription, useQuery } from '@apollo/react-hooks';
@@ -26,7 +26,19 @@ export interface IGameComponentProps {
     gameId: string
 }
 
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+
+        },
+        logo: {
+            paddingBottom: 20
+        }
+    })
+);
+
 export const GameComponent: React.FC<IGameComponentProps> = props => {
+    const classes = useStyles();
     /*Retrieve info needed to enter a game */
     let params: IGameComponentProps = useParams();
     const localStorageUserName: string | null = localStorage.getItem(LOCAL_STORAGE_USER_NAME)
@@ -93,21 +105,15 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
     if (!currentGame.id) {
         return <CircularProgress />
     }
-    //TODO: Fix this
-    // if (!localStorageUserName || !localStorageUserId) {
-    //     return <Redirect to={'/home'} />
-    // }
     return (
         <div>
             {currentGame.roundNumber > 0 &&
-                <Grid container justify="center" alignItems="center" spacing={0} >
+                <Grid container direction="row" justify="center" alignItems="center" spacing={0} className={classes.logo}>
                     <Grid item>
                         <a href="/">
                             <img className="small-logo" src={require('./../assets/logo.png')} />
                         </a>
-                        <Divider />
                     </Grid>
-
                 </Grid>}
             <Grid container direction="row" justify="center" alignItems="flex-start" spacing={1}>
                 <Grid item md={2}>
