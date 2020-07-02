@@ -23,7 +23,7 @@ export const GifSubmit: React.FC<GifSubmitProps> = props => {
         }
     }
     return (
-        <Grid container direction="row">
+        <Grid container direction="row" spacing={1} justify="center">
             {props.submittedGifs.length > 0 && props.submittedGifs.map((submittedGif: SubmittedGif) =>
                 <Grid item lg={4} key={submittedGif.id}>
                     <GifCard
