@@ -6,7 +6,6 @@ import ENVIRONMENT from '../common/environments';
 import { SUBMITTED_GIF_SIZE } from '../common/constants';
 import { GifCard, GifCardStyle } from './GifCard';
 
-
 export interface GifSubmitProps {
     submittedGifs: Array<SubmittedGif>;
     voteForGif: (gif: SubmittedGif) => void;

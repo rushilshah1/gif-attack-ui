@@ -98,7 +98,7 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
     return (
         <Container>
             <Grid container direction="row" justify="center" alignItems="flex-start">
-                <Grid item lg={2}>
+                <Grid item md={2}>
                     <Grid container justify="center">
                         <Grid item>
                             <Scoreboard players={currentGame.users}></Scoreboard>
@@ -106,7 +106,7 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
                     </Grid>
                 </Grid>
 
-                <Grid item lg={8}>
+                <Grid item md={10}>
                     {currentGame.roundNumber === 0 &&
                         <Lobby gameId={currentGame.id} players={currentGame.users} startGame={() => startGame()} />
                     }
@@ -114,16 +114,8 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
                     {currentGame.roundNumber > 0 &&
                         (currentGame.roundActive ?
                             <Round player={currentUser} currentGame={currentGame} /> :
-                            <RoundResult submittedGifs={currentGame.submittedGifs} players={currentGame.users} startNewRound={() => startNewRound()}/>
+                            <RoundResult currentGame={currentGame} submittedGifs={currentGame.submittedGifs} players={currentGame.users} startNewRound={() => startNewRound()}/>
                         )}
-                </Grid>
-
-                <Grid item lg={2}>
-                    <Grid container direction="column" alignItems="center">
-                        <Grid item>
-                            <h1>Round {currentGame.roundNumber}</h1>
-                        </Grid>
-                    </Grid>
                 </Grid>
             </Grid>
         </Container>

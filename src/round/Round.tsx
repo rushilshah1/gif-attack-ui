@@ -78,13 +78,17 @@ export const Round: React.FC<RoundProps> = props => {
     };
 
     return (
-        <Container>
-            <Grid container justify="center">
+        <Grid container justify="center" alignItems="flex-start">
+            <Grid item md={10}>
                 <Topic topic={props.currentGame.topic} submitTopic={text => (submitTopic(text))} />
 
                 <GifSubmit submittedGifs={props.currentGame.submittedGifs} voteForGif={(gif) => (submitGifVote(gif))}></GifSubmit>
                 {!hasUserSubmittedGif && <GifSelect selectGif={(gif, searchText) => (submitGif(gif, searchText))}></GifSelect>}
             </Grid>
-        </Container>
+
+            <Grid item md={2}>
+                <h1>Round {props.currentGame.roundNumber}</h1>
+            </Grid>
+        </Grid>
     )
 }
