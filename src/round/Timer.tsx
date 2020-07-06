@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import './Timer.css';
+import './Timer.scss';
 import ENVIRONMENT from '../common/environments';
 import { ENVIRONMENT_LOCAL } from '../common/constants';
 import { ROUND_CLOCK_SUBSCRIPTION } from '../graphql/round';

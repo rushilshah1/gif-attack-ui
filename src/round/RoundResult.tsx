@@ -3,7 +3,7 @@ import * as _ from "lodash";
 import { partition } from 'lodash';
 
 // UI + CSS
-import './RoundResult.css';
+import './RoundResult.scss';
 import { Container, Card, CardHeader, CardContent, CardActions, IconButton, Divider, Fab, makeStyles, withStyles, Typography, Grid, Theme, createStyles } from '@material-ui/core'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 

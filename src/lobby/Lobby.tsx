@@ -2,7 +2,7 @@ import React from 'react'
 
 // UI + CSS
 import { Container, Typography, Button, makeStyles, Theme, createStyles, Grid } from '@material-ui/core'
-import './Lobby.css';
+import './Lobby.scss';
 
 // Models
 import { User } from '../models/User';
@@ -14,16 +14,16 @@ interface LobbyProps {
 }
 
 const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    code: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingBottom: 20,
-        fontSize: 'xx-large',
-        fontWeight: 'bolder'
-    }
-  }),
+    createStyles({
+        code: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingBottom: 20,
+            fontSize: 'xx-large',
+            fontWeight: 'bolder'
+        }
+    }),
 );
 
 export const Lobby: React.FC<LobbyProps> = props => {
