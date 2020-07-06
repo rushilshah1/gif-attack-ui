@@ -12,7 +12,7 @@ import { SubmittedGif, IGif } from '../models/SubmittedGif';
 // UI + CSS
 import { Grid, CircularProgress, Fab, withStyles, Divider } from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import './GameComponent.css';
+import './GameComponent.scss';
 // Graphql + Apollo
 import { useMutation, useSubscription, useQuery } from '@apollo/react-hooks';
 import { NEW_ROUND_MUTATION, IRound } from '../graphql/round';

@@ -6,7 +6,7 @@ import { CREATE_GIF_MUTATION, UPDATE_GIF_MUTATION } from '../graphql/gif';
 import { UPDATE_TOPIC_MUTATION, ITopic } from '../graphql/topic';
 
 //UI + CSS
-import './Round.css';
+import './Round.scss';
 import { Container, Grid, Icon, withStyles, Modal, Theme, makeStyles, createStyles, Button, Typography, Backdrop } from '@material-ui/core';
 
 // Components
@@ -55,7 +55,6 @@ export const Round: React.FC<RoundProps> = props => {
     /**State for instructions modal and user gif submission */
     const [hasUserSubmittedGif, setHasUserSubmittedGif] = useState<boolean>(false);
     const [openInstructions, setOpenInstructions] = useState<boolean>(localStorage.getItem(LOCAL_STORAGE_PLAYED_BEFORE) ? false : true);
-
     /** Apollo Hooks */
     const [createGif, createGifResult] = useMutation(CREATE_GIF_MUTATION);
     const [updateGif, updateGifResult] = useMutation(UPDATE_GIF_MUTATION);

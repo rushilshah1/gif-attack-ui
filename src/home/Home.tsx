@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './Home.css';
+import './Home.scss';
 import { TextField, Button, RadioGroup, FormControlLabel, FormLabel, Radio, CircularProgress, withStyles, Divider, Container, Grid, Typography } from '@material-ui/core';
 import { useForm } from "react-hook-form";
 import { useMutation, useLazyQuery, useQuery } from '@apollo/react-hooks';

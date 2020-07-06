@@ -15,9 +15,8 @@ import { Home } from './home/Home';
 
 // UI + CSS
 import { createMuiTheme, MuiThemeProvider, makeStyles } from '@material-ui/core/styles';
-import HomeIcon from '@material-ui/icons/Home';
 import { Container, withStyles, Divider, Typography, CardMedia, Grid } from '@material-ui/core';
-import './App.css';
+import './App.scss';
 
 
 const theme = createMuiTheme({

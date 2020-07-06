@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { makeStyles, Theme, createStyles, Button, withStyles } from '@material-ui/core';
-import './InstructionsModal.css';
+import './InstructionsModal.scss';
 
 const getModalStyle = () => {
     return {
