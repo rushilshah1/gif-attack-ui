@@ -1,10 +1,15 @@
 import React from 'react'
-import { SubmittedGif } from '../models/SubmittedGif'
-import { Card, CardContent, Typography, CardActions, makeStyles, IconButton } from '@material-ui/core'
-import { Gif } from '@giphy/react-components'
+
+//UI + CSS
+import { Typography, makeStyles, IconButton } from '@material-ui/core'
 import FavoriteOutlinedIcon from '@material-ui/icons/FavoriteOutlined';
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import './GifCard.scss';
+
+//Components
+import { SubmittedGif } from '../models/SubmittedGif'
+
+//Giphy
+import { Gif } from '@giphy/react-components'
 
 export enum GifCardStyle {
     Votable = "votable-gif-card",

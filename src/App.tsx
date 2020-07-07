@@ -41,14 +41,17 @@ const theme = createMuiTheme({
 function App() {
   return (
     <ApolloProvider client={apolloClient}>
+
       <div className="App">
         <MuiThemeProvider theme={theme}>
           <BrowserRouter>
             <Container fixed>
               {/*TODO: Guard Game route by ensuring there is a valid user in the game, otherwise re-route to Home */}
-              <Route exact path="/home" component={Home}></Route>
-              <Route exact path="/game/:gameId" component={GameComponent}></Route>
-              <Route path="/" render={() => <Redirect to="/home" />} />
+              <Switch>
+                <Route exact path="/home" component={Home}></Route>
+                <Route exact path="/game/:gameId" component={GameComponent}></Route>
+                <Route path="/" render={() => <Redirect to="/home" />} />
+              </Switch>
             </Container>
           </BrowserRouter>
         </MuiThemeProvider>

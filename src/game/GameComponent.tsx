@@ -10,8 +10,7 @@ import { Scoreboard } from '../scoreboard/Scoreboard';
 import { RoundResult } from '../round/RoundResult';
 import { SubmittedGif, IGif } from '../models/SubmittedGif';
 // UI + CSS
-import { Grid, CircularProgress, Fab, withStyles, Divider } from '@material-ui/core';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { Grid, CircularProgress } from '@material-ui/core';
 import './GameComponent.scss';
 // Graphql + Apollo
 import { useMutation, useSubscription, useQuery } from '@apollo/react-hooks';
@@ -21,7 +20,6 @@ import { createRemoveUserPayload } from '../graphql/user';
 // constants
 import ENVIRONMENT from '../common/environments';
 import { LOCAL_STORAGE_USER_NAME, LOCAL_STORAGE_USER_ID } from '../common/constants';
-import { settings } from 'cluster';
 import { defaultSettings } from '../models/Settings';
 
 export interface IGameComponentProps {
@@ -55,12 +53,14 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
     });
 
     /** Remove user from game if they leave/close the screen. TODO: Handle tab close bug */
+    /*
     useEffect(() => {
         window.addEventListener("unload", leaveGame);
         return () => {
             window.removeEventListener("unload", leaveGame);
         }
     });
+    */
 
     const leaveGame = async (event) => {
         event.preventDefault();
@@ -102,15 +102,15 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
     return (
         <div>
             <Grid container direction="row" justify="center" alignItems="flex-start" spacing={1}>
-                <Grid item md={2}>
-                    <Grid container justify="center" spacing={1}>
+                <Grid item xs={12} sm={4}>
+                    <Grid container justify="center" >
                         <Grid item>
                             <Scoreboard players={currentGame.users} submittedGifs={currentGame.submittedGifs}></Scoreboard>
                         </Grid>
                     </Grid>
                 </Grid>
 
-                <Grid item md={10}>
+                <Grid item xs={12} sm={8}>
                     {currentGame.roundNumber === 0 &&
                         <Lobby gameId={currentGame.id} players={currentGame.users} startGame={() => startGame()} />
                     }
