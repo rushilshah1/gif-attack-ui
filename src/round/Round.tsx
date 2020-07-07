@@ -143,15 +143,15 @@ export const Round: React.FC<RoundProps> = props => {
         return !hasUserSubmittedGif && <GifSelect selectGif={(gif, searchText) => (submitGif(gif, searchText))}></GifSelect>;
     }
     return (
-        <Grid container justify="center" alignItems="flex-start" spacing={2} >
-            <Grid item xs={8}>
+        <Grid container justify="center" alignItems="flex-start">
+            <Grid item md={10}>
                 <Topic topic={props.currentGame.topic} submitTopic={text => (submitTopic(text))} />
                 {showSubmittedGifs()}
                 {showGifSelection()}
                 {hasUserSubmittedGif && <SubmissionConfirmation></SubmissionConfirmation>}
             </Grid>
 
-            <Grid item xs={4}>
+            <Grid item md={2}>
                 <Grid container direction="column" justify="flex-start" alignItems="center">
                     <Grid item>
                         <a href="/">

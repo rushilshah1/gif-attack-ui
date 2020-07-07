@@ -102,15 +102,15 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
     return (
         <div>
             <Grid container direction="row" justify="center" alignItems="flex-start" spacing={1}>
-                <Grid item xs={12} sm={4}>
-                    <Grid container justify="center" >
+                <Grid item md={2}>
+                    <Grid container justify="center" spacing={1}>
                         <Grid item>
                             <Scoreboard players={currentGame.users} submittedGifs={currentGame.submittedGifs}></Scoreboard>
                         </Grid>
                     </Grid>
                 </Grid>
 
-                <Grid item xs={12} sm={8}>
+                <Grid item md={10}>
                     {currentGame.roundNumber === 0 &&
                         <Lobby gameId={currentGame.id} players={currentGame.users} startGame={() => startGame()} />
                     }
