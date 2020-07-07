@@ -1,10 +1,16 @@
 import React, { useState } from 'react'
+
+//UI + CSS
 import { Grid } from '@material-ui/core'
 import './GifSubmit.scss';
+
+//Components
 import { SubmittedGif } from '../models/SubmittedGif';
-import ENVIRONMENT from '../common/environments';
 import { SUBMITTED_GIF_SIZE } from '../common/constants';
 import { GifCard, GifCardStyle } from './GifCard';
+
+//Libraries
+import { shuffle } from 'lodash';
 
 export interface GifSubmitProps {
     submittedGifs: Array<SubmittedGif>;
@@ -24,7 +30,7 @@ export const GifSubmit: React.FC<GifSubmitProps> = props => {
     }
     return (
         <Grid container direction="row" spacing={1} justify="center">
-            {props.submittedGifs.length > 0 && props.submittedGifs.map((submittedGif: SubmittedGif) =>
+            {props.submittedGifs.length > 0 && shuffle(props.submittedGifs).map((submittedGif: SubmittedGif) =>
                 <Grid item lg={4} key={submittedGif.id}>
                     <GifCard
                         key={submittedGif.id}

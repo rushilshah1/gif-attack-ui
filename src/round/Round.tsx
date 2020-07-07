@@ -132,7 +132,7 @@ export const Round: React.FC<RoundProps> = props => {
         );
         if (props.currentGame.settings?.hiddenSubmission) {
             //Everyone has submitted
-            return props.currentGame.submittedGifs.length === props.currentGame.users.length && submittedGifPanel;
+            return (props.currentGame.submittedGifs.length >= props.currentGame.users.length) && submittedGifPanel;
         }
         else {
             return submittedGifPanel;
