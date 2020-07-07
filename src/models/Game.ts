@@ -1,5 +1,6 @@
 import { User } from "./User";
 import { SubmittedGif } from "./SubmittedGif";
+import { ISettings, defaultSettings } from "./Settings";
 
 export interface IGame {
     id: string;
@@ -9,6 +10,7 @@ export interface IGame {
     roundNumber: number;
     users: Array<User>;
     submittedGifs: Array<SubmittedGif>;
+    settings?: ISettings;
 }
 
 export interface IGameVars {
@@ -25,6 +27,7 @@ export class Game implements IGame {
     roundNumber!: number;
     users: Array<User> = [];
     submittedGifs: Array<SubmittedGif> = [];
+    settings?: ISettings = defaultSettings;
 
     constructor(game?: Partial<Game>) {
         Object.assign(this, game);

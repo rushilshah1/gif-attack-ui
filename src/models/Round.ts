@@ -8,3 +8,8 @@ export interface IClock {
     minutes: number;
     seconds: number;
 }
+
+export interface ITopic {
+    topic: string
+};
+

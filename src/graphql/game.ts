@@ -108,7 +108,7 @@ export const GET_GAMES_BY_ID_QUERY = (id): string =>
 `
 export const canJoinGame = async (gameId: string): Promise<boolean> => {
     const game = await getGameById(gameId);
-    return (game && game.gameStarted === false);
+    return game ? true : false;
 }
 
 export const getGameById = async (gameId: string): Promise<any> => {

@@ -3,11 +3,11 @@ import React, { useState, useEffect } from 'react'
 // Apollo + Graphql
 import { useMutation, useSubscription } from '@apollo/react-hooks';
 import { CREATE_GIF_MUTATION, UPDATE_GIF_MUTATION } from '../graphql/gif';
-import { UPDATE_TOPIC_MUTATION, ITopic } from '../graphql/topic';
+import { UPDATE_TOPIC_MUTATION } from '../graphql/topic';
 
 //UI + CSS
 import './Round.scss';
-import { Container, Grid, Icon, withStyles, Modal, Theme, makeStyles, createStyles, Button, Typography, Backdrop } from '@material-ui/core';
+import { Grid, Icon, withStyles, Modal, Theme, makeStyles, createStyles, Typography, Backdrop } from '@material-ui/core';
 
 // Components
 import { InstructionsModal } from './InstructionsModal';
@@ -15,6 +15,8 @@ import { Game } from '../models/Game';
 import { Timer } from './Timer';
 import { User } from '../models/User';
 import { Topic } from '../topic/Topic';
+import { ITopic } from '../models/Round';
+import { SubmissionConfirmation } from '../gif/SubmissionConfirmation';
 import { LOCAL_STORAGE_PLAYED_BEFORE } from '../common/constants';
 
 //Icons
@@ -24,6 +26,7 @@ import HelpIcon from '@material-ui/icons/Help';
 import { GifSubmit } from '../gif/GifSubmit';
 import { GifSelect } from '../gif/GifSelect';
 import { SubmittedGif, IGif } from '../models/SubmittedGif';
+
 
 export interface RoundProps {
     currentGame: Game;
@@ -84,9 +87,14 @@ export const Round: React.FC<RoundProps> = props => {
             isWinner: gif.isWinner
         }
         await updateGif({ variables: { gif: updateGifInput, gameId: props.currentGame.id } });
-        console.log(`Gif ${gif.id} has been voted for`);
     }
 
+    const submitTopic = async (topic: string) => {
+        const topicInput: ITopic = { topic: topic }
+        await updateTopic({ variables: { topicInput: topicInput, gameId: props.currentGame.id } });
+    };
+
+    /*Instructions Modal */
     const openInstructionsModal = () => {
         setOpenInstructions(true);
     }
@@ -96,18 +104,51 @@ export const Round: React.FC<RoundProps> = props => {
         localStorage.setItem(LOCAL_STORAGE_PLAYED_BEFORE, 'true');
     }
 
-    const submitTopic = async (topic: string) => {
-        const topicInput: ITopic = { topic: topic }
-        await updateTopic({ variables: { topicInput: topicInput, gameId: props.currentGame.id } });
-    };
+    const showInstructionsModal = () => {
+        return openInstructions && <Modal
+            open={openInstructions}
+            onClose={closeInstructionsModal}
+            closeAfterTransition
+            BackdropComponent={Backdrop}
+            BackdropProps={{
+                timeout: 1500,
+            }}>
+            <InstructionsModal closeInstructionsModal={() => closeInstructionsModal()} />
+        </Modal>;
+    }
 
+    /* Gif Submission */
+    const showSubmittedGifs = () => {
+        const submittedGifPanel = (
+            <div className="gif-submission">
+                <Typography variant="h6" >
+                    Time to Vote!
+                    </Typography>
+                <GifSubmit
+                    submittedGifs={props.currentGame.submittedGifs}
+                    voteForGif={(gif) => (submitGifVote(gif))}>
+                </GifSubmit>
+            </div>
+        );
+        if (props.currentGame.settings?.hiddenSubmission) {
+            //Everyone has submitted
+            return (props.currentGame.submittedGifs.length >= props.currentGame.users.length) && submittedGifPanel;
+        }
+        else {
+            return submittedGifPanel;
+        }
+    }
+    /* Gif Selection */
+    const showGifSelection = () => {
+        return !hasUserSubmittedGif && <GifSelect selectGif={(gif, searchText) => (submitGif(gif, searchText))}></GifSelect>;
+    }
     return (
         <Grid container justify="center" alignItems="flex-start">
             <Grid item md={10}>
                 <Topic topic={props.currentGame.topic} submitTopic={text => (submitTopic(text))} />
-
-                <GifSubmit submittedGifs={props.currentGame.submittedGifs} voteForGif={(gif) => (submitGifVote(gif))}></GifSubmit>
-                {!hasUserSubmittedGif && <GifSelect selectGif={(gif, searchText) => (submitGif(gif, searchText))}></GifSelect>}
+                {showSubmittedGifs()}
+                {showGifSelection()}
+                {hasUserSubmittedGif && <SubmissionConfirmation></SubmissionConfirmation>}
             </Grid>
 
             <Grid item md={2}>
@@ -126,17 +167,7 @@ export const Round: React.FC<RoundProps> = props => {
                                 </Icon>
                             </div>
                         </div>
-
-                        {openInstructions && <Modal
-                            open={openInstructions}
-                            onClose={closeInstructionsModal}
-                            closeAfterTransition
-                            BackdropComponent={Backdrop}
-                            BackdropProps={{
-                                timeout: 1500,
-                            }}>
-                            <InstructionsModal closeInstructionsModal={() => closeInstructionsModal()} />
-                        </Modal>}
+                        {showInstructionsModal()}
                     </Grid>
 
                     <Grid item>

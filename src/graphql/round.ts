@@ -13,11 +13,7 @@ export const ROUND_CLOCK_SUBSCRIPTION = gql`
         }
     }
 `
-// export const UPDATE_ROUND_STATUS_MUTATION = gql`
-//     mutation UpdateRoundStatusMutation($round: UpdateRoundInput!, $gameId: ID!) {
-//         updateRoundStatus(round: $round, gameId: $gameId) 
-//     }
-// `
+
 export const NEW_ROUND_MUTATION = gql`
     mutation NewRoundMutation($round: NewRoundInput!, $gameId: ID!) {
         newRound(round: $round, gameId: $gameId) {

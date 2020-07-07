@@ -40,7 +40,6 @@ export const Home: React.FC = props => {
     localStorage.removeItem(LOCAL_STORAGE_USER_ID);
   }, []);
   const onSubmit = async (formValues) => {
-    console.log(`Form has been submitted ${formValues}`)
     if (gameType === CREATE_GAME) {
       await createNewGame(formValues.name);
     }
