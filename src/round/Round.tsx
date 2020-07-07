@@ -152,7 +152,7 @@ export const Round: React.FC<RoundProps> = props => {
             </Grid>
 
             <Grid item md={2}>
-                <Grid container direction="column" justify="flex-start" alignItems="center">
+                <Grid container spacing={0} direction="column" justify="flex-start" alignItems="center">
                     <Grid item>
                         <a href="/">
                             <img className="small-logo" src={require('./../assets/logo.png')} />
