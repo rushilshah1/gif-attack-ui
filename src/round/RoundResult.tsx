@@ -20,7 +20,6 @@ export interface RoundResultProps {
     players: Array<User>;
     submittedGifs: Array<SubmittedGif>;
     startNewRound: () => void;
-    currentGame: Game;
 }
 
 const ResultDivider = withStyles({

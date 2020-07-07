@@ -21,6 +21,8 @@ import { createRemoveUserPayload } from '../graphql/user';
 // constants
 import ENVIRONMENT from '../common/environments';
 import { LOCAL_STORAGE_USER_NAME, LOCAL_STORAGE_USER_ID } from '../common/constants';
+import { settings } from 'cluster';
+import { defaultSettings } from '../models/Settings';
 
 export interface IGameComponentProps {
     gameId: string
@@ -74,7 +76,11 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
         if (updatedGame.submittedGifs) {
             updatedGame.submittedGifs = updatedGame.submittedGifs.map((rawGif: IGif) => new SubmittedGif(rawGif));
         }
-        setCurrentGame(prevGame => updatedGame);
+        //For now, settings will always be the default settings.
+        //As the game evolves and more settings are required, this will move over to the backend as well with configurable settings controlled on game creation
+        setCurrentGame(prevGame => {
+            return { ...updatedGame, settings: defaultSettings }
+        });
     }
 
     /** Start Game */
@@ -99,7 +105,7 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
                 <Grid item md={2}>
                     <Grid container justify="center" spacing={1}>
                         <Grid item>
-                            <Scoreboard players={currentGame.users}></Scoreboard>
+                            <Scoreboard players={currentGame.users} submittedGifs={currentGame.submittedGifs}></Scoreboard>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -112,7 +118,7 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
                     {currentGame.roundNumber > 0 &&
                         (currentGame.roundActive ?
                             <Round player={currentUser} currentGame={currentGame} /> :
-                            <RoundResult currentGame={currentGame} submittedGifs={currentGame.submittedGifs} players={currentGame.users} startNewRound={() => startNewRound()} />
+                            <RoundResult submittedGifs={currentGame.submittedGifs} players={currentGame.users} startNewRound={() => startNewRound()} />
                         )}
                 </Grid>
             </Grid>

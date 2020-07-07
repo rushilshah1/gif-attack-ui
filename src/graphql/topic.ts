@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-import { apolloClient } from './apollo-client';
 import gql from 'graphql-tag';
 
 
@@ -13,6 +11,3 @@ export const REMOVE_TOPIC_MUTATION = gql`
         removeTopic(gameId: $gameId)
     }
 `
-export interface ITopic {
-    topic: string
-};
