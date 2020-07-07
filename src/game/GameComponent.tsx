@@ -10,8 +10,7 @@ import { Scoreboard } from '../scoreboard/Scoreboard';
 import { RoundResult } from '../round/RoundResult';
 import { SubmittedGif, IGif } from '../models/SubmittedGif';
 // UI + CSS
-import { Grid, CircularProgress, Fab, withStyles, Divider } from '@material-ui/core';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { Grid, CircularProgress } from '@material-ui/core';
 import './GameComponent.scss';
 // Graphql + Apollo
 import { useMutation, useSubscription, useQuery } from '@apollo/react-hooks';
@@ -21,7 +20,6 @@ import { createRemoveUserPayload } from '../graphql/user';
 // constants
 import ENVIRONMENT from '../common/environments';
 import { LOCAL_STORAGE_USER_NAME, LOCAL_STORAGE_USER_ID } from '../common/constants';
-import { settings } from 'cluster';
 import { defaultSettings } from '../models/Settings';
 
 export interface IGameComponentProps {

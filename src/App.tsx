@@ -41,6 +41,7 @@ const theme = createMuiTheme({
 function App() {
   return (
     <ApolloProvider client={apolloClient}>
+
       <div className="App">
         <MuiThemeProvider theme={theme}>
           <BrowserRouter>
