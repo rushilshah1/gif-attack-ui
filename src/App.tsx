@@ -45,12 +45,14 @@ function App() {
       <div className="App">
         <MuiThemeProvider theme={theme}>
           <BrowserRouter>
-            <Container fixed>
-              {/*TODO: Guard Game route by ensuring there is a valid user in the game, otherwise re-route to Home */}
+            {/* <Container fixed> */}
+            {/*TODO: Guard Game route by ensuring there is a valid user in the game, otherwise re-route to Home */}
+            <Switch>
               <Route exact path="/home" component={Home}></Route>
               <Route exact path="/game/:gameId" component={GameComponent}></Route>
               <Route path="/" render={() => <Redirect to="/home" />} />
-            </Container>
+            </Switch>
+            {/* </Container> */}
           </BrowserRouter>
         </MuiThemeProvider>
       </div>

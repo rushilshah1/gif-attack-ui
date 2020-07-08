@@ -4,7 +4,7 @@ import { partition } from 'lodash';
 
 // UI + CSS
 import './RoundResult.scss';
-import { Container, Card, CardHeader, CardContent, CardActions, IconButton, Divider, Fab, makeStyles, withStyles, Typography, Grid, Theme, createStyles } from '@material-ui/core'
+import { Container, Card, CardHeader, CardContent, CardActions, IconButton, Divider, Fab, makeStyles, withStyles, Typography, Grid, Theme, createStyles, Hidden } from '@material-ui/core'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 // Models
@@ -63,7 +63,7 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
         return gifList.map((gif: SubmittedGif) => {
             const gifCardTitle: string = userNameByIdMap.get(gif.userId) + (gif.gifSearchText ? ` - ${gif.gifSearchText}` : '');
             return (
-                <Grid item lg={isWinner ? 6 : 4} key={gif.id}>
+                <Grid item key={gif.id}>
                     <GifCard
                         gif={gif}
                         height={size}
@@ -91,7 +91,7 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
     const showWinningGifs = () => {
         if (winnerGifs.length > 0) {
             return (
-                <Grid container direction="row">
+                <Grid container direction="row" spacing={1} justify="center">
                     {generateGifPanel(winnerGifs, true)}
                 </Grid>
             )
@@ -110,7 +110,7 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
     const showConsolationGifs = () => {
         if (consolationGifs.length > 0) {
             return (
-                <Grid container direction="row">
+                <Grid container direction="row" spacing={1} justify="center">
                     {generateGifPanel(consolationGifs, false)}
                 </Grid>
             )
@@ -118,10 +118,10 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
 
     };
     return (
-        <Grid container>
-            <Grid item md={10}>
+        <Grid container spacing={2}>
+            <Grid item xs={12}>
                 <Grid container justify="center" alignItems="center" direction="column">
-                    <Grid item className="next-round">
+                    <Grid item className="next-round" xs={12}>
                         {showWinnerHeading()}
 
                         <div className="next-round-icon">
@@ -131,25 +131,26 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
                         </div>
                     </Grid>
 
-                    <Grid item>
+                    <Grid item xs={12}>
                         {showWinningGifs()}
                     </Grid>
 
-                    <Grid item>
+                    <Grid item xs={12}>
                         {showConsolationHeading()}
                     </Grid>
 
-                    <Grid item>
+                    <Grid item xs={12}>
                         {showConsolationGifs()}
                     </Grid>
                 </Grid>
             </Grid>
-
-            <Grid item md={2}>
-                <a href="/">
-                    <img className="small-logo" src={require('./../assets/logo.png')} />
-                </a>
-            </Grid>
+            {/* <Hidden smDown>
+                <Grid item md={2}>
+                    <a href="/">
+                        <img className="small-logo" src={require('./../assets/logo.png')} />
+                    </a>
+                </Grid>
+            </Hidden> */}
         </Grid>
     )
 }

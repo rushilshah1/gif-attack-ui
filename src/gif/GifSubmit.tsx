@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 //UI + CSS
 import { Grid } from '@material-ui/core'
@@ -19,6 +19,7 @@ export interface GifSubmitProps {
 
 export const GifSubmit: React.FC<GifSubmitProps> = props => {
     const [gifIdVotedFor, setGifIdVotedFor] = useState<string | null>(null); //either null or gif id user voted for
+    const [shuffledGifs, setShuffledGifs] = useState<Array<SubmittedGif>>(shuffle(props.submittedGifs));
 
     const getGifCardType = (id: string): GifCardStyle => {
         if (!gifIdVotedFor) {
@@ -30,8 +31,8 @@ export const GifSubmit: React.FC<GifSubmitProps> = props => {
     }
     return (
         <Grid container direction="row" spacing={1} justify="center">
-            {props.submittedGifs.length > 0 && shuffle(props.submittedGifs).map((submittedGif: SubmittedGif) =>
-                <Grid item lg={4} key={submittedGif.id}>
+            {props.submittedGifs.length > 0 && shuffledGifs.map((submittedGif: SubmittedGif) =>
+                <Grid item key={submittedGif.id}>
                     <GifCard
                         key={submittedGif.id}
                         gif={submittedGif}

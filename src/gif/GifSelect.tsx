@@ -35,7 +35,7 @@ export const GifSelect: React.FC<GifSelectProps> = props => {
                         [
                             { columns: 1, imageWidth: 150, gutter: 5 },
                             { mq: '650px', columns: 2, imageWidth: 150, gutter: 10 },
-                            { mq: '1250px', columns: 3, imageWidth: 190, gutter: 10 },
+                            { mq: '1300px', columns: 3, imageWidth: 190, gutter: 10 },
                             // { mq: '1000px', columns: 4, imageWidth: 200, gutter: 10 },
                         ]}
                 />

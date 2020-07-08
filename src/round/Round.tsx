@@ -7,7 +7,7 @@ import { UPDATE_TOPIC_MUTATION } from '../graphql/topic';
 
 //UI + CSS
 import './Round.scss';
-import { Grid, Icon, withStyles, Modal, Theme, makeStyles, createStyles, Typography, Backdrop } from '@material-ui/core';
+import { Grid, Icon, withStyles, Modal, Theme, makeStyles, createStyles, Typography, Backdrop, Hidden } from '@material-ui/core';
 
 // Components
 import { InstructionsModal } from './InstructionsModal';
@@ -143,21 +143,23 @@ export const Round: React.FC<RoundProps> = props => {
         return !hasUserSubmittedGif && <GifSelect selectGif={(gif, searchText) => (submitGif(gif, searchText))}></GifSelect>;
     }
     return (
-        <Grid container justify="center" alignItems="flex-start">
-            <Grid item md={10}>
+        <Grid container justify="center" alignItems="flex-start" spacing={2}>
+            <Grid item xs={12} md={12} alignContent="center">
                 <Topic topic={props.currentGame.topic} submitTopic={text => (submitTopic(text))} />
                 {showSubmittedGifs()}
                 {showGifSelection()}
                 {hasUserSubmittedGif && <SubmissionConfirmation></SubmissionConfirmation>}
             </Grid>
 
-            <Grid item md={2}>
-                <Grid container spacing={0} direction="column" justify="flex-start" alignItems="center">
-                    <Grid item>
-                        <a href="/">
-                            <img className="small-logo" src={require('./../assets/logo.png')} />
-                        </a>
-                    </Grid>
+            {/* <Grid item xs={12} md={3}>
+                <Grid container spacing={2} direction="column" justify="flex-start" alignItems="center">
+                    <Hidden smDown>
+                        <Grid item>
+                            <a href="/">
+                                <img className="small-logo" src={require('./../assets/logo.png')} />
+                            </a>
+                        </Grid>
+                    </Hidden>
                     <Grid item>
                         <div className="round-heading">
                             <div className="round-number">
@@ -174,7 +176,7 @@ export const Round: React.FC<RoundProps> = props => {
                         <Timer gameId={props.currentGame.id}></Timer>
                     </Grid>
                 </Grid>
-            </Grid>
-        </Grid>
+            </Grid> */}
+        </Grid >
     )
 }
