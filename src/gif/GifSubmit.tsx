@@ -14,7 +14,7 @@ import { shuffle, unionBy } from 'lodash';
 
 export interface GifSubmitProps {
     submittedGifs: Array<SubmittedGif>;
-    voteForGif: (gif: SubmittedGif) => void;
+    voteForGif: (id: string) => void;
 }
 
 export const GifSubmit: React.FC<GifSubmitProps> = props => {
@@ -50,7 +50,7 @@ export const GifSubmit: React.FC<GifSubmitProps> = props => {
                         title={submittedGif.gifSearchText}
                         voteForGif={(gif) => {
                             setGifIdVotedFor(gif.id)
-                            props.voteForGif(gif)
+                            props.voteForGif(gif.id)
                         }}
                         gifIdVotedFor={gifIdVotedFor}
                         type={getGifCardType(submittedGif.id)}>

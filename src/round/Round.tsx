@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 
 // Apollo + Graphql
-import { useMutation } from '@apollo/react-hooks';
-import { CREATE_GIF_MUTATION, UPDATE_GIF_MUTATION } from '../graphql/gif';
+import { useMutation, useSubscription } from '@apollo/react-hooks';
+import { CREATE_GIF_MUTATION, UPDATE_GIF_MUTATION, VOTE_FOR_GIF_MUTATION } from '../graphql/gif';
 import { UPDATE_TOPIC_MUTATION } from '../graphql/topic';
 
 //UI + CSS
@@ -46,7 +46,7 @@ export const Round: React.FC<RoundProps> = props => {
     const [hasUserSubmittedGif, setHasUserSubmittedGif] = useState<boolean>(false);
     /** Apollo Hooks */
     const [createGif, createGifResult] = useMutation(CREATE_GIF_MUTATION);
-    const [updateGif, updateGifResult] = useMutation(UPDATE_GIF_MUTATION);
+    const [voteForGif, voteForGifResult] = useMutation(VOTE_FOR_GIF_MUTATION);
     const [updateTopic, updateTopicResult] = useMutation(UPDATE_TOPIC_MUTATION);
 
     /**Action functions using Apollo Hooks */
@@ -62,17 +62,8 @@ export const Round: React.FC<RoundProps> = props => {
         setHasUserSubmittedGif(true);
     };
 
-    const submitGifVote = async (gif: SubmittedGif) => {
-        const updateGifInput: IGif = {
-            id: gif.id,
-            gifId: gif.gifId,
-            content: JSON.stringify(gif.content),
-            userId: gif.userId,
-            gifSearchText: gif.gifSearchText,
-            numVotes: gif.numVotes + 1,
-            isWinner: gif.isWinner
-        }
-        await updateGif({ variables: { gif: updateGifInput, gameId: props.currentGame.id } });
+    const submitGifVote = async (id: string) => {
+        await voteForGif({ variables: { gifId: id, gameId: props.currentGame.id } });
     }
 
     const submitTopic = async (topic: string) => {
@@ -89,7 +80,7 @@ export const Round: React.FC<RoundProps> = props => {
                     </Typography>
                 <GifSubmit
                     submittedGifs={props.currentGame.submittedGifs}
-                    voteForGif={(gif) => (submitGifVote(gif))}>
+                    voteForGif={(gifId) => (submitGifVote(gifId))}>
                 </GifSubmit>
             </div>
         );
