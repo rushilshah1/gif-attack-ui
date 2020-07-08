@@ -14,7 +14,7 @@ import { shuffle } from 'lodash';
 
 export interface GifSubmitProps {
     submittedGifs: Array<SubmittedGif>;
-    voteForGif: (gif: SubmittedGif) => void;
+    voteForGif: (id: string) => void;
 }
 
 export const GifSubmit: React.FC<GifSubmitProps> = props => {
@@ -30,7 +30,7 @@ export const GifSubmit: React.FC<GifSubmitProps> = props => {
     }
     return (
         <Grid container direction="row" spacing={1} justify="center">
-            {props.submittedGifs.length > 0 && shuffle(props.submittedGifs).map((submittedGif: SubmittedGif) =>
+            {props.submittedGifs.length > 0 && props.submittedGifs.map((submittedGif: SubmittedGif) =>
                 <Grid item lg={4} key={submittedGif.id}>
                     <GifCard
                         key={submittedGif.id}
@@ -40,7 +40,7 @@ export const GifSubmit: React.FC<GifSubmitProps> = props => {
                         title={submittedGif.gifSearchText}
                         voteForGif={(gif) => {
                             setGifIdVotedFor(gif.id)
-                            props.voteForGif(gif)
+                            props.voteForGif(gif.id)
                         }}
                         gifIdVotedFor={gifIdVotedFor}
                         type={getGifCardType(submittedGif.id)}>
