@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { intersectionBy } from 'lodash';
 //UI + CSS
-import { Table, TableHead, TableRow, TableCell, TableBody, makeStyles, Grid } from '@material-ui/core';
+import { Table, TableHead, TableRow, TableCell, TableBody, makeStyles, Grid, TableContainer } from '@material-ui/core';
 import DoneIcon from '@material-ui/icons/Done';
 import './Scoreboard.scss';
 
@@ -60,6 +60,7 @@ export const Scoreboard: React.FC<ScoreboardProps> = props => {
         return playersThatSubmitted.has(userId) ? <DoneIcon color="inherit" fontSize={"large"} /> : null;
     }
     return (
+        // <TableContainer>
         <Table className={classes.table} size="small" aria-label="scoreboard">
             <TableHead>
                 <TableRow className={classes.header}>
@@ -87,6 +88,7 @@ export const Scoreboard: React.FC<ScoreboardProps> = props => {
                 ))}
             </TableBody>
         </Table>
+        // </TableContainer>
 
     )
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 //UI + CSS
 import { Grid } from '@material-ui/core'
@@ -10,7 +10,7 @@ import { SUBMITTED_GIF_SIZE } from '../common/constants';
 import { GifCard, GifCardStyle } from './GifCard';
 
 //Libraries
-import { shuffle } from 'lodash';
+import { shuffle, unionBy } from 'lodash';
 
 export interface GifSubmitProps {
     submittedGifs: Array<SubmittedGif>;
@@ -19,6 +19,7 @@ export interface GifSubmitProps {
 
 export const GifSubmit: React.FC<GifSubmitProps> = props => {
     const [gifIdVotedFor, setGifIdVotedFor] = useState<string | null>(null); //either null or gif id user voted for
+    const [shuffledGifs, setShuffledGifs] = useState<Array<SubmittedGif>>(shuffle(props.submittedGifs)); //One time shuffle
 
     const getGifCardType = (id: string): GifCardStyle => {
         if (!gifIdVotedFor) {
@@ -28,10 +29,19 @@ export const GifSubmit: React.FC<GifSubmitProps> = props => {
             return gifIdVotedFor === id ? GifCardStyle.Voted : GifCardStyle.Unvotable;
         }
     }
+    useEffect(() => {
+        //Update the shuffled gifs from the newly voted on gifs
+        setShuffledGifs(shuffledGifs => (
+            shuffledGifs.map((shuffledGif: SubmittedGif) => (
+                { ...shuffledGif, ...props.submittedGifs.find((updatedGif: SubmittedGif) => updatedGif.id === shuffledGif.id) }
+            ))
+        ));
+    }, [props.submittedGifs]);
+
     return (
         <Grid container direction="row" spacing={1} justify="center">
-            {props.submittedGifs.length > 0 && shuffle(props.submittedGifs).map((submittedGif: SubmittedGif) =>
-                <Grid item lg={4} key={submittedGif.id}>
+            {shuffledGifs.map((submittedGif: SubmittedGif) =>
+                <Grid item key={submittedGif.id}>
                     <GifCard
                         key={submittedGif.id}
                         gif={submittedGif}

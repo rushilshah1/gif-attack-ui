@@ -10,7 +10,7 @@ import { Scoreboard } from '../scoreboard/Scoreboard';
 import { RoundResult } from '../round/RoundResult';
 import { SubmittedGif, IGif } from '../models/SubmittedGif';
 // UI + CSS
-import { Grid, CircularProgress } from '@material-ui/core';
+import { Grid, CircularProgress, makeStyles, Theme, createStyles, Hidden } from '@material-ui/core';
 import './GameComponent.scss';
 // Graphql + Apollo
 import { useMutation, useSubscription, useQuery } from '@apollo/react-hooks';
@@ -21,12 +21,28 @@ import { createRemoveUserPayload } from '../graphql/user';
 import ENVIRONMENT from '../common/environments';
 import { LOCAL_STORAGE_USER_NAME, LOCAL_STORAGE_USER_ID } from '../common/constants';
 import { defaultSettings } from '../models/Settings';
+import { GameDetails } from './GameDetails';
 
 export interface IGameComponentProps {
     gameId: string
 }
 
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            overflowX: "auto",
+            padding: "2%"
+        },
+        noOverflow: {
+            overflowX: "hidden",
+
+        }
+
+    }),
+);
+
 export const GameComponent: React.FC<IGameComponentProps> = props => {
+    const classes = useStyles();
     /*Retrieve info needed to enter a game */
     let params: IGameComponentProps = useParams();
     const localStorageUserName: string | null = localStorage.getItem(LOCAL_STORAGE_USER_NAME)
@@ -52,7 +68,7 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
         }
     });
 
-    /** Remove user from game if they leave/close the screen. TODO: Handle tab close bug */
+    /** Remove user from game if they leave/close the screen*/
     useEffect(() => {
         window.addEventListener("unload", leaveGame);
         return () => {
@@ -98,28 +114,39 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
         return <CircularProgress />
     }
     return (
-        <div>
-            <Grid container direction="row" justify="center" alignItems="flex-start" spacing={1}>
-                <Grid item md={2}>
-                    <Grid container justify="center" spacing={1}>
+        <Grid container direction="row" alignItems="flex-start" className={classes.root} spacing={1}>
+            <Hidden smDown>
+                <Grid item md={3} >
+                    <Grid container >
                         <Grid item>
                             <Scoreboard players={currentGame.users} submittedGifs={currentGame.submittedGifs}></Scoreboard>
                         </Grid>
                     </Grid>
                 </Grid>
+            </Hidden>
+            <Grid item xs={12} md={6}>
+                {currentGame.roundNumber === 0 &&
+                    <Lobby gameId={currentGame.id} players={currentGame.users} startGame={() => startGame()} />
+                }
 
-                <Grid item md={10}>
-                    {currentGame.roundNumber === 0 &&
-                        <Lobby gameId={currentGame.id} players={currentGame.users} startGame={() => startGame()} />
-                    }
-
-                    {currentGame.roundNumber > 0 &&
-                        (currentGame.roundActive ?
-                            <Round player={currentUser} currentGame={currentGame} /> :
-                            <RoundResult submittedGifs={currentGame.submittedGifs} players={currentGame.users} startNewRound={() => startNewRound()} />
-                        )}
-                </Grid>
+                {currentGame.roundNumber > 0 &&
+                    (currentGame.roundActive ?
+                        <Round player={currentUser} currentGame={currentGame} /> :
+                        <RoundResult submittedGifs={currentGame.submittedGifs} players={currentGame.users} startNewRound={() => startNewRound()} />
+                    )}
             </Grid>
-        </div>
+            <Grid item xs={12} md={3}>
+                <GameDetails currentGame={currentGame}></GameDetails>
+            </Grid>
+            <Hidden mdUp>
+                <Grid item xs={12}>
+                    <Grid container justify="center">
+                        <Grid item>
+                            <Scoreboard players={currentGame.users} submittedGifs={currentGame.submittedGifs}></Scoreboard>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Hidden>
+        </Grid>
     )
 }
