@@ -79,7 +79,7 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
 
     const showWinnerHeading = () => {
         if (!props.submittedGifs || !props.submittedGifs.length) {
-            return <Typography variant="h5" component="h5" className={classes.boldText}>There were no submitted gifs this round!</Typography>;
+            return <Typography variant="h6" className={classes.boldText}>There were no submitted gifs this round!</Typography>;
         }
         else if (winnerGifs.length === 1) {
             return <Typography variant="h5" component="h5" className={classes.boldText}>Winner!</Typography>
@@ -91,7 +91,7 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
     const showWinningGifs = () => {
         if (winnerGifs.length > 0) {
             return (
-                <Grid container direction="row" spacing={1} justify="center">
+                <Grid container direction="row" justify="center">
                     {generateGifPanel(winnerGifs, true)}
                 </Grid>
             )
@@ -99,7 +99,7 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
     };
     const showConsolationHeading = () => {
         if (winnerGifs.length === 0 && consolationGifs.length > 0) {
-            return <Typography variant="h5" component="h5" className={classes.boldText}>There were no votes cast this round!</Typography>
+            return <Typography variant="h6" className={classes.boldText}>There were no votes cast this round!</Typography>
         }
         if (consolationGifs.length > 0) {
             return (
@@ -110,7 +110,7 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
     const showConsolationGifs = () => {
         if (consolationGifs.length > 0) {
             return (
-                <Grid container direction="row" spacing={1} justify="center">
+                <Grid container direction="row" justify="center">
                     {generateGifPanel(consolationGifs, false)}
                 </Grid>
             )
@@ -118,39 +118,28 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
 
     };
     return (
-        <Grid container spacing={2}>
-            <Grid item xs={12}>
-                <Grid container justify="center" alignItems="center" direction="column">
-                    <Grid item className="next-round" xs={12}>
-                        {showWinnerHeading()}
-
-                        <div className="next-round-icon">
-                            <Fab color="secondary" aria-label="next round" onClick={() => props.startNewRound()} size="small">
-                                <ArrowForwardIosIcon />
-                            </Fab>
-                        </div>
-                    </Grid>
-
-                    <Grid item xs={12}>
-                        {showWinningGifs()}
-                    </Grid>
-
-                    <Grid item xs={12}>
-                        {showConsolationHeading()}
-                    </Grid>
-
-                    <Grid item xs={12}>
-                        {showConsolationGifs()}
-                    </Grid>
-                </Grid>
+        <Grid container justify="center" alignItems="center" direction="column">
+            <Grid item className="next-round">
+                {showWinnerHeading()}
+                <div className="next-round-icon">
+                    <Fab color="secondary" aria-label="next round" onClick={() => props.startNewRound()} size="small">
+                        <ArrowForwardIosIcon />
+                    </Fab>
+                </div>
             </Grid>
-            {/* <Hidden smDown>
-                <Grid item md={2}>
-                    <a href="/">
-                        <img className="small-logo" src={require('./../assets/logo.png')} />
-                    </a>
-                </Grid>
-            </Hidden> */}
+
+            <Grid item >
+                {showWinningGifs()}
+            </Grid>
+
+            <Grid item >
+                {showConsolationHeading()}
+            </Grid>
+
+            <Grid item >
+                {showConsolationGifs()}
+            </Grid>
         </Grid>
+
     )
 }

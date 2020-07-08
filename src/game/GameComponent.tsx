@@ -116,7 +116,7 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
         return <CircularProgress />
     }
     return (
-        <Grid container direction="row" alignItems="flex-start" className={classes.root}>
+        <Grid container direction="row" alignItems="flex-start" className={classes.root} spacing={1}>
             <Hidden smDown>
                 <Grid item md={3} >
                     <Grid container >
@@ -142,7 +142,7 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
             </Grid>
             <Hidden mdUp>
                 <Grid item xs={12}>
-                    <Grid container justify="center" spacing={2}>
+                    <Grid container justify="center">
                         <Grid item>
                             <Scoreboard players={currentGame.users} submittedGifs={currentGame.submittedGifs}></Scoreboard>
                         </Grid>
