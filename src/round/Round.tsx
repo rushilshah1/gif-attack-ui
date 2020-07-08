@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 // Apollo + Graphql
-import { useMutation, useSubscription } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 import { CREATE_GIF_MUTATION, UPDATE_GIF_MUTATION } from '../graphql/gif';
 import { UPDATE_TOPIC_MUTATION } from '../graphql/topic';
 
 //UI + CSS
 import './Round.scss';
-import { Grid, Icon, withStyles, Modal, Theme, makeStyles, createStyles, Typography, Backdrop, Hidden } from '@material-ui/core';
+import { Grid, Theme, makeStyles, createStyles, Typography } from '@material-ui/core';
 
 // Components
 import { Game } from '../models/Game';

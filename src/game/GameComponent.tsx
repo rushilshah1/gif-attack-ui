@@ -68,16 +68,14 @@ export const GameComponent: React.FC<IGameComponentProps> = props => {
         }
     });
 
-    /** Remove user from game if they leave/close the screen. TODO: Handle tab close bug */
-
-    /*
+    /** Remove user from game if they leave/close the screen*/
     useEffect(() => {
         window.addEventListener("unload", leaveGame);
         return () => {
             window.removeEventListener("unload", leaveGame);
         }
     });
-    */
+
     const leaveGame = async (event) => {
         event.preventDefault();
         localStorage.removeItem(LOCAL_STORAGE_USER_NAME);

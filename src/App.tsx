@@ -14,8 +14,7 @@ import { GameComponent } from './game/GameComponent';
 import { Home } from './home/Home';
 
 // UI + CSS
-import { createMuiTheme, MuiThemeProvider, makeStyles } from '@material-ui/core/styles';
-import { Container, withStyles, Divider, Typography, CardMedia, Grid } from '@material-ui/core';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import './App.scss';
 
 
@@ -45,14 +44,10 @@ function App() {
       <div className="App">
         <MuiThemeProvider theme={theme}>
           <BrowserRouter>
-            {/* <Container fixed> */}
             {/*TODO: Guard Game route by ensuring there is a valid user in the game, otherwise re-route to Home */}
-            <Switch>
-              <Route exact path="/home" component={Home}></Route>
-              <Route exact path="/game/:gameId" component={GameComponent}></Route>
-              <Route path="/" render={() => <Redirect to="/home" />} />
-            </Switch>
-            {/* </Container> */}
+            <Route exact path="/home" component={Home}></Route>
+            <Route exact path="/game/:gameId" component={GameComponent}></Route>
+            <Route path="/" render={() => <Redirect to="/home" />} />
           </BrowserRouter>
         </MuiThemeProvider>
       </div>

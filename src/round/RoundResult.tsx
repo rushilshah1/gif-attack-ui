@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import * as _ from "lodash";
-import { partition } from 'lodash';
 
 // UI + CSS
 import './RoundResult.scss';
-import { Container, Card, CardHeader, CardContent, CardActions, IconButton, Divider, Fab, makeStyles, withStyles, Typography, Grid, Theme, createStyles, Hidden } from '@material-ui/core'
+import { Divider, Fab, makeStyles, withStyles, Typography, Grid, Theme, createStyles } from '@material-ui/core'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 // Models
 import { SubmittedGif } from '../models/SubmittedGif';
 import { User } from '../models/User';
-import { Game } from '../models/Game';
 import { GifCard, GifCardStyle } from '../gif/GifCard';
+
+//Libraries
+import * as _ from "lodash";
+import { partition } from 'lodash';
 
 // Constants
 import { WINNER_GIF_SIZE, CONSOLIDATION_GIF_SIZE } from '../common/constants';
