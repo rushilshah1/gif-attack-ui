@@ -42,4 +42,18 @@ export const UPDATE_GIF_MUTATION = gql`
     }
 `
 
+export const VOTE_FOR_GIF_MUTATION = gql`
+    mutation VoteForGif($gifId: ID!, $gameId: ID!) {
+        voteForGif(gifId: $gifId, gameId: $gameId) {
+            id
+            gifId
+            content
+            userId
+            gifSearchText
+            numVotes
+            isWinner
+        }
+    }
+`
+
 
