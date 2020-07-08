@@ -30,7 +30,7 @@ export const Lobby: React.FC<LobbyProps> = props => {
     const classes = useStyles();
 
     return (
-        <Grid container alignItems="flex-start">
+        <Grid container justify="center" alignItems="flex-start">
             <Grid item>
                 <Typography variant="h6">Send the game code to your friends so they can join the game session!</Typography>
 
