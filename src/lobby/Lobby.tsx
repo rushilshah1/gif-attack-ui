@@ -1,9 +1,7 @@
-import React from 'react'
-
+import React from 'react';
 // UI + CSS
 import { Container, Typography, Button, makeStyles, Theme, createStyles, Grid } from '@material-ui/core'
 import './Lobby.scss';
-
 // Models
 import { User } from '../models/User';
 
@@ -15,6 +13,7 @@ interface LobbyProps {
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        root: {},
         code: {
             display: 'flex',
             alignItems: 'center',

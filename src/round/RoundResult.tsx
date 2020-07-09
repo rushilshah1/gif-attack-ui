@@ -1,19 +1,14 @@
-import React, { useEffect, useState } from 'react'
-
+import React, { useEffect, useState } from 'react';
 // UI + CSS
 import './RoundResult.scss';
-import { Divider, Fab, makeStyles, withStyles, Typography, Grid, Theme, createStyles } from '@material-ui/core'
+import { Fab, makeStyles, withStyles, Typography, Grid, Theme, createStyles } from '@material-ui/core'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-
 // Models
 import { SubmittedGif } from '../models/SubmittedGif';
 import { User } from '../models/User';
 import { GifCard, GifCardStyle } from '../gif/GifCard';
-
 //Libraries
-import * as _ from "lodash";
 import { partition } from 'lodash';
-
 // Constants
 import { WINNER_GIF_SIZE, CONSOLIDATION_GIF_SIZE } from '../common/constants';
 
@@ -23,18 +18,9 @@ export interface RoundResultProps {
     startNewRound: () => void;
 }
 
-const ResultDivider = withStyles({
-    root: {
-        marginTop: '4%',
-        marginBottom: '4%',
-    }
-})(Divider);
-
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        root: {
-
-        },
+        root: {},
         boldText: {
             fontWeight: "bold",
             fontStyle: theme.typography.fontFamily
@@ -51,7 +37,7 @@ export const RoundResult: React.FC<RoundResultProps> = props => {
         if (props.submittedGifs && props.submittedGifs.length) {
             const partitionedGifsByTag: Array<Array<SubmittedGif>> = partition(props.submittedGifs, 'isWinner');
             setWinnerGifs(winnerGifs => partitionedGifsByTag[0]);
-            const sortedConsolationGifs = partitionedGifsByTag[1].sort((a: SubmittedGif, b: SubmittedGif) => b.numVotes - a.numVotes);
+            const sortedConsolationGifs: Array<SubmittedGif> = partitionedGifsByTag[1].sort((a: SubmittedGif, b: SubmittedGif) => b.numVotes - a.numVotes);
             setConsolationGifs(consolationGifs => sortedConsolationGifs);
         }
 

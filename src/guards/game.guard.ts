@@ -1,9 +1,10 @@
 import { canJoinGame } from "../graphql/game"
 
+//To be used if there needs to be a restriction from joining the game
+/*
 export const gameGuard = async (to, from, next) => {
     const { gameId } = to.match.params;
     const validGame: boolean = await canJoinGame(gameId);
-    console.log(`Checking in Guard for Game ${gameId} -> ${validGame}`)
     if (validGame) {
         next()
     }
@@ -11,3 +12,4 @@ export const gameGuard = async (to, from, next) => {
         next.redirect('/home')
     }
 }
+*/

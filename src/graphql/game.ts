@@ -106,6 +106,7 @@ export const GET_GAMES_BY_ID_QUERY = (id): string =>
         }
     }
 `
+/*Only to be used if players are not permitted to join a game freely */
 export const canJoinGame = async (gameId: string): Promise<boolean> => {
     const game = await getGameById(gameId);
     return game ? true : false;
