@@ -1,0 +1,21 @@
+.round-number {
+    display: inline-flex;
+    text-align: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+.round-help {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.round-help:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.small-logo {
+    padding-bottom: 20px;
+    margin-top: -20px;
+}
