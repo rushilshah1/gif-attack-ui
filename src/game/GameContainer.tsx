@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 // Libraries
 import { useParams } from "react-router-dom";
-// Model + Components
+//Components
 import { User } from '../models/User';
 import { IRound } from '../models/Round';
 import { Lobby } from '../lobby/Lobby';
@@ -12,15 +12,15 @@ import { RoundResult } from '../round/RoundResult';
 import { SubmittedGif, IGif } from '../models/SubmittedGif';
 import { defaultSettings } from '../models/Settings';
 import { GameDetails } from './GameDetails';
-// UI + CSS
+//UI + CSS
 import { Grid, CircularProgress, makeStyles, Theme, createStyles, Hidden } from '@material-ui/core';
 import './GameContainer.scss';
-// Graphql + Apollo
+//GraphQL + Apollo
 import { useMutation, useSubscription, useQuery } from '@apollo/react-hooks';
 import { NEW_ROUND_MUTATION } from '../graphql/round';
 import { START_GAME_MUTATION, GAME_STATE_CHANGED_SUBSCRIPTION, GET_GAME_BY_ID_QUERY_HOOK } from '../graphql/game';
 import { createRemoveUserPayload } from '../graphql/user';
-// constants
+//Constants
 import ENVIRONMENT from '../common/environments';
 import { LOCAL_STORAGE_USER_NAME, LOCAL_STORAGE_USER_ID } from '../common/constants';
 
