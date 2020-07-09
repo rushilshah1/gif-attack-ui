@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+//UI + CSS
 import './GifSelect.scss';
-import ENVIRONMENT from '../common/environments';
-import { ENVIRONMENT_LOCAL } from '../common/constants';
-import ReactGiphySearchbox from 'react-giphy-searchbox';
 import { Grid } from '@material-ui/core';
+//Components
+import ReactGiphySearchbox from 'react-giphy-searchbox';
+//Constants
+import ENVIRONMENT from '../common/environments';
 
-interface GifSelectProps {
+interface IGifSelectProps {
     selectGif: (gif: any, searchText: string) => void;
 }
 
-export const GifSelect: React.FC<GifSelectProps> = props => {
+export const GifSelect: React.FC<IGifSelectProps> = props => {
 
     const [gifSearchInput, setGifSearchInput] = useState<string>('');
 
@@ -30,9 +32,9 @@ export const GifSelect: React.FC<GifSelectProps> = props => {
                     gifPerPage={10}
                     masonryConfig={
                         [
-                            { columns: 2, imageWidth: 150, gutter: 10 },
-                            { mq: '700px', columns: 3, imageWidth: 190, gutter: 10 },
-                            // { mq: '1000px', columns: 4, imageWidth: 200, gutter: 10 },
+                            { columns: 1, imageWidth: 150, gutter: 5 },
+                            { mq: '650px', columns: 2, imageWidth: 150, gutter: 10 },
+                            { mq: '1300px', columns: 3, imageWidth: 190, gutter: 10 },
                         ]}
                 />
             </div >

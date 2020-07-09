@@ -1,5 +1,4 @@
 import { GifsResult } from "@giphy/js-fetch-api/dist/result-types";
-
 export const gifSearchData = {
     "data": [
         {

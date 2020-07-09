@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react'
-import './Timer.css';
-import ENVIRONMENT from '../common/environments';
-import { ENVIRONMENT_LOCAL } from '../common/constants';
+import React, { useState } from 'react';
+//UI + CSS
+import { makeStyles, Theme, createStyles, Typography } from '@material-ui/core';
+import './Timer.scss';
+//Apollo + GraphQL
 import { ROUND_CLOCK_SUBSCRIPTION } from '../graphql/round';
 import { useSubscription } from '@apollo/react-hooks';
+//Components
 import { IClock } from '../models/Round';
-import { makeStyles, Theme, createStyles, Typography } from '@material-ui/core';
 
-interface TimerProps {
+interface ITimerProps {
     gameId: string;
 }
 
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export const Timer: React.FC<TimerProps> = props => {
+export const Timer: React.FC<ITimerProps> = props => {
     const classes = useStyles();
     const [clock, setClock] = useState<IClock | null>(null);
 
@@ -36,16 +37,21 @@ export const Timer: React.FC<TimerProps> = props => {
             setClock(response.subscriptionData.data.roundClock)
         }
     });
-    if (!clock) {
-        return <div></div>;
-    }
+
+    const showTimer = () => {
+        if (!clock) {
+            return;
+        }
+        else {
+            return clock.minutes === 0 && clock.seconds <= 30 ?
+                <Typography variant="h4" component="h4" className={classes.timerWarning}>{clock.minutes}:{clock.seconds < 10 ? `0${clock.seconds}` : clock.seconds}</Typography> :
+                <Typography variant="h4" component="h4" className={classes.timerRegular}>{clock.minutes}:{clock.seconds < 10 ? `0${clock.seconds}` : clock.seconds}</Typography>
+        }
+    };
+
     return (
         <div>
-            {clock.minutes === 0 && clock.seconds <= 30 ?
-                <Typography variant="h4" component="h4" className={classes.timerWarning}>{clock.minutes}:{clock.seconds < 10 ? `0${clock.seconds}` : clock.seconds}</Typography>
-                :
-                <Typography variant="h4" component="h4" className={classes.timerRegular}>{clock.minutes}:{clock.seconds < 10 ? `0${clock.seconds}` : clock.seconds}</Typography>
-            }
+            {showTimer()}
         </div>
     )
 }

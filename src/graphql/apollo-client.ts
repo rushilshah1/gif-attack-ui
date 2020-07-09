@@ -1,3 +1,4 @@
+//Apollo
 import { split } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
@@ -6,9 +7,10 @@ import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-boost';
-import ENVIRONMENT from '../common/environments';
 import { setContext } from 'apollo-link-context';
-import { LOCAL_STORAGE_USER_NAME, LOCAL_STORAGE_USER_ID } from '../common/constants';
+//Constants
+import ENVIRONMENT from '../common/environments';
+import { LOCAL_STORAGE_USER_NAME } from '../common/constants';
 
 // Create an http link:
 const httpLink = new HttpLink({
@@ -20,7 +22,7 @@ const wsLink = new WebSocketLink({
     options: {
         reconnect: true,
         connectionParams: () => ({
-            user: localStorage.getItem(LOCAL_STORAGE_USER_NAME) ? localStorage.getItem(LOCAL_STORAGE_USER_NAME) : ''
+            user: localStorage.getItem(LOCAL_STORAGE_USER_NAME) || ''
         }),
         lazy: true
     },
@@ -46,11 +48,10 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 })
 
 const authLink = setContext((_, { headers, connectionParams }) => {
-    const user = localStorage.getItem(LOCAL_STORAGE_USER_NAME);
     return {
         headers: {
             ...headers,
-            authorization: user ? user : ""
+            authorization: localStorage.getItem(LOCAL_STORAGE_USER_NAME) || ""
         }
     }
 });
