@@ -1,19 +1,16 @@
-import React, { useState, useEffect } from 'react'
-
+import React, { useState } from 'react';
 // UI + CSS
 import './Topic.scss';
 import { TextField, Button, Grid, IconButton } from '@material-ui/core';
 import { Theme, createStyles, makeStyles, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
-
-// ExpansionPanel
 import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
 import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-interface TopicProps {
+interface ITopicProps {
     submitTopic: (text: string) => void;
     topic: string;
 }
@@ -90,8 +87,9 @@ const ExpansionPanelDetails = withStyles((theme) => ({
     },
 }))(MuiExpansionPanelDetails);
 
-export const Topic: React.FC<TopicProps> = props => {
+export const Topic: React.FC<ITopicProps> = props => {
     const classes = useStyles();
+    /*State for user topic interactions */
     const [userSelectedTopic, setUserSelectedTopic] = useState<string>('');
     const [expanded, setExpanded] = React.useState<string | false>(false);
     const [enableTopicDeletion, setEnableTopicDeletion] = useState<boolean>(false);

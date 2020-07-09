@@ -11,7 +11,7 @@ import { Game } from '../models/Game';
 import { LOCAL_STORAGE_PLAYED_BEFORE } from '../common/constants';
 import { InstructionsModal } from '../round/InstructionsModal';
 
-export interface GameDetailsProps {
+export interface IGameDetailsProps {
     currentGame: Game;
 }
 
@@ -24,9 +24,7 @@ const StyledHelpIcon = withStyles({
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        root: {
-
-        },
+        root: {},
         boldText: {
             fontWeight: "bold",
             fontStyle: theme.typography.fontFamily
@@ -34,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export const GameDetails: React.FC<GameDetailsProps> = props => {
+export const GameDetails: React.FC<IGameDetailsProps> = props => {
     const classes = useStyles();
     const [openInstructions, setOpenInstructions] = useState<boolean>(localStorage.getItem(LOCAL_STORAGE_PLAYED_BEFORE) ? false : true);
 

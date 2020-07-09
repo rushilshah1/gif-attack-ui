@@ -10,7 +10,7 @@ import { SUBMITTED_GIF_SIZE } from '../common/constants';
 import { GifCard, GifCardStyle } from './GifCard';
 
 //Libraries
-import { shuffle, unionBy } from 'lodash';
+import { shuffle } from 'lodash';
 
 export interface GifSubmitProps {
     submittedGifs: Array<SubmittedGif>;

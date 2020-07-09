@@ -1,14 +1,7 @@
 import React, { useState } from 'react'
+//UI + CSS
 import { makeStyles, Theme, createStyles, Button, withStyles } from '@material-ui/core';
 import './InstructionsModal.scss';
-
-const getModalStyle = () => {
-    return {
-        top: '50%',
-        left: '50%',
-        transform: `translate(-50%, -50%)`,
-    };
-}
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -39,7 +32,7 @@ interface InstructionsModalProps {
 
 export const InstructionsModal: React.FC<InstructionsModalProps> = React.forwardRef((props, ref) => {
     const classes = useStyles();
-    const [modalStyle] = useState(getModalStyle);
+    const [modalStyle] = useState({ top: '50%', left: '50%', transform: `translate(-50%, -50%)` });
 
     return (
         <div style={modalStyle} className={classes.paper}>

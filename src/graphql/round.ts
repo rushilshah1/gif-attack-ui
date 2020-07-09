@@ -1,10 +1,5 @@
 import gql from 'graphql-tag';
 
-export interface IRound {
-    roundNumber?: number;
-    roundActive?: boolean;
-}
-
 export const ROUND_CLOCK_SUBSCRIPTION = gql`
     subscription RoundClockSubscription($gameId: ID!) {
         roundClock(gameId: $gameId) {

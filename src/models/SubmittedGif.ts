@@ -1,4 +1,3 @@
-//TOD: Break interface/ into two so content is string and object and
 export interface IGif {
     id?: string
     gifId?: string;
@@ -13,7 +12,7 @@ export class SubmittedGif implements IGif {
 
     id!: string;
     gifId!: string;
-    content: any;
+    content!: any;
     userId!: string;
     gifSearchText!: string;
     numVotes!: number;

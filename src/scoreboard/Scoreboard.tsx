@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { intersectionBy } from 'lodash';
+import React from 'react';
+
 //UI + CSS
-import { Table, TableHead, TableRow, TableCell, TableBody, makeStyles, Grid, TableContainer } from '@material-ui/core';
+import { Table, TableHead, TableRow, TableCell, TableBody, makeStyles } from '@material-ui/core';
 import DoneIcon from '@material-ui/icons/Done';
 import './Scoreboard.scss';
 
@@ -23,9 +23,7 @@ const useStyles = makeStyles({
         height: "auto"
     },
     header: {
-        backgroundColor: '#14AFF2',
-        // width: '100%',
-        // minWidth: '100%'
+        backgroundColor: '#14AFF2'
     },
     headerCell: {
         color: 'white'
@@ -60,7 +58,6 @@ export const Scoreboard: React.FC<ScoreboardProps> = props => {
         return playersThatSubmitted.has(userId) ? <DoneIcon color="inherit" fontSize={"large"} /> : null;
     }
     return (
-        // <TableContainer>
         <Table className={classes.table} size="small" aria-label="scoreboard">
             <TableHead>
                 <TableRow className={classes.header}>
@@ -88,7 +85,6 @@ export const Scoreboard: React.FC<ScoreboardProps> = props => {
                 ))}
             </TableBody>
         </Table>
-        // </TableContainer>
 
     )
 }

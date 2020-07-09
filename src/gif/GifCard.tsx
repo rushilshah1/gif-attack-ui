@@ -1,7 +1,7 @@
 import React from 'react'
 
 //UI + CSS
-import { Typography, makeStyles, IconButton } from '@material-ui/core'
+import { Typography, IconButton } from '@material-ui/core'
 import FavoriteOutlinedIcon from '@material-ui/icons/FavoriteOutlined';
 import './GifCard.scss';
 
@@ -16,6 +16,7 @@ export enum GifCardStyle {
     Unvotable = "unvotable-gif-card",
     Voted = "voted-gif-card",
 }
+
 interface IGifCardProps {
     gif: SubmittedGif;
     width: number;
@@ -41,6 +42,10 @@ export const GifCard: React.FC<IGifCardProps> = props => {
         ));
     }
 
+    const gifClicked = () => {
+        if (!props.voteForGif || props.gifIdVotedFor) return;
+        props.voteForGif(props.gif);
+    }
     return (
         <div className={props.type}>
             <Typography variant="subtitle1" >
@@ -52,10 +57,7 @@ export const GifCard: React.FC<IGifCardProps> = props => {
                 height={props.height}
                 hideAttribution={true}
                 noLink={true}
-                onGifClick={() => {
-                    if (!props.voteForGif || props.gifIdVotedFor) return;
-                    props.voteForGif(props.gif)
-                }}
+                onGifClick={() => gifClicked()}
             ></Gif>
             {props.showVoteIcons && generateVoteIcons(props.gif.numVotes)}
             <div className="vote-icon">
@@ -63,10 +65,7 @@ export const GifCard: React.FC<IGifCardProps> = props => {
                     <IconButton
                         aria-label="Vote for gif"
                         color='secondary'
-                        onClick={() => {
-                            if (!props.voteForGif || props.gifIdVotedFor) return;
-                            props.voteForGif(props.gif)
-                        }}>
+                        onClick={() => gifClicked()}>
                         <FavoriteOutlinedIcon />
                     </IconButton>}
             </div>

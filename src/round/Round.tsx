@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 
 // Apollo + Graphql
-import { useMutation, useSubscription } from '@apollo/react-hooks';
-import { CREATE_GIF_MUTATION, UPDATE_GIF_MUTATION, VOTE_FOR_GIF_MUTATION } from '../graphql/gif';
+import { useMutation } from '@apollo/react-hooks';
+import { CREATE_GIF_MUTATION, VOTE_FOR_GIF_MUTATION } from '../graphql/gif';
 import { UPDATE_TOPIC_MUTATION } from '../graphql/topic';
 
 //UI + CSS
 import './Round.scss';
-import { Grid, Theme, makeStyles, createStyles, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 
 // Components
 import { Game } from '../models/Game';
@@ -19,7 +19,7 @@ import { SubmissionConfirmation } from '../gif/SubmissionConfirmation';
 //Giphy
 import { GifSubmit } from '../gif/GifSubmit';
 import { GifSelect } from '../gif/GifSelect';
-import { SubmittedGif, IGif } from '../models/SubmittedGif';
+import { IGif } from '../models/SubmittedGif';
 
 
 export interface RoundProps {
@@ -27,22 +27,8 @@ export interface RoundProps {
     player: User;
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-
-        },
-        boldText: {
-            fontWeight: "bold",
-            fontStyle: theme.typography.fontFamily
-        }
-    })
-);
-
 export const Round: React.FC<RoundProps> = props => {
-    /**Classes for Material Components */
-    const classes = useStyles();
-    /**State for instructions modal and user gif submission */
+    /**State User Gif Submission */
     const [hasUserSubmittedGif, setHasUserSubmittedGif] = useState<boolean>(false);
     /** Apollo Hooks */
     const [createGif, createGifResult] = useMutation(CREATE_GIF_MUTATION);
