@@ -59,6 +59,23 @@ export const GameDetails: React.FC<IGameDetailsProps> = props => {
         </Modal>;
     }
 
+    const showRoundInfo = () => {
+        if (props.currentGame.roundNumber <= 0) {
+            return;
+        }
+        else {
+            return (
+                <div className="round-number">
+                    <Typography variant="h4" component="h4" className={classes.boldText}>Round {props.currentGame.roundNumber}</Typography>
+                    <Icon color='primary' className='round-help' onClick={() => openInstructionsModal()}>
+                        <StyledHelpIcon />
+                    </Icon>
+                </div>
+            );
+        }
+
+    }
+
     return (
         <Grid container spacing={1} direction="column" justify="flex-start" alignItems="center">
             <Hidden smDown>
@@ -70,12 +87,7 @@ export const GameDetails: React.FC<IGameDetailsProps> = props => {
             </Hidden>
             {props.currentGame.gameStarted &&
                 <Grid item>
-                    <div className="round-number">
-                        <Typography variant="h4" component="h4" className={classes.boldText}>Round {props.currentGame.roundNumber}</Typography>
-                        <Icon color='primary' className='round-help' onClick={() => openInstructionsModal()}>
-                            <StyledHelpIcon />
-                        </Icon>
-                    </div>
+                    {showRoundInfo()}
                     {showInstructionsModal()}
                 </Grid>}
 
