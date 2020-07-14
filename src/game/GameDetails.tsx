@@ -67,9 +67,11 @@ export const GameDetails: React.FC<IGameDetailsProps> = props => {
             return (
                 <div className="round-number">
                     <Typography variant="h4" component="h4" className={classes.boldText}>Round {props.currentGame.roundNumber}</Typography>
-                    <Icon color='primary' className='round-help' onClick={() => openInstructionsModal()}>
-                        <StyledHelpIcon />
-                    </Icon>
+                    <Hidden xsDown>
+                        <Icon color='primary' className='round-help' onClick={() => openInstructionsModal()}>
+                            <StyledHelpIcon />
+                        </Icon>
+                    </Hidden>
                 </div>
             );
         }
@@ -88,7 +90,9 @@ export const GameDetails: React.FC<IGameDetailsProps> = props => {
             {props.currentGame.gameStarted &&
                 <Grid item>
                     {showRoundInfo()}
-                    {showInstructionsModal()}
+                    <Hidden xsDown>
+                        {showInstructionsModal()}
+                    </Hidden>
                 </Grid>}
 
             {props.currentGame.roundActive &&
