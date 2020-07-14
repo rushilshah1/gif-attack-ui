@@ -7,8 +7,6 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         paper: {
             position: 'absolute',
-            // minWidth: 450,
-            // minHeight: 450,
             backgroundColor: theme.palette.background.paper,
             border: '2px solid #000',
             boxShadow: theme.shadows[5],
