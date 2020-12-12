@@ -7,6 +7,8 @@ export const ADD_USER_MUTATION = gql`
             id
             name
             score
+            hasSubmitted
+            votedGif
         }
     }
 `
@@ -17,6 +19,8 @@ export const REMOVE_USER_MUTATION = gql`
             id
             name
             score
+            hasSubmitted
+            votedGif
         }
     }
 `
@@ -27,6 +31,8 @@ export const UPDATE_USER_MUTATION = gql`
             id
             name
             score
+            hasSubmitted
+            votedGif
         }
     }
 `
@@ -35,7 +41,7 @@ export const createRemoveUserPayload = (user: IUser, gameId: string): string => 
     const payload: Object = {
         "query": "mutation RemoveUserMutation($user: ModifyUserInput!, $gameId: ID!) {removeUser(user: $user, gameId: $gameId) {name}}",
         "operationName": "RemoveUserMutation",
-        "variables": { "user": { "id": user.id, "name": user.name, "score": user.score }, "gameId": gameId }
+        "variables": { "user": { "id": user.id, "name": user.name, "score": user.score, "hasSubmitted": user.hasSubmitted, "votedGif": user.votedGif }, "gameId": gameId }
     };
     return JSON.stringify(payload);
 }

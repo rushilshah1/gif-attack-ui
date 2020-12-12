@@ -44,12 +44,12 @@ export const Round: React.FC<RoundProps> = props => {
             userId: props.player.id,
             gifSearchText: searchText
         };
-        await createGif({ variables: { gif: createGifInput, gameId: props.currentGame.id } });
+        await createGif({ variables: { gif: createGifInput, gameId: props.currentGame.id, userId: props.player.id } });
         setHasUserSubmittedGif(true);
     };
 
     const submitGifVote = async (id: string) => {
-        await voteForGif({ variables: { gifId: id, gameId: props.currentGame.id } });
+        await voteForGif({ variables: { gifId: id, gameId: props.currentGame.id, userId: props.player.id } });
     }
 
     const submitTopic = async (topic: string) => {

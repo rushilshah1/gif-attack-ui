@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const CREATE_GIF_MUTATION = gql`
-    mutation CreateGif($gif: AddGifInput!, $gameId: ID!) {
-        createGif(gif: $gif, gameId: $gameId) {
+    mutation CreateGif($gif: AddGifInput!, $gameId: ID!, $userId: ID!) {
+        createGif(gif: $gif, gameId: $gameId, userId: $userId) {
             id
             gifId
             content
@@ -43,8 +43,8 @@ export const UPDATE_GIF_MUTATION = gql`
 `
 
 export const VOTE_FOR_GIF_MUTATION = gql`
-    mutation VoteForGif($gifId: ID!, $gameId: ID!) {
-        voteForGif(gifId: $gifId, gameId: $gameId) {
+    mutation VoteForGif($gifId: ID!, $gameId: ID!, $userId: ID!) {
+        voteForGif(gifId: $gifId, gameId: $gameId, userId: $userId) {
             id
             gifId
             content

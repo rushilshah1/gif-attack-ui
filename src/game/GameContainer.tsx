@@ -92,6 +92,7 @@ export const GameContainer: React.FC<IGameContainerProps> = props => {
         setCurrentGame(prevGame => {
             return { ...updatedGame, settings: defaultSettings }
         });
+        //debugger;
     }
 
     /** Start Game */

@@ -13,6 +13,8 @@ export const GAME_STATE_CHANGED_SUBSCRIPTION = gql`
                 id
                 name
                 score
+                hasSubmitted
+                votedGif
             }
             submittedGifs {
                 id
@@ -65,6 +67,8 @@ export const GET_GAME_BY_ID_QUERY_HOOK = gql`
                 id
                 name
                 score
+                hasSubmitted
+                votedGif
             }
             submittedGifs {
                 id
@@ -93,6 +97,8 @@ export const GET_GAMES_BY_ID_QUERY = (id): string =>
                 id
                 name
                 score
+                hasSubmitted
+                votedGif
             }
             submittedGifs {
                 id
