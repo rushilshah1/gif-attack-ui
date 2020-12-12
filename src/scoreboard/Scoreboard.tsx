@@ -12,6 +12,7 @@ import { SubmittedGif } from '../models/SubmittedGif';
 interface ScoreboardProps {
     players: Array<User>;
     submittedGifs: Array<SubmittedGif>;
+    submissionActive: boolean;
 }
 
 const tableCellStyle = {
@@ -51,11 +52,11 @@ const useStyles = makeStyles({
 
 export const Scoreboard: React.FC<ScoreboardProps> = props => {
     const classes = useStyles();
-    const isSubmissionOver: boolean = props.players.every((player: User) => player.hasSubmitted === true);
+    // const isSubmissionOver: boolean = props.players.every((player: User) => player.hasSubmitted === true);
     const maxScore: number = Math.max(...props.players.map(player => player.score));
 
     const showCheckMark = (hasSubmitted: boolean, votedGif: string) => {
-        const isComplete: boolean = (isSubmissionOver) ? votedGif !== '' : hasSubmitted;
+        const isComplete: boolean = (props.submissionActive) ? hasSubmitted : votedGif !== '';
         return isComplete ? <DoneIcon color="inherit" fontSize={"large"} /> : null;
     }
     return (

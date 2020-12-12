@@ -6,6 +6,7 @@ export interface IGame {
     id: string;
     gameStarted: boolean;
     roundActive: boolean;
+    submissionActive: boolean;
     topic: string;
     roundNumber: number;
     users: Array<User>;
@@ -23,6 +24,7 @@ export class Game implements IGame {
     id!: string;
     gameStarted!: boolean;
     roundActive!: boolean;
+    submissionActive!: boolean;
     topic!: string;
     roundNumber!: number;
     users: Array<User> = [];

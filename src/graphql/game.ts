@@ -7,6 +7,7 @@ export const GAME_STATE_CHANGED_SUBSCRIPTION = gql`
             id
             gameStarted
             roundActive
+            submissionActive
             topic
             roundNumber
             users {
@@ -61,6 +62,7 @@ export const GET_GAME_BY_ID_QUERY_HOOK = gql`
             id
             gameStarted
             roundActive
+            submissionActive
             topic
             roundNumber
             users {
@@ -91,6 +93,7 @@ export const GET_GAMES_BY_ID_QUERY = (id): string =>
             id
             gameStarted
             roundActive
+            submissionActive
             topic
             roundNumber
             users {

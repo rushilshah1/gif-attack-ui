@@ -129,7 +129,7 @@ export const GameContainer: React.FC<IGameContainerProps> = props => {
                 <Grid item md={3} >
                     <Grid container >
                         <Grid item>
-                            <Scoreboard players={currentGame.users} submittedGifs={currentGame.submittedGifs}></Scoreboard>
+                            <Scoreboard players={currentGame.users} submittedGifs={currentGame.submittedGifs} submissionActive={currentGame.submissionActive}></Scoreboard>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -144,7 +144,7 @@ export const GameContainer: React.FC<IGameContainerProps> = props => {
                 <Grid item xs={12}>
                     <Grid container justify="center">
                         <Grid item>
-                            <Scoreboard players={currentGame.users} submittedGifs={currentGame.submittedGifs}></Scoreboard>
+                            <Scoreboard players={currentGame.users} submittedGifs={currentGame.submittedGifs} submissionActive={currentGame.submissionActive}></Scoreboard>
                         </Grid>
                     </Grid>
                 </Grid>
