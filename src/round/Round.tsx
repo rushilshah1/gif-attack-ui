@@ -44,12 +44,12 @@ export const Round: React.FC<RoundProps> = props => {
             userId: props.player.id,
             gifSearchText: searchText
         };
-        await createGif({ variables: { gif: createGifInput, gameId: props.currentGame.id } });
+        await createGif({ variables: { gif: createGifInput, gameId: props.currentGame.id, userId: props.player.id } });
         setHasUserSubmittedGif(true);
     };
 
     const submitGifVote = async (id: string) => {
-        await voteForGif({ variables: { gifId: id, gameId: props.currentGame.id } });
+        await voteForGif({ variables: { gifId: id, gameId: props.currentGame.id, userId: props.player.id } });
     }
 
     const submitTopic = async (topic: string) => {
@@ -72,19 +72,25 @@ export const Round: React.FC<RoundProps> = props => {
         );
         if (props.currentGame.settings?.hiddenSubmission) {
             //Everyone has submitted
-            return (props.currentGame.submittedGifs.length >= props.currentGame.users.length) && submittedGifPanel;
+            return !props.currentGame.submissionActive && submittedGifPanel;
         }
         else {
             return submittedGifPanel;
         }
     }
 
+    const showGifSelection = () => {
+        const selectionPanel = <GifSelect selectGif={(gif, searchText) => (submitGif(gif, searchText))}></GifSelect>;
+        if (!hasUserSubmittedGif && props.currentGame.submissionActive) {
+            return selectionPanel;
+        }
+    }
     return (
         <Grid container justify="center" alignItems="flex-start" spacing={2}>
             <Grid item xs={12}>
                 <Topic topic={props.currentGame.topic} submitTopic={text => (submitTopic(text))} />
                 {showSubmittedGifs()}
-                {!hasUserSubmittedGif && <GifSelect selectGif={(gif, searchText) => (submitGif(gif, searchText))}></GifSelect>}
+                {showGifSelection()}
                 {hasUserSubmittedGif && <SubmissionConfirmation></SubmissionConfirmation>}
             </Grid>
         </Grid >

@@ -12,6 +12,7 @@ import { SubmittedGif } from '../models/SubmittedGif';
 interface ScoreboardProps {
     players: Array<User>;
     submittedGifs: Array<SubmittedGif>;
+    submissionActive: boolean;
 }
 
 const tableCellStyle = {
@@ -51,11 +52,11 @@ const useStyles = makeStyles({
 
 export const Scoreboard: React.FC<ScoreboardProps> = props => {
     const classes = useStyles();
-    const playersThatSubmitted: Set<string> = new Set(props.submittedGifs.map((gif: SubmittedGif) => gif.userId));
     const maxScore: number = Math.max(...props.players.map(player => player.score));
 
-    const hasPlayerSubmitted = (userId: string) => {
-        return playersThatSubmitted.has(userId) ? <DoneIcon color="inherit" fontSize={"large"} /> : null;
+    const showCheckMark = (hasSubmitted: boolean, votedGif: string) => {
+        const isComplete: boolean = (props.submissionActive) ? hasSubmitted : votedGif !== '';
+        return isComplete ? <DoneIcon color="inherit" fontSize={"large"} /> : null;
     }
     return (
         <Table className={classes.table} size="small" aria-label="scoreboard">
@@ -74,7 +75,7 @@ export const Scoreboard: React.FC<ScoreboardProps> = props => {
                     <TableRow key={player.id}>
                         <TableCell className={classes.nameCell} align="left">{player.name}</TableCell>
                         <TableCell className={classes.submittedCell} align="right">
-                            {hasPlayerSubmitted(player.id)}
+                            {showCheckMark(player.hasSubmitted, player.votedGif)}
                         </TableCell >
                         <TableCell className={classes.iconCell} align="right">{player.score === maxScore && maxScore !== 0
                             ? <img src={require('../assets/leader.png')} />
