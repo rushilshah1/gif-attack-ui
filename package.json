@@ -58,7 +58,7 @@
       "last 1 safari version"
     ]
   },
-  "description": "An Ionic project",
+  "description": "Gif Attack UI",
   "devDependencies": {
     "react-scripts": "3.2.0"
   }
