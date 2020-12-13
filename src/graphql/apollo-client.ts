@@ -24,7 +24,7 @@ const wsLink = new WebSocketLink({
         connectionParams: () => ({
             user: localStorage.getItem(LOCAL_STORAGE_USER_NAME) || ''
         }),
-        lazy: true
+        //lazy: true
     },
 });
 
