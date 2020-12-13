@@ -52,7 +52,6 @@ const useStyles = makeStyles({
 
 export const Scoreboard: React.FC<ScoreboardProps> = props => {
     const classes = useStyles();
-    // const isSubmissionOver: boolean = props.players.every((player: User) => player.hasSubmitted === true);
     const maxScore: number = Math.max(...props.players.map(player => player.score));
 
     const showCheckMark = (hasSubmitted: boolean, votedGif: string) => {
