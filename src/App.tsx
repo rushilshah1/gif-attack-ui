@@ -12,7 +12,6 @@ import { Home } from './home/Home';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import './App.scss';
 
-
 const theme = createMuiTheme({
   palette: {
     primary: {
