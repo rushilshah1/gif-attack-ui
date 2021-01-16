@@ -18,7 +18,7 @@
     "apollo-link-context": "^1.0.20",
     "apollo-link-error": "^1.1.13",
     "apollo-link-ws": "^1.0.20",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "dotenv": "^8.2.0",
     "graphql": "^15.0.0",
     "less": "^3.11.3",
