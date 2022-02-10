@@ -23,7 +23,7 @@
     "graphql": "^15.0.0",
     "less": "^3.11.3",
     "material-table": "^1.62.0",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-giphy-searchbox": "^1.5.2",
